@@ -1,0 +1,68 @@
+{
+  "name": "@sap-devx/inquirer-gui",
+  "displayName": "Inquier GUI",
+  "version": "1.0.9",
+  "publisher": "SAP",
+  "license": "Apache 2.0",
+  "description": "Inquirer Graphical User Interface",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name form src/index.js",
+    "build-dev": "vue-cli-service build --mode development",
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@mdi/font": "^4.7.95",
+    "@sap-devx/webview-rpc": "^0.2.0",
+    "core-js": "2.6.6",
+    "material-design-icons-iconfont": "^5.0.1",
+    "vue": "^2.6.10",
+    "vuetify": "^2.2.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-plugin-unit-jest": "^4.1.1",
+    "@vue/cli-service": "^3.11.0",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^24.9.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "jest": "^24.9.0",
+    "jest-serializer-vue": "^2.0.2",
+    "sass": "^1.24.3",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-vuetify": "^2.0.3",
+    "vue-jest": "^3.0.5",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.4.3",
+    "webpack": "^4.41.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}
