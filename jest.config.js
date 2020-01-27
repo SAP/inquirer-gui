@@ -1,5 +1,6 @@
 module.exports = {
   verbose: true,
+  testRegex: "(\/__tests__\/(.*)\.(test|spec))\.[jt]sx?$",
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{js,vue}",
@@ -16,7 +17,7 @@ module.exports = {
     "json"
   ],
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!(@sap-devx)/)"
+    "<rootDir>/node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)"
   ],
   modulePaths: [
     "<rootDir>/src",
@@ -34,10 +35,10 @@ module.exports = {
   ],
   coverageThreshold: {
     "global": {
-      "branches": 0,
-      "functions": 0,
-      "lines": 0,
-      "statements": 0
+      "branches": 70,
+      "functions": 85,
+      "lines": 85,
+      "statements": 85
     }
   }
 }
