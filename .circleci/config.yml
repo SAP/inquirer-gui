@@ -1,0 +1,67 @@
+version: 2.1 # use CircleCI 2.1
+
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node:10.17.0
+
+jobs: # a collection of steps
+  build-and-test:
+    <<: *defaults  
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install dependencies
+          command: npm install
+      - run:
+          name: build
+          command: npm run build
+      - run:
+          name: run tests
+          command: npm test
+      - save_cache:
+          paths:
+            - node_modules
+          key: dependency-cache-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+      - store_test_results:
+          path: reports/junit
+      - store_artifacts:
+          path: reports/junit
+      - store_artifacts:
+          path: coverage
+  publish:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: build for publish
+          command: npm run build
+      - run:
+          name: authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
+      - run:
+          name: publish package
+          command: npm publish
+
+workflows:
+  version: 2
+  test-publish:
+    jobs:
+      - build-and-test:
+          filters:
+            tags:
+              only: /.*/
+      - publish:
+          requires:
+            - build-and-test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

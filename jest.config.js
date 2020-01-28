@@ -7,6 +7,16 @@ module.exports = {
     "!**/node_modules/**",
     "!<rootDir>/src/main.js"
   ],
+  reporters: [
+    "default",
+    [
+      "jest-junit",
+      {
+        outputDirectory: "reports/junit",
+        outputName: "js-test-results.xml"
+      }
+    ]
+  ],
   coverageReporters: [
     "html",
     "text-summary"

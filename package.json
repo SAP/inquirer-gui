@@ -3,7 +3,10 @@
   "displayName": "Inquier GUI",
   "version": "0.0.2",
   "publisher": "SAP",
-  "author": {"name": "Eyal Barlev", "email": "eyal.barlev@sap.com"},
+  "author": {
+    "name": "Eyal Barlev",
+    "email": "eyal.barlev@sap.com"
+  },
   "license": "Apache 2.0",
   "description": "Inquirer Graphical User Interface",
   "scripts": {
@@ -34,6 +37,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "jest": "^24.9.0",
+    "jest-junit": "^10.0.0",
     "jest-serializer-vue": "^2.0.2",
     "sass": "^1.24.3",
     "sass-loader": "^8.0.0",
