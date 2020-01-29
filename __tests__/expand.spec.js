@@ -1,5 +1,5 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
+import { mount } from '@vue/test-utils';
+import Vue from 'vue';
 import Form from '../src/Form.vue';
 
 const questionExpand = [
@@ -12,23 +12,16 @@ const questionExpand = [
   }
 ];
 
-let localVue;
-
 describe('Question of type expand', () => {
-  beforeAll(() => {
-    localVue = createLocalVue();
-    localVue.use(Vuetify);
-  });
-
   test('Expand', async () => {
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionExpand });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const expand = wrapper.find('div[role="listitem"');
     expand.trigger('click');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers

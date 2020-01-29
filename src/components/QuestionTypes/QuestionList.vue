@@ -2,7 +2,7 @@
   <div>
     <p class="question-label">{{currentQuestion._message}}</p>
 
-    <v-combobox
+    <v-select
       v-model="selected"
       :items="this.currentQuestion._choices"
       item-text="name"
@@ -10,7 +10,7 @@
       :error-messages="currentQuestion.validationMessage"
       outlined
       dense
-    ></v-combobox>
+    ></v-select>
   </div>
 </template>
 

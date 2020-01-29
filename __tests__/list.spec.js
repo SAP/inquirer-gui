@@ -1,5 +1,6 @@
-import { createLocalVue, mount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import Vuetify from 'vuetify';
+import Vue from 'vue';
 import Form from '../src/Form.vue';
 
 const questionList = [
@@ -12,31 +13,29 @@ const questionList = [
   }
 ];
 
-let localVue;
-
+// TODO: fix 'infinite update loop' issues and unskip
 describe.skip('Question of type list', () => {
-  beforeAll(() => {
-    localVue = createLocalVue();
-    localVue.use(Vuetify);
-  });
-
   test('List', async () => {
-    const wrapper = mount(Form, { localVue });
+    const vuetify = new Vuetify({});
+
+    new Vue({ vuetify });
+
+    document.body.setAttribute('data-app', 'true');
+    const wrapper = mount(Form, { vuetify });
     wrapper.setProps({ questions: questionList });
-    await localVue.nextTick();
 
-    // const country = wrapper.find('div[role="combobox');
-    // country.trigger('click');
-    // await localVue.nextTick();
+    await Vue.nextTick();
+    const select = (wrapper.find('div.v-select__slot'))
 
-    // const usa = wrapper.find('div[role="option"');
-    // console.dir(usa)
-    // usa.trigger('click');
-    // await localVue.nextTick();
+    // The following line causes this error:
+    //   [Vue warn]: You may have an infinite update loop in a component render function.
 
-    // expect(wrapper.emitted().answered).toBeTruthy();
-    // const answered = wrapper.emitted().answered[0];
-    // // test answers
-    // expect(answered[0].country).toContain("USA");
+    select.trigger('click')
+    await Vue.nextTick();
+
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const answered = wrapper.emitted().answered[0];
+    // test answers
+    expect(answered[0].country).toContain("USA");
   });
 });

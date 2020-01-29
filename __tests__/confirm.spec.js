@@ -1,5 +1,5 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
+import { mount } from '@vue/test-utils';
+import Vue from 'vue';
 import Form from '../src/Form.vue';
 
 const questionConfirm = [
@@ -11,23 +11,16 @@ const questionConfirm = [
   }
 ];
 
-let localVue;
-
 describe('Question of type confirm', () => {
-  beforeAll(() => {
-    localVue = createLocalVue();
-    localVue.use(Vuetify);
-  });
-
   test('Confirm', async () => {
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionConfirm });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const confirm = wrapper.find('button');
     confirm.trigger('click');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers

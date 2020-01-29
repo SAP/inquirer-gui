@@ -1,5 +1,5 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
+import { mount } from '@vue/test-utils';
+import Vue from 'vue';
 import Form from '../src/Form.vue';
 
 const questionInput = [
@@ -35,26 +35,19 @@ const questionNumber = [
   },
 ];
 
-let localVue;
-
 describe('Questions of type input, password and number', () => {
-  beforeAll(() => {
-    localVue = createLocalVue();
-    localVue.use(Vuetify);
-  });
-
   test('Input', async () => {
     const value1 = "my input";
 
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionInput });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const name = wrapper.find('input');
     name.element.value = value1;
     name.trigger('input');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -66,15 +59,15 @@ describe('Questions of type input, password and number', () => {
   test('Input with invalid input', async () => {
     const value1 = "m";
 
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionInput });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const name = wrapper.find('input');
     name.element.value = value1;
     name.trigger('input');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -86,15 +79,15 @@ describe('Questions of type input, password and number', () => {
   test('Password', async () => {
     const value1 = "my password";
 
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionPassword });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const name = wrapper.find('input');
     name.element.value = value1;
     name.trigger('input');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -104,15 +97,15 @@ describe('Questions of type input, password and number', () => {
   test('Number', async () => {
     const value1 = 5;
 
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionNumber });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const name = wrapper.find('input');
     name.element.value = value1;
     name.trigger('input');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers

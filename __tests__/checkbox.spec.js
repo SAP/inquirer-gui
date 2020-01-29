@@ -1,5 +1,5 @@
-import { createLocalVue, mount } from '@vue/test-utils';
-import Vuetify from 'vuetify';
+import { mount } from '@vue/test-utils';
+import Vue from 'vue';
 import Form from '../src/Form.vue';
 
 const questionCheckbox = [
@@ -17,23 +17,16 @@ const questionCheckbox = [
   }
 ];
 
-let localVue;
-
 describe('Question of type checkbox', () => {
-  beforeAll(() => {
-    localVue = createLocalVue();
-    localVue.use(Vuetify);
-  });
-
   test('Checkbox', async () => {
-    const wrapper = mount(Form, { localVue });
+    const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionCheckbox });
-    await localVue.nextTick();
+    await Vue.nextTick();
 
     const citizenship = wrapper.find('input[role="checkbox"');
     citizenship.trigger('click');
 
-    await localVue.nextTick();
+    await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers

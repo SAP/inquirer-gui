@@ -5,7 +5,8 @@ module.exports = {
   collectCoverageFrom: [
     "src/**/*.{js,vue}",
     "!**/node_modules/**",
-    "!<rootDir>/src/main.js"
+    "!<rootDir>/src/main.js",
+    "!<rootDir>/src/plugins/**"
   ],
   reporters: [
     "default",
@@ -40,6 +41,9 @@ module.exports = {
     '^.+\\.tsx?$': 'ts-jest',
     "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
   },
+  setupFiles: [
+    "<rootDir>/__tests__/setup.js"
+  ],
   snapshotSerializers: [
     "<rootDir>/node_modules/jest-serializer-vue"
   ],
