@@ -2,10 +2,9 @@
   <div>
     <p class="question-label">{{question._message}}</p>
     <v-text-field
-      v-model="text"
       @input="onInput"
+      :value="question.answer"
       class="pa-0 ma-0"
-      :placeholder="question.answer"
       :type="getInputType(question.type)"
       :error-messages="question.validationMessage"
       outlined
@@ -21,11 +20,6 @@ export default {
   name: "QuestionInput",
   props: {
     question: Object
-  },
-  data() {
-    return {
-      text: undefined
-    };
   },
   methods: {
     onInput: utils.debounce(function(val) {

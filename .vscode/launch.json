@@ -7,11 +7,14 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${file}"
+            "name": "Run tests",
+            "cwd": "${workspaceFolder}",
+            // "program": "${workspaceFolder}/src/main.js",
+            "program": "${workspaceFolder}/node_modules/@vue/cli-service/bin/vue-cli-service.js",
+            "args": [
+                "test:unit",
+                "--runInBand"
+            ]
         }
     ]
 }

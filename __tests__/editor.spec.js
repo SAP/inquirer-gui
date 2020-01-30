@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Vue from 'vue';
 import Form from '../src/Form.vue';
+import utils from './utils';
 
 const filterSuffix = "!!!";
 const questionEditor = [
@@ -23,7 +24,7 @@ describe('Question of type editor and filter func', () => {
   test('Editor', async () => {
     const value1 = "my lines";
 
-    const wrapper = mount(Form, { });
+    const wrapper = mount(Form, {});
     wrapper.setProps({ questions: questionEditor });
     await Vue.nextTick();
 
@@ -31,7 +32,9 @@ describe('Question of type editor and filter func', () => {
     notes.element.value = value1;
     notes.trigger('input');
 
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers

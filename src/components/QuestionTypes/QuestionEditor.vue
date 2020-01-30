@@ -2,9 +2,8 @@
   <div>
     <p>{{question._message}}</p>
     <v-textarea
-      v-model="text"
-      :placeholder="question.answer"
       @input="onInput"
+      :value="question.answer"
       aria-describedby="validation-message"
       :error-messages="question.validationMessage"
       outlined
@@ -19,11 +18,6 @@ export default {
   name: "QuestionEditor",
   props: {
     question: Object
-  },
-  data() {
-    return {
-      text: undefined
-    };
   },
   methods: {
     onInput: utils.debounce(function(val) {

@@ -18,11 +18,6 @@ export default {
   components: {
     QuestionTypeSelector
   },
-  data() {
-    return {
-      allValid: true
-    };
-  },
   props: {
     questions: Array
   },
@@ -30,7 +25,7 @@ export default {
     getAnswers() {
       let result = {};
       for (let question of this.questions) {
-        if (question._choices && question.answer.value) {
+        if (question._choices && question.answer && question.answer.value) {
           // Vuetify returns objects instead of values for comboboxes: https://github.com/vuetifyjs/vuetify/issues/5479
           result[question.name] = question.answer.value;
         } else {
@@ -55,6 +50,7 @@ export default {
         return value["name"] === name;
       });
       if (answeredQuestion) {
+        answeredQuestion.isDirty = true;
         // evaluate validate()
         if (answeredQuestion.validate) {
           const answers = this.getAnswers();
@@ -64,14 +60,8 @@ export default {
             typeof response === "string" ? response : "";
         }
         // TODO: if input is invalid, should we update the answer?
-
-        let filteredAnswer = answer;
-        if (answeredQuestion.filter) {
-          filteredAnswer = await answeredQuestion.filter(answer);
-        }
-
         // set the answer
-        answeredQuestion["answer"] = filteredAnswer;
+        answeredQuestion["answer"] = answer;
       }
 
       // evaluate answers for all questions (e.g. when)
@@ -83,23 +73,50 @@ export default {
             let response = await question.when(answers);
             question.shouldShow = response;
           }
-        }
 
-        // TODO: evaluate choices, message and default if functions
+          // evaluate default()
+          if (typeof question.message === "function") {
+            let response = await question.message(answers);
+            question._message = response;
+          }
+
+          if (typeof question.default === "function" && !question.isDirty) {
+            const response = await question.default(answers);
+            // TODO: perform transformation when needed (indexes for lists, etc.)
+            question.answer = response;
+            answers[question.name] = response;
+          }
+
+          // TODO: evaluate choices if defined as a function
+        }
+      }
+
+      const allValid = !this.questions.some(question => {
+        return question.isValid === false;
+      });
+
+      // apply filters
+      let filteredAnswers = {};
+      Object.assign(filteredAnswers, answers);
+      for (let question of this.questions) {
+        if (question.filter) {
+          const currentAnswer = answers[question.name];
+          const filteredAnswer = await question.filter(currentAnswer);
+          filteredAnswers[question.name] = filteredAnswer;
+        }
       }
 
       // fire 'answered' event
-      this.allValid = !this.questions.some(question => {
-        return question.isValid === false;
-      });
-      this.$emit("answered", answers, this.allValid);
+      this.$emit("answered", filteredAnswers, allValid);
     }
   },
   watch: {
     questions: async function() {
       // set initial values for properties
       for (let question of this.questions) {
-        this.$set(question, "answer", undefined);
+        const answer =
+          typeof question.default === "string" ? question.default : undefined;
+        this.$set(question, "answer", answer);
         const message =
           typeof question.message === "string" ? question.message : "";
         this.$set(question, "_message", message);
@@ -113,11 +130,8 @@ export default {
         const shouldShow = question.when === false ? false : true;
         this.$set(question, "shouldShow", shouldShow);
         this.$set(question, "isValid", true);
+        this.$set(question, "isDirty", false);
         this.$set(question, "validationMessage", "");
-        if (typeof question.default !== "function") {
-          // TODO: perform transformation when needed (indexes for lists, etc.)
-          question.answer = question.default;
-        }
       }
 
       for (let question of this.questions) {
@@ -125,6 +139,7 @@ export default {
         const answers = this.getAnswers();
         if (typeof question.default === "function") {
           const response = await question.default(answers);
+          // TODO: perform transformation when needed (indexes for lists, etc.)
           question.answer = response;
         }
         if (typeof question.message === "function") {

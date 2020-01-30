@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Vue from 'vue';
 import Form from '../src/Form.vue';
+import utils from './utils';
 
 const questionInput = [
   {
@@ -72,7 +73,9 @@ describe('Questions of type input, password and number', () => {
     name.element.value = value1;
     name.trigger('input');
 
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -92,7 +95,9 @@ describe('Questions of type input, password and number', () => {
     name.element.value = value1;
     name.trigger('input');
 
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -112,7 +117,9 @@ describe('Questions of type input, password and number', () => {
     name.element.value = value1;
     name.trigger('input');
 
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -130,7 +137,8 @@ describe('Questions of type input, password and number', () => {
     name.element.value = value1;
     name.trigger('input');
 
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
     expect(wrapper.emitted().answered).toBeTruthy();
     const answered = wrapper.emitted().answered[0];
     // test answers
@@ -146,7 +154,9 @@ describe('Questions of type input, password and number', () => {
     expect(inputs.length).toEqual(3);
     inputs.at(0).element.value = "hide";
     inputs.at(0).trigger('input');
-    await Vue.nextTick();
+    // wait to account for debounce
+    await utils.sleep(300);
+
     inputs = wrapper.findAll('input');
     expect(inputs.length).toEqual(2);
   });
