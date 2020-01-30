@@ -4,6 +4,7 @@
     <v-textarea
       v-model="text"
       :placeholder="question.answer"
+      @input="onInput"
       aria-describedby="validation-message"
       :error-messages="question.validationMessage"
       outlined
@@ -12,6 +13,8 @@
 </template>
 
 <script>
+import utils from "../../utils";
+
 export default {
   name: "QuestionEditor",
   props: {
@@ -22,12 +25,10 @@ export default {
       text: undefined
     };
   },
-  watch: {
-    text: {
-      handler(val) {
-        this.$emit("answerChanged", this.question.name, val);
-      }
-    }
+  methods: {
+    onInput: utils.debounce(function(val) {
+      this.$emit("answerChanged", this.question.name, val);
+    }, 280)
   }
 };
 </script>

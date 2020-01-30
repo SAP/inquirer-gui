@@ -132,8 +132,6 @@ export default {
           question._message = response;
         }
       }
-      // const answers = this.getAnswers();
-      // this.$emit("answered", answers, this.allValid);
     }
   }
 };

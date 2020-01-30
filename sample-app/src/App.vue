@@ -9,8 +9,9 @@
         <h1 class="text-danger" v-if="!this.allValid">Some answers are invalid</h1>
         <div>
           <v-btn
-            v-bind:disabled="!allValid"
-            v-bind:class="{'btn-success': allValid, 'btn-danger': !allValid}"
+            :disabled="!allValid"
+            :class="{'btn-success': allValid, 'btn-danger': !allValid}"
+            @click="onNext"
           >Next</v-btn>
         </div>
       </v-col>
@@ -24,6 +25,7 @@ import Answers from "./Answers.vue";
 
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
+import main from "./main.js";
 
 export default {
   name: "app",
@@ -42,6 +44,9 @@ export default {
     onAnswered(answers, allValid) {
       this.answers = answers;
       this.allValid = allValid;
+    },
+    onNext() {
+      main.$emit("next");
     },
     isInVsCode() {
       return typeof acquireVsCodeApi !== "undefined";
