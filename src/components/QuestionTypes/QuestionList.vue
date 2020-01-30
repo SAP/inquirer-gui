@@ -1,13 +1,13 @@
 <template>
   <div>
-    <p class="question-label">{{currentQuestion._message}}</p>
+    <p class="question-label">{{question._message}}</p>
 
     <v-select
       v-model="selected"
-      :items="this.currentQuestion._choices"
+      :items="this.question._choices"
       item-text="name"
       item-value="value"
-      :error-messages="currentQuestion.validationMessage"
+      :error-messages="question.validationMessage"
       outlined
       dense
     ></v-select>
@@ -19,19 +19,19 @@ export default {
   name: "QuestionList",
   data() {
     return {
-      selected: this.currentQuestion.answer
+      selected: this.question.answer
     };
   },
   watch: {
     selected: {
       immediate: true,
       handler: function(selectedvalue) {
-        this.$emit("answerChanged", this.currentQuestion.name, selectedvalue);
+        this.$emit("answerChanged", this.question.name, selectedvalue);
       }
     }
   },
   props: {
-    currentQuestion: Object
+    question: Object
   }
 };
 </script>

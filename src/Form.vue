@@ -4,7 +4,7 @@
       <QuestionTypeSelector
         v-for="(item, index) in questions"
         :key="index"
-        :currentQuestion="item"
+        :question="item"
         @answerChanged="onAnswerChanged"
       />
     </v-form>
@@ -51,43 +51,41 @@ export default {
       }
     },
     async onAnswerChanged(name, answer) {
-      if (name !== undefined) {
-        const question = this.questions.find(value => {
-          return value["name"] === name;
-        });
-        if (question) {
-          // evaluate validate()
-          if (question.validate) {
-            const answers = this.getAnswers();
-            let response = await question.validate(answer, answers);
-            question.isValid = response !== true ? false : true;
-            question.validationMessage =
-              typeof response === "string" ? response : "";
-          }
-          // TODO: if input is invalid, should we update the answer?
-
-          let filteredAnswer = answer;
-          if (question.filter) {
-            filteredAnswer = await question.filter(answer);
-          }
-
-          // set the answer
-          question["answer"] = filteredAnswer;
+      const answeredQuestion = this.questions.find(value => {
+        return value["name"] === name;
+      });
+      if (answeredQuestion) {
+        // evaluate validate()
+        if (answeredQuestion.validate) {
+          const answers = this.getAnswers();
+          let response = await answeredQuestion.validate(answer, answers);
+          answeredQuestion.isValid = response !== true ? false : true;
+          answeredQuestion.validationMessage =
+            typeof response === "string" ? response : "";
         }
+        // TODO: if input is invalid, should we update the answer?
+
+        let filteredAnswer = answer;
+        if (answeredQuestion.filter) {
+          filteredAnswer = await answeredQuestion.filter(answer);
+        }
+
+        // set the answer
+        answeredQuestion["answer"] = filteredAnswer;
       }
 
       // evaluate answers for all questions (e.g. when)
       const answers = this.getAnswers();
       for (let question of this.questions) {
-        // evaluate when()
-        if (question.when) {
+        if (question.name !== answeredQuestion.name) {
+          // evaluate when()
           if (typeof question.when === "function") {
             let response = await question.when(answers);
             question.shouldShow = response;
-          } else if (typeof question.when === "boolean") {
-            question.shouldShow = question.when;
           }
         }
+
+        // TODO: evaluate choices, message and default if functions
       }
 
       // fire 'answered' event
@@ -102,7 +100,9 @@ export default {
       // set initial values for properties
       for (let question of this.questions) {
         this.$set(question, "answer", undefined);
-        this.$set(question, "_message", "");
+        const message =
+          typeof question.message === "string" ? question.message : "";
+        this.$set(question, "_message", message);
         if (question.choices) {
           this.$set(
             question,
@@ -110,15 +110,13 @@ export default {
             this.normalizeChoices(question.choices)
           );
         }
-        this.$set(question, "shouldShow", true);
+        const shouldShow = question.when === false ? false : true;
+        this.$set(question, "shouldShow", shouldShow);
         this.$set(question, "isValid", true);
         this.$set(question, "validationMessage", "");
         if (typeof question.default !== "function") {
           // TODO: perform transformation when needed (indexes for lists, etc.)
           question.answer = question.default;
-        }
-        if (typeof question.message !== "function") {
-          question._message = question.message;
         }
       }
 
@@ -134,6 +132,8 @@ export default {
           question._message = response;
         }
       }
+      // const answers = this.getAnswers();
+      // this.$emit("answered", answers, this.allValid);
     }
   }
 };

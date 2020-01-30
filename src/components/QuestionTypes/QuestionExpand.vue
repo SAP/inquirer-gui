@@ -1,11 +1,11 @@
 <template>
   <div class="question-expand-container">
-    <p class="question-label">{{currentQuestion._message}}</p>
+    <p class="question-label">{{question._message}}</p>
     <v-card outlined>
       <v-list>
-        <v-list-item-group :value="currentQuestion.answer" @change="onClick">
+        <v-list-item-group :value="question.answer" @change="onClick">
           <v-list-item
-            v-for="(choice, i) in currentQuestion._choices"
+            v-for="(choice, i) in question._choices"
             :key="i"
             :value="choice.value"
           >
@@ -23,12 +23,12 @@
 export default {
   name: "QuestionExpand",
   props: {
-    currentQuestion: Object
+    question: Object
   },
   methods: {
     onClick(answer) {
       if (answer !== undefined) {
-        this.$emit("answerChanged", this.currentQuestion.name, answer);
+        this.$emit("answerChanged", this.question.name, answer);
       }
     }
   }

@@ -35,6 +35,31 @@ const questionNumber = [
   },
 ];
 
+const questionsConditional = [
+  {
+    type: "input",
+    name: "condition",
+    default: "some value"
+  },
+  {
+    type: "input",
+    name: "conditional",
+    when: function (answers) {
+      return (answers.condition !== "hide");
+    }
+  },
+  {
+    type: "input",
+    name: "conditional2",
+    when: false
+  },
+  {
+    type: "input",
+    name: "conditional3",
+    when: true
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -110,5 +135,19 @@ describe('Questions of type input, password and number', () => {
     const answered = wrapper.emitted().answered[0];
     // test answers
     expect(answered[0].number).toEqual(value1.toString());
+  });
+
+  test('Input with conditions', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionsConditional });
+    await Vue.nextTick();
+
+    let inputs = wrapper.findAll('input');
+    expect(inputs.length).toEqual(3);
+    inputs.at(0).element.value = "hide";
+    inputs.at(0).trigger('input');
+    await Vue.nextTick();
+    inputs = wrapper.findAll('input');
+    expect(inputs.length).toEqual(2);
   });
 });

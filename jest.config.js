@@ -5,7 +5,7 @@ module.exports = {
   collectCoverageFrom: [
     "src/**/*.{js,vue}",
     "!**/node_modules/**",
-    "!<rootDir>/src/main.js",
+    "!<rootDir>/src/index.js",
     "!<rootDir>/src/plugins/**"
   ],
   reporters: [
@@ -49,10 +49,10 @@ module.exports = {
   ],
   coverageThreshold: {
     "global": {
-      "branches": 70,
-      "functions": 85,
-      "lines": 85,
-      "statements": 85
+      "branches": 80,
+      "functions": 90,
+      "lines": 95,
+      "statements": 95
     }
   }
 }

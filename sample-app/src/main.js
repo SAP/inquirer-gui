@@ -37,6 +37,12 @@ new Vue({
         }
       },
       {
+        type: "input",
+        name: "conditional",
+        message: "Conditional",
+        when: false
+      },
+      {
         type: "editor",
         name: "notes",
         message: function (answers) {

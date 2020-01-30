@@ -1,12 +1,13 @@
 <template>
   <div>
-    <p class="question-label">{{currentQuestion._message}}</p>
+    <p class="question-label">{{question._message}}</p>
     <v-text-field
       v-model="text"
+      @input="onInput"
       class="pa-0 ma-0"
-      :placeholder="currentQuestion.answer"
-      :type="getInputType(currentQuestion.type)"
-      :error-messages="currentQuestion.validationMessage"
+      :placeholder="question.answer"
+      :type="getInputType(question.type)"
+      :error-messages="question.validationMessage"
       outlined
       dense
     ></v-text-field>
@@ -17,21 +18,17 @@
 export default {
   name: "QuestionInput",
   props: {
-    currentQuestion: Object
+    question: Object
   },
   data() {
     return {
       text: undefined
     };
   },
-  watch: {
-    text: {
-      async handler(val) {
-        this.$emit("answerChanged", this.currentQuestion.name, val);
-      }
-    }
-  },
   methods: {
+    onInput(val) {
+        this.$emit("answerChanged", this.question.name, val);
+    },
     getInputType(questionType) {
       switch (questionType) {
         case "password":

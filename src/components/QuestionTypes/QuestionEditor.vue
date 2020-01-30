@@ -1,11 +1,11 @@
 <template>
   <div>
-    <p>{{currentQuestion._message}}</p>
+    <p>{{question._message}}</p>
     <v-textarea
       v-model="text"
-      :placeholder="currentQuestion.answer"
+      :placeholder="question.answer"
       aria-describedby="validation-message"
-      :error-messages="currentQuestion.validationMessage"
+      :error-messages="question.validationMessage"
       outlined
     ></v-textarea>
   </div>
@@ -15,7 +15,7 @@
 export default {
   name: "QuestionEditor",
   props: {
-    currentQuestion: Object
+    question: Object
   },
   data() {
     return {
@@ -25,7 +25,7 @@ export default {
   watch: {
     text: {
       handler(val) {
-        this.$emit("answerChanged", this.currentQuestion.name, val);
+        this.$emit("answerChanged", this.question.name, val);
       }
     }
   }

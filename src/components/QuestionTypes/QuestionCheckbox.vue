@@ -1,15 +1,15 @@
 <template>
   <div>
-  <p class="question-label">{{currentQuestion._message}}</p>
+  <p class="question-label">{{question._message}}</p>
     <v-checkbox
-      v-for="(item) in currentQuestion._choices"
+      v-for="(item) in question._choices"
       dense
       stacked
       v-model="options"
       :key="item.value"
       :label="item.name"
       :value="item.value"
-      :error-messages="currentQuestion.validationMessage"
+      :error-messages="question.validationMessage"
     ></v-checkbox>
   </div>
 </template>
@@ -19,17 +19,17 @@
 export default {
   name: "QuestionCheckbox",
   props: {
-    currentQuestion: Object
+    question: Object
   },
   data() {
     return {
-      options: this.currentQuestion.default ? this.currentQuestion.default : []
+      options: this.question.default ? this.question.default : []
     };
   },
   watch: {
     options: {
       handler(val) {
-        this.$emit("answerChanged", this.currentQuestion.name, val);
+        this.$emit("answerChanged", this.question.name, val);
       }
     }
   }

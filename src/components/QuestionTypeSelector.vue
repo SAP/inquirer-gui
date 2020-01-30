@@ -1,38 +1,38 @@
 <template>
-  <div id="QuestionTypeSelector" v-if="currentQuestion.shouldShow">
+  <div id="QuestionTypeSelector" v-if="question.shouldShow">
     <QuestionInput
-      v-if="!currentQuestion.type || currentQuestion.type==='input' || currentQuestion.type==='password' || currentQuestion.type==='number'"
-      :currentQuestion="currentQuestion"
+      v-if="!question.type || question.type==='input' || question.type==='password' || question.type==='number'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
 
     <QuestionEditor
-      v-if="currentQuestion.type==='editor'"
-      :currentQuestion="currentQuestion"
+      v-if="question.type==='editor'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
 
     <QuestionList
-      v-if="currentQuestion.type==='list' || currentQuestion.type==='rawlist'"
-      :currentQuestion="currentQuestion"
+      v-if="question.type==='list' || question.type==='rawlist'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
 
     <QuestionConfirm
-      v-if="currentQuestion.type==='confirm'"
-      :currentQuestion="currentQuestion"
+      v-if="question.type==='confirm'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
 
     <QuestionCheckbox
-      v-if="currentQuestion.type==='checkbox'"
-      :currentQuestion="currentQuestion"
+      v-if="question.type==='checkbox'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
 
     <QuestionExpand
-      v-if="currentQuestion.type==='expand'"
-      :currentQuestion="currentQuestion"
+      v-if="question.type==='expand'"
+      :question="question"
       @answerChanged="onAnswerChanged"
     />
   </div>
@@ -57,7 +57,7 @@ export default {
     QuestionExpand
   },
   props: {
-    currentQuestion: Object
+    question: Object
   },
   data() {
     return {
