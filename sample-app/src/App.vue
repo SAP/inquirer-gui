@@ -25,6 +25,7 @@ import Answers from "./Answers.vue";
 
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
+import QuestionDateTime from "./formElements/QuestionDateTime";
 import main from "./main.js";
 
 export default {
@@ -107,6 +108,14 @@ export default {
     }
   },
   mounted() {
+    // register custom form elements
+    Vue.component("QuestionDateTime", QuestionDateTime);
+    const datePlugin = {
+      questionType: "date",
+      component: QuestionDateTime
+    };
+    this.$refs.form.registerPlugin(datePlugin);
+
     this.setupRpc();
     const mutationCallback = mutationsList => {
       for (let mutation of mutationsList) {

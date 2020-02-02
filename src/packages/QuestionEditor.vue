@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>{{question._message}}</p>
+    <p class="question-label">{{question._message}}</p>
     <v-textarea
       @input="onInput"
       :value="question.answer"
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import utils from "../../utils";
+import utils from "../utils";
 
 export default {
   name: "QuestionEditor",

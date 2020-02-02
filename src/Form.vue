@@ -1,27 +1,42 @@
 <template>
-  <div class="inquirer-gui">
-    <v-form>
-      <QuestionTypeSelector
-        v-for="(item, index) in questions"
+  <v-form class="inquirer-gui">
+    <template v-for="(question, index) in questions">
+      <component
+        v-if="question.shouldShow"
+        :is="getComponentByQuestionType(question.type)"
         :key="index"
-        :question="item"
+        :question="question"
         @answerChanged="onAnswerChanged"
-      />
-    </v-form>
-  </div>
+      ></component>
+    </template>
+  </v-form>
 </template>
 
 <script>
-import QuestionTypeSelector from "./components/QuestionTypeSelector.vue";
+import Plugins from "./Plugins";
+
 export default {
   name: "Form",
-  components: {
-    QuestionTypeSelector
-  },
   props: {
     questions: Array
   },
+  data() {
+    return {
+      plugins: Plugins.registerBuiltinPlugins()
+    };
+  },
   methods: {
+    getComponentByQuestionType(questionType) {
+      const foundPlugin = this.plugins.find(plugin => {
+        return plugin.questionType === questionType;
+      });
+      if (foundPlugin) {
+        return foundPlugin.component;
+      }
+    },
+    registerPlugin(plugin) {
+      this.plugins.push(plugin);
+    },
     getAnswers() {
       let result = {};
       for (let question of this.questions) {
@@ -155,6 +170,10 @@ export default {
 <style >
 .inquirer-gui p.question-label {
   margin-bottom: 0.25rem;
+}
+
+.inquirer-gui .v-text-field div.v-text-field__details {
+  margin-bottom: 2px;
 }
 
 .inquirer-gui .v-text-field input {

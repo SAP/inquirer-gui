@@ -1,5 +1,5 @@
 <template>
-  <div class="question-expand-container">
+  <div class="question-confirm-container">
     <p class="question-label">{{question._message}}</p>
     <v-btn-toggle dense :value="question.answer" @change="onClick">
       <v-btn :value="true">Yes</v-btn>

@@ -12,6 +12,11 @@ import Form from "../../src/index";
 
 const questions1 = [
   {
+    type: "date",
+    name: "birthday",
+    message: "Birthday"
+  },
+  {
     type: "input",
     name: "name",
     message: "Your name (frontend)",
@@ -138,14 +143,11 @@ export default new Vue({
   methods: {
     prompt(questions) {
       this.$children[0].questions = questions;
-    },
-    setNextCallback() {
-
     }
   },
   mounted() {
-    this.prompt(questionsArray[0]);
     console.log('sample app is mounted');
+    this.prompt(questionsArray[0]);
   },
 }).$on('next', function() {
   if (this.questionsIndex === 0) {
