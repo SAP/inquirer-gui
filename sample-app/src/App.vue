@@ -25,8 +25,13 @@ import Answers from "./Answers.vue";
 
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
-import QuestionDateTime from "./formElements/QuestionDateTime";
 import main from "./main.js";
+import DatePlugin from "@sap-devx/inquirer-gui-date-plugin/dist/datePlugin.umd";
+/**
+ * If you want to make changes to the sample date plugin you
+ * should consume it from this repo and not from npm:
+ *   import DatePlugin from "../../sample-plugin/index";
+ */
 
 export default {
   name: "app",
@@ -108,13 +113,10 @@ export default {
     }
   },
   mounted() {
-    // register custom form elements
-    Vue.component("QuestionDateTime", QuestionDateTime);
-    const datePlugin = {
-      questionType: "date",
-      component: QuestionDateTime
-    };
-    this.$refs.form.registerPlugin(datePlugin);
+    // register custom plugins
+    const options = {};
+    Vue.use(DatePlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
 
     this.setupRpc();
     const mutationCallback = mutationsList => {

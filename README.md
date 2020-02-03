@@ -75,8 +75,44 @@ The `answered` event is fired when any answer is changed:
 * The first parameter to the event handler, `answers`, contains all answers.
 * The second parameter, `allValid`, can be used to, for example, enable or disable a `Next` button.
 
+## Custom form elements
+`inquirer-gui` provides *built-in form elements* for all built-in `inquirer.js` question types:
+* `list`, `rawlist`
+* `expand`
+* `checkbox`
+* `confirm`
+* `input` (number, password and input)
+* `editor`
+
+`inquirer-gui` supports *custom form elements* via its `plugin` mechanism.
+
+### Creating a custom form element
+A form element plugin is a `javascript` object with this structure:
+```js
+{
+  questionType: '<inquirer-question-type>';
+  component: <MyVueComponent>;
+}
+```
+
+Where `questionType` is the string provided in the question's `type` property, and `component` is a `Vue` component that renders questions of the given type.
+
+There is example of a custom form element in the `/sample-plugin` folder. It is defined as a `Vue plugin` and was published as `@sap-devx/inquirer-gui-date-plugin` on `npm`.
+
+### Consuming a custom form element
+Consume a custom form element as a `Vue plugin` using the `Vue.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
+```js
+import DatePlugin from "@sap-devx/inquirer-gui-date-plugin/dist/datePlugin.umd";
+
+const options = {};
+// use the Vue plugin
+Vue.use(DatePlugin, options);
+// register the inquirer-gui plugin with your form instance
+form.registerPlugin(options.plugin);
+```
+
 ## Note
-The samples provided consume the `inquirer-gui` component directly from source code.
+The `/sample-app` exmaple consumes the `inquirer-gui` component directly from source in this repo.
 
 In real life scenarios, the component should be consumed from `npm`:
 
