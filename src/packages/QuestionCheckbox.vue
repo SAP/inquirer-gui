@@ -1,9 +1,9 @@
 <template>
   <div>
-  <p class="question-label">{{question._message}}</p>
     <v-checkbox
       v-for="(item) in question._choices"
-      dense
+      hide-details="auto"
+        dense
       stacked
       v-model="options"
       :key="item.value"
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-
 export default {
   name: "QuestionCheckbox",
   props: {
@@ -33,7 +32,7 @@ export default {
       }
     }
   }
-    // TODO: handle default values of type object (with properties name, value and short)
+  // TODO: handle default values of type object (with properties name, value and short)
 };
 </script>
 

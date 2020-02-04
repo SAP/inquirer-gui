@@ -6,13 +6,15 @@ import QuestionDateTime from './QuestionDateTime.vue';
 const questionDate = [
   {
     type: "date",
-    name: "birthday"
+    name: "birthday",
+    message: "birthday"
   }
 ];
 
 describe('Question of custom type date', () => {
   test('Custom Date', async () => {
     Vue.component('QuestionDateTime', QuestionDateTime);
+    await Vue.nextTick();
     const datePlugin = {
       questionType: "date",
       component: QuestionDateTime
@@ -23,12 +25,12 @@ describe('Question of custom type date', () => {
         'QuestionDateTime': QuestionDateTime
       }
     });
-    wrapper.setProps({ questions: questionDate });
-    await Vue.nextTick();
     wrapper.vm.registerPlugin(datePlugin);
     await Vue.nextTick();
+    wrapper.setProps({ questions: questionDate });
+    await Vue.nextTick();
     
-    expect(wrapper.find('div.question-date-container').exists()).toBe(true);
+    expect(wrapper.find('p.question-label').element.innerHTML).toBe("birthday");
   });
 
 });

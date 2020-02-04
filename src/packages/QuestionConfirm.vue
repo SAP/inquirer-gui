@@ -1,11 +1,8 @@
 <template>
-  <div class="question-confirm-container">
-    <p class="question-label">{{question._message}}</p>
-    <v-btn-toggle dense :value="question.answer" @change="onClick">
-      <v-btn :value="true">Yes</v-btn>
-      <v-btn :value="false">No</v-btn>
-    </v-btn-toggle>
-  </div>
+  <v-btn-toggle dense :value="question.answer" @change="onClick">
+    <v-btn :value="true">Yes</v-btn>
+    <v-btn :value="false">No</v-btn>
+  </v-btn-toggle>
 </template>
 
 <script>

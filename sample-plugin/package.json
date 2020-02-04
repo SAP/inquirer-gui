@@ -1,8 +1,8 @@
 {
   "name": "@sap-devx/inquirer-gui-date-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sample date plugin for inquirer-gui",
-  "main": "index.js",
+  "main": "dist/datePlugin.umd.js",
   "scripts": {
     "build": "vue-cli-service build --target lib --name datePlugin src/index.js",
     "prepublishOnly": "npm run build"

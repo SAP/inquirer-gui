@@ -12,7 +12,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@sap-devx/inquirer-gui-date-plugin": "0.0.1",
+    "@sap-devx/inquirer-gui": "0.0.3",
+    "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
     "@sap-devx/webview-rpc": "^0.2.0",
     "vue": "^2.6.10",
     "vuetify": "^2.2.3"

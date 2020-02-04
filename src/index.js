@@ -1,7 +1,5 @@
 import Form from './Form.vue';
-import vuetify from "./plugins/vuetify";
-
-Object.assign(Form, vuetify);
+import 'vuetify/dist/vuetify.min.css';
 
 export default {
   install (Vue) {

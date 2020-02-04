@@ -1,14 +1,15 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquier GUI",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "SAP",
   "author": {
     "name": "Eyal Barlev",
     "email": "eyal.barlev@sap.com"
   },
-  "license": "Apache 2.0",
   "description": "Inquirer Graphical User Interface",
+  "license": "Apache 2.0",
+  "main": "dist/form.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name form src/index.js",

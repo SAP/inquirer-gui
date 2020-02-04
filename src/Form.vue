@@ -1,6 +1,11 @@
 <template>
   <v-form class="inquirer-gui">
     <template v-for="(question, index) in questions">
+      <p
+        :key="'label-' + index"
+        class="question-label"
+        v-if="question.shouldShow"
+      >{{question._message}}</p>
       <component
         v-if="question.shouldShow"
         :is="getComponentByQuestionType(question.type)"

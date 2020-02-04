@@ -102,27 +102,13 @@ There is example of a custom form element in the `/sample-plugin` folder. It is 
 ### Consuming a custom form element
 Consume a custom form element as a `Vue plugin` using the `Vue.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
 ```js
-import DatePlugin from "@sap-devx/inquirer-gui-date-plugin/dist/datePlugin.umd";
+import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 
 const options = {};
 // use the Vue plugin
 Vue.use(DatePlugin, options);
 // register the inquirer-gui plugin with your form instance
 form.registerPlugin(options.plugin);
-```
-
-## Note
-The `/sample-app` exmaple consumes the `inquirer-gui` component directly from source in this repo.
-
-In real life scenarios, the component should be consumed from `npm`:
-
-* Run this shell command:
-```sh
-npm install @sap-devx/inquirer-gui --save
-```
-* In the source code replace instances of `import Form from ...` with:
-```js
-import Form from "@sap-devx/inquirer-gui/dist/form.umd";
 ```
 
 ## How to obtain support

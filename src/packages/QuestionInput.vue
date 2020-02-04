@@ -1,16 +1,14 @@
 <template>
-  <div>
-    <p class="question-label">{{question._message}}</p>
-    <v-text-field
-      @input="onInput"
-      :value="question.answer"
-      class="pa-0 ma-0"
-      :type="getInputType(question.type)"
-      :error-messages="question.validationMessage"
-      outlined
-      dense
-    ></v-text-field>
-  </div>
+  <v-text-field
+    @input="onInput"
+    :value="question.answer"
+    class="pa-0 ma-0"
+    :type="getInputType(question.type)"
+    :error-messages="question.validationMessage"
+    hide-details="auto"
+    outlined
+    dense
+  ></v-text-field>
 </template>
 
 <script>
@@ -32,8 +30,6 @@ export default {
         case "number":
           return "number";
         case "input":
-          return "text";
-        default:
           return "text";
       }
     }

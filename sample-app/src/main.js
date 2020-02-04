@@ -1,14 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
-/**
- * To consume the latest inquirer-gui from npm, do this:
- *   * Run npm install @sap-devx/inquirer-gui --save
- *   * Uncomment the following line
- *   * Comment the line after it
- */
-// import Form from "@sap-devx/inquirer-gui/dist/form.umd";
-import Form from "../../src/index";
+import Form from "@sap-devx/inquirer-gui";
+import "@sap-devx/inquirer-gui/dist/form.css";
 
 const questions1 = [
   {
@@ -74,18 +68,6 @@ const questions1 = [
     message: "The country where you live",
     choices: ["USA", "Germany", "China", "Israel"],
     default: "USA"
-  },
-  {
-    type: "list",
-    name: "countryCode",
-    message: "Your country code",
-    choices: [
-      { name: "+1", value: 1 },
-      { name: "+49", value: 49 },
-      { name: "+86", value: 86 },
-      { name: "+972", value: 972 }
-    ],
-    default: { name: "+49", value: 49 }
   }
 ];
 const questions2 = [
@@ -130,7 +112,8 @@ const questions2 = [
 const questionsArray = [questions1, questions2];
 
 Vue.config.productionTip = false;
-Vue.use(Form);
+const options = { vuetify };
+Vue.use(Form, options);
 
 export default new Vue({
   vuetify,

@@ -1,17 +1,14 @@
 <template>
-  <div>
-    <p class="question-label">{{question._message}}</p>
-
-    <v-select
-      v-model="selected"
-      :items="this.question._choices"
-      item-text="name"
-      item-value="value"
-      :error-messages="question.validationMessage"
-      outlined
-      dense
-    ></v-select>
-  </div>
+  <v-select
+    v-model="selected"
+    :items="this.question._choices"
+    item-text="name"
+    item-value="value"
+    :error-messages="question.validationMessage"
+    hide-details="auto"
+    outlined
+    dense
+  ></v-select>
 </template>
 
 <script>
