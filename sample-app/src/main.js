@@ -1,10 +1,20 @@
 import Vue from "vue";
 import App from "./App.vue";
 import vuetify from "./plugins/vuetify";
-import Form from "@sap-devx/inquirer-gui";
-import "@sap-devx/inquirer-gui/dist/form.css";
+// import Form from "@sap-devx/inquirer-gui";
+// import "@sap-devx/inquirer-gui/dist/form.css";
+import Form from "../../src/index";
 
 const questions1 = [
+  {
+    type: "remote-file-browser",
+    name: "configFile",
+    message: "Config file",
+    default: "/home/",
+    getFilePath: async function (currentPath) {
+      return `${currentPath}user`;
+    }
+  },
   {
     type: "date",
     name: "birthday",

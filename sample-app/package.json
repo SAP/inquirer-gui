@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name form src/index.js",
+    "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
@@ -19,6 +19,7 @@
     "vuetify": "^2.2.3"
   },
   "devDependencies": {
+    "@sap-devx/inquirer-gui-remote-file-browser-plugin": "0.0.1",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-plugin-unit-jest": "^4.1.1",

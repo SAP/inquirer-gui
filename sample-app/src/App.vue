@@ -26,11 +26,14 @@ import Answers from "./Answers.vue";
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
 import main from "./main.js";
-import DatePlugin from "@sap-devx/inquirer-gui-date-plugin/dist/datePlugin.umd";
+import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
+import RemoteFileBrowserPlugin from "@sap-devx/inquirer-gui-remote-file-browser-plugin";
+
 /**
- * If you want to make changes to the sample date plugin you
- * should consume it from this repo and not from npm:
- *   import DatePlugin from "../../sample-plugin/index";
+ * If you want to make changes to the plugins from source in this repo
+ * do not consume them from npm:
+import DatePlugin from "../../sample-plugin/src/index";
+import RemoteFileBrowserPlugin from "../../remote-file-browser-plugin/src/index";
  */
 
 export default {
@@ -114,8 +117,12 @@ export default {
   },
   mounted() {
     // register custom plugins
-    const options = {};
+    let options = {};
     Vue.use(DatePlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
+    options = {};
+    Vue.use(RemoteFileBrowserPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
     this.setupRpc();
@@ -150,19 +157,39 @@ body {
   height: 100%;
   padding: 0px;
 }
+
 .inquirer-gui {
   margin: 8px;
 }
 
-.v-application.theme--light div.inquirer-gui p.question-label {
-  color: var(--vscode-editor-foreground, darkgray);
+.inquirer-gui div.v-input__slot {
+  border-radius: 0;
 }
 
-div.theme--light.v-input input::placeholder {
-  color: var(--vscode-input-placeholderForeground, gray);
+div.v-application.theme--light {
+  background-color: var(--vscode-editor-background, white);
+  color: var(--vscode-editor-foreground, black);
 }
 
-div.inquirer-gui div.theme--light.v-input input {
-  color: var(--vscode-input-foreground, black);
+/* --vscode-focusBorder */
+
+form.inquirer-gui p.question-label {
+  color: var(--vscode-panelTitle-activeForeground, black);
+}
+
+form.inquirer-gui div.theme--light.v-input.v-input--is-focused div.v-input__control {
+  border-color: var(--vscode-inputOption-activeBorder, white);
+}
+
+form.inquirer-gui div.theme--light.v-input div.v-input__control{
+  background-color: var(--vscode-input-background, darkgray);
+}
+
+form.inquirer-gui div.theme--light.v-select {
+  color: pink;
+}
+form.inquirer-gui div.theme--light.v-input input,
+form.inquirer-gui div.theme--light.v-input textarea {
+  color: var(--vscode-input-foreground, white);
 }
 </style>

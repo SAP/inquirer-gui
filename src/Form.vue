@@ -12,6 +12,7 @@
         :key="index"
         :question="question"
         @answerChanged="onAnswerChanged"
+        @customEvent="onCustomEvent"
       ></component>
     </template>
   </v-form>
@@ -63,6 +64,18 @@ export default {
           return value;
         });
         return mappedChoices;
+      }
+    },
+    async onCustomEvent(questionName, methodName, callback, ...params) {
+      const relevantQuestion = this.questions.find(value => {
+        return value["name"] === questionName;
+      });
+
+      if (typeof relevantQuestion[methodName] === "function") {
+        let response = await relevantQuestion[methodName](params);
+        if (callback) {
+          callback(response);
+        }
       }
     },
     async onAnswerChanged(name, answer) {
@@ -172,9 +185,10 @@ export default {
 };
 </script>
 
-<style >
+<style>
 .inquirer-gui p.question-label {
-  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.05rem;
 }
 
 .inquirer-gui .v-text-field div.v-text-field__details {
