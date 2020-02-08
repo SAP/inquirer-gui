@@ -61,6 +61,36 @@ const questionsConditional = [
   }
 ];
 
+const questionsMessageAsFunction = [
+  {
+    type: "input",
+    name: "trigger",
+    default: "some value"
+  },
+  {
+    type: "input",
+    name: "message",
+    message: function (answers) {
+      return (`${answers.trigger}-message`);
+    }
+  }
+];
+
+const questionsDefaultAsFunction = [
+  {
+    type: "input",
+    name: "trigger",
+    default: "some value"
+  },
+  {
+    type: "input",
+    name: "default",
+    default: function (answers) {
+      return (`${answers.trigger}-default`);
+    }
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -159,5 +189,39 @@ describe('Questions of type input, password and number', () => {
 
     inputs = wrapper.findAll('input');
     expect(inputs.length).toEqual(2);
+  });
+
+  test('Input with message as a function', async () => {
+    const newValue = "another value";
+
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionsMessageAsFunction });
+    await Vue.nextTick();
+
+    let inputs = wrapper.findAll('input');
+    inputs.at(0).element.value = newValue;
+    inputs.at(0).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('p.question-label');
+    expect(inputs.at(1).element.innerHTML).toBe(`${newValue}-message`);
+  });
+
+  test('Input with default as a function', async () => {
+    const newValue = "another value";
+
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionsDefaultAsFunction });
+    await Vue.nextTick();
+
+    let inputs = wrapper.findAll('input');
+    inputs.at(0).element.value = newValue;
+    inputs.at(0).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(`${newValue}-default`);
   });
 });

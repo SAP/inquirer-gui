@@ -107,12 +107,13 @@ export default {
             question.shouldShow = response;
           }
 
-          // evaluate default()
+          // evaluate message()
           if (typeof question.message === "function") {
             let response = await question.message(answers);
             question._message = response;
           }
 
+          // evaluate default()
           if (typeof question.default === "function" && !question.isDirty) {
             const response = await question.default(answers);
             // TODO: perform transformation when needed (indexes for lists, etc.)
