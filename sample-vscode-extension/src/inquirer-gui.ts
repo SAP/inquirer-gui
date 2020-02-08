@@ -1,5 +1,4 @@
 import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
-import * as vscode from "vscode";
 
 function funcReplacer(key: any, value: any) {
     return (typeof value === 'function') ? "__Function" : value;
@@ -15,20 +14,8 @@ const questions1 = [
         name: "configFile",
         message: "Config file (vscode)",
         default: "/home/",
-        getFilePath: async function (currentPath: string) {
-            let uri;
-            try {
-                uri = vscode.Uri.file(currentPath);
-            } catch (e) {
-                uri = vscode.Uri.file('/');
-            }
-
-            try {
-                let filePath = await vscode.window.showOpenDialog({canSelectFiles: true, canSelectFolders: true, defaultUri: uri});
-                return (filePath as Array<vscode.Uri>)[0].fsPath;
-            } catch (e) {
-                return currentPath;
-            }
+        getFilePath: async function (currentPath: string, showOpenDialog: Function) {
+            return await showOpenDialog(currentPath);
         }
     },
     {
@@ -108,11 +95,13 @@ const questions1 = [
 export class InquirerGui {
     private rpc: IRpc;
     private questions: Array<any>;
+    private showOpenDialog: Function;
 
-    constructor(rpc: IRpc) {
+    constructor(rpc: IRpc, showOpenDialogCallback: Function) {
         this.rpc = rpc;
         this.questions = questions1;
         this.rpc = rpc;
+        this.showOpenDialog = showOpenDialogCallback;
         this.registerMethods();
     }
 
@@ -121,7 +110,7 @@ export class InquirerGui {
         this.rpc.registerMethod({ func: this.onClientIsReady, thisArg: this });
     }
 
-    async evaluateMethod(questionName: string, methodName: string, params: any) {
+    async evaluateMethod(questionName: string, methodName: string, params: Array<any>) {
         console.log(`evaluating method ${questionName}.${methodName}`);
         let relevantQuestion = undefined;
         for await (let question of this.questions) {
@@ -131,6 +120,11 @@ export class InquirerGui {
             }
         }
         if (relevantQuestion !== undefined) {
+            // This part is a bit dirty, but the idea is to keep
+            // this file clean of references to vscode:
+            if (methodName === "getFilePath") {
+              params = [...params, this.showOpenDialog];
+            }
             const response = await relevantQuestion[methodName].apply(this.questions, params);
             console.log(response);
             return response;

@@ -31,7 +31,7 @@ class InquirerUIPanel {
 	 */
 	public static currentPanel: InquirerUIPanel | undefined;
 
-	public static readonly viewType = 'inquirerUiExample';
+	public static readonly viewType = 'inquirerGuiExample';
 
 	private rpc: RpcExtension;
 	private readonly _panel: vscode.WebviewPanel;
@@ -75,7 +75,7 @@ class InquirerUIPanel {
 		this._panel = panel;
 		this._extensionPath = extensionPath;
 		this.rpc = new RpcExtension(this._panel.webview);
-		this.inquirerGui = new InquirerGui(this.rpc);
+		this.inquirerGui = new InquirerGui(this.rpc, showOpenDialog);
 
 		// Set the webview's initial html content
 		this._update();
@@ -161,4 +161,23 @@ function getNonce() {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
 	return text;
+}
+
+async function showOpenDialog(currentPath: string): Promise<string> {
+	let uri;
+	try {
+		uri = vscode.Uri.file(currentPath);
+	} catch (e) {
+		uri = vscode.Uri.file('/');
+	}
+
+	try {
+		let filePath = await vscode.window.showOpenDialog({
+			canSelectFiles: true,
+			defaultUri: uri
+		});
+		return (filePath as Array<vscode.Uri>)[0].fsPath;
+	} catch (e) {
+		return currentPath;
+	}
 }
