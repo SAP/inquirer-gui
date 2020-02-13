@@ -66,6 +66,96 @@ export default {
         return mappedChoices;
       }
     },
+    getInitialAnswer(question) {
+      let answer;
+      switch (question.type) {
+        case "input":
+        case "password":
+          answer = question.default;
+          if (answer === undefined) {
+            answer = "";
+          }
+          return answer;
+        case "number":
+          answer = question.default;
+          if (answer === undefined) {
+            answer = 0;
+          }
+          return answer;
+        case "list":
+        case "rawlist":
+        case "expand":
+        case "checkbox":
+          if (!Array.isArray(question._choices)) {
+            return;
+          }
+          // handle complex choice cases below
+          break;
+        default:
+          return question.default;
+      }
+
+      // handle complex choice cases
+      let index = -1;
+      switch (question.type) {
+        case "list":
+        case "rawlist":
+          if (question._choices.length === 0) {
+            return;
+          }
+          if (typeof question.default === "number") {
+            index = question.default;
+          } else {
+            index = question._choices.findIndex(choice => {
+              if (question.default) {
+                return choice.value === question.default.value;
+              }
+            });
+          }
+          if (index < 0 || index > question._choices.length - 1) {
+            index = 0;
+          }
+          return question._choices[index].value;
+        case "expand":
+          if (question._choices.length === 0) {
+            return;
+          }
+          if (typeof question.default === "number") {
+            index = question.default;
+          }
+          if (index < 0 || index > question._choices.length - 1) {
+            index = 0;
+          }
+          return question._choices[index].value;
+        case "checkbox":
+          const initialAnswersArray = [];
+          for (let choice of question._choices) {
+            // add to answers if choice is in default
+            if (Array.isArray(question.default)) {
+              let foundIndex = question.default.findIndex(
+                currentDefaultValue => {
+                  return choice.value === currentDefaultValue;
+                }
+              );
+              if (foundIndex >= 0) {
+                initialAnswersArray.push(choice.value);
+              }
+            }
+
+            // add to answers if choice is marked as checked
+            if (choice.checked === true) {
+              initialAnswersArray.push(choice.value);
+            }
+          }
+
+          // add first choice to answers if there are no other defaults
+          if (initialAnswersArray.length === 0 && question._choices.length > 0) {
+            initialAnswersArray.push(question._choices[0].value);
+          }
+
+          return initialAnswersArray;
+      }
+    },
     async onCustomEvent(questionName, methodName, callback, ...params) {
       const relevantQuestion = this.questions.find(value => {
         return value["name"] === questionName;
@@ -97,8 +187,8 @@ export default {
         answeredQuestion["answer"] = answer;
       }
 
-      // evaluate answers for all questions (e.g. when)
       const answers = this.getAnswers();
+      // evaluate answers for all questions (e.g. when)
       for (let question of this.questions) {
         if (question.name !== answeredQuestion.name) {
           // evaluate when()
@@ -113,15 +203,23 @@ export default {
             question._message = response;
           }
 
+          // evaluate choices()
+          if (typeof question.choices === "function") {
+            const response = await question.choices(answers);
+            question._choices = this.normalizeChoices(response);
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
+          }
+
           // evaluate default()
           if (typeof question.default === "function" && !question.isDirty) {
             const response = await question.default(answers);
-            // TODO: perform transformation when needed (indexes for lists, etc.)
-            question.answer = response;
-            answers[question.name] = response;
+            question.default = response;
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
           }
-
-          // TODO: evaluate choices if defined as a function
         }
       }
 
@@ -146,41 +244,70 @@ export default {
   },
   watch: {
     questions: async function() {
-      // set initial values for properties
+      // 1st pass: set initial values
       for (let question of this.questions) {
-        const answer =
-          typeof question.default === "string" ? question.default : undefined;
-        this.$set(question, "answer", answer);
+        // message
         const message =
-          typeof question.message === "string" ? question.message : "";
+          typeof question.message === "string"
+            ? question.message
+            : question.name;
         this.$set(question, "_message", message);
+
+        // choices
         if (question.choices) {
-          this.$set(
-            question,
-            "_choices",
-            this.normalizeChoices(question.choices)
-          );
+          let choices = [];
+          if (typeof question.choices !== "function") {
+            choices = this.normalizeChoices(question.choices);
+          }
+          this.$set(question, "_choices", choices);
         }
+
+        // answer
+        let answer = this.getInitialAnswer(question);
+        this.$set(question, "answer", answer);
+
+        // visibility
         const shouldShow = question.when === false ? false : true;
         this.$set(question, "shouldShow", shouldShow);
+
+        // validity
         this.$set(question, "isValid", true);
-        this.$set(question, "isDirty", false);
         this.$set(question, "validationMessage", "");
+
+        // dirty
+        this.$set(question, "isDirty", false);
       }
 
+      const answers = this.getAnswers();
+      // 2nd pass: evaluate properties that are functions
       for (let question of this.questions) {
-        // evaluate default values that are functions
-        const answers = this.getAnswers();
-        if (typeof question.default === "function") {
-          const response = await question.default(answers);
-          // TODO: perform transformation when needed (indexes for lists, etc.)
-          question.answer = response;
-        }
+        // evaluate message()
         if (typeof question.message === "function") {
           const response = await question.message(answers);
           question._message = response;
         }
+
+        // evaluate choices()
+        if (typeof question.choices === "function") {
+          const response = await question.choices(answers);
+          question._choices = this.normalizeChoices(response);
+          question.answer = this.getInitialAnswer(question);
+          // optimization: avoid repeatedly calling this.getAnswers()
+          answers[question.name] = question.answer;
+        }
+
+        // evaluate default()
+        if (typeof question.default === "function") {
+          const response = await question.default(answers);
+          // TODO: perform transformation when needed (indexes for lists, etc.)
+          question.default = response;
+          question.answer = this.getInitialAnswer(question)
+          // optimization: avoid repeatedly calling this.getAnswers()
+          answers[question.name] = question.answer;
+        }
       }
+
+      // TODO: set defaults for choice functions after they were evaluated?
     }
   }
 };

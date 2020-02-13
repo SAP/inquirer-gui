@@ -5,21 +5,21 @@
   "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --modren",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@sap-devx/inquirer-gui": "0.0.3",
+    "@sap-devx/inquirer-gui": "0.0.4",
     "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
     "@sap-devx/webview-rpc": "^0.2.0",
+    "@sap-devx/inquirer-gui-remote-file-browser-plugin": "0.0.1",
     "vue": "^2.6.10",
     "vuetify": "^2.2.3"
   },
   "devDependencies": {
-    "@sap-devx/inquirer-gui-remote-file-browser-plugin": "0.0.1",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-plugin-unit-jest": "^4.1.1",

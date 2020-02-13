@@ -1,11 +1,14 @@
 import Vue from "vue";
 import App from "./App.vue";
-import vuetify from "./plugins/vuetify";
 // import Form from "@sap-devx/inquirer-gui";
-// import "@sap-devx/inquirer-gui/dist/form.css";
+import "@sap-devx/inquirer-gui/dist/form.css";
 import Form from "../../src/index";
 
 const questions1 = [
+  {
+    type: "input",
+    name: "A string"
+  },
   {
     type: "remote-file-browser",
     name: "configFile",
@@ -37,6 +40,7 @@ const questions1 = [
     type: "input",
     name: "conditional",
     message: "Conditional",
+    default: "Never shows",
     when: false
   },
   {
@@ -76,8 +80,8 @@ const questions1 = [
     type: "list",
     name: "country",
     message: "The country where you live",
-    choices: ["USA", "Germany", "China", "Israel"],
-    default: "USA"
+      
+    choices: ["USA", { type: 'separator'}, "Germany", "China", "Israel"]
   }
 ];
 const questions2 = [
@@ -117,16 +121,29 @@ const questions2 = [
     name: "confirm",
     message: "Are you sure?",
     default: false
+  },
+  {
+    type: "checkbox",
+    name: "citizenship2",
+    message: "Your citizenship2",
+    choices: function (answers) {
+      return [
+        "USA",
+        { type: "separator" },
+        "Germany"
+      ]
+    }
   }
 ];
 const questionsArray = [questions1, questions2];
 
+import vuetify from "./plugins/vuetify";
+
 Vue.config.productionTip = false;
-const options = { vuetify };
+const options = {};
 Vue.use(Form, options);
 
-export default new Vue({
-  vuetify,
+let vueOptions = {
   render: h => h(App),
   data() {
     return {
@@ -142,9 +159,20 @@ export default new Vue({
     console.log('sample app is mounted');
     this.prompt(questionsArray[0]);
   },
-}).$on('next', function() {
+};
+
+if (options.vuetify) {
+  vueOptions.vuetify = options.vuetify;
+} else {
+  vueOptions.vuetify = vuetify;
+}
+
+export default new Vue(
+  vueOptions
+).$on('next', function () {
   if (this.questionsIndex === 0) {
     this.questionsIndex = 1;
     this.prompt(questionsArray[1]);
   }
-}).$mount('#app');
+}
+).$mount('#app');

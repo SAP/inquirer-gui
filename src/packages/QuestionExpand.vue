@@ -13,6 +13,7 @@
 </template>
 
 <script>
+// TODO: Support separators
 export default {
   name: "QuestionExpand",
   props: {

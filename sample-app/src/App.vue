@@ -69,6 +69,7 @@ export default {
       } else {
         const ws = new WebSocket("ws://127.0.0.1:8081");
         ws.onerror = () => {
+          // eslint-disable-next-line
           console.error("ws error");
         };
         ws.onopen = () => {
@@ -81,7 +82,6 @@ export default {
       for (let question of questions) {
         for (let prop in question) {
           if (question[prop] === "__Function") {
-            console.debug(`${question.name}.${prop}() is a function`);
             var that = this;
             question[prop] = async (...args) => {
               const response = await that.rpc.invoke("evaluateMethod", [
@@ -108,13 +108,6 @@ export default {
       this.rpc.invoke("onClientIsReady", []);
     }
   },
-  watch: {
-    "questions.answers": {
-      handler(val) {
-        console.log(val);
-      }
-    }
-  },
   mounted() {
     // register custom plugins
     let options = {};
@@ -132,9 +125,9 @@ export default {
           mutation.type === "attributes" &&
           mutation.attributeName === "class"
         ) {
-          const isVsCodeLight = mutation.target.classList.contains(
-            "vscode-light"
-          );
+          // const isVsCodeLight = mutation.target.classList.contains(
+          //   "vscode-light"
+          // );
           // if (isVsCodeLight) {
           //   this.$vuetify.theme.light = true;
           // } else {

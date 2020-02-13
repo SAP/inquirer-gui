@@ -91,6 +91,13 @@ const questionsDefaultAsFunction = [
   }
 ];
 
+const questionInputNoMessage = [
+  {
+    type: "input",
+    name: "input with no message"
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -223,5 +230,15 @@ describe('Questions of type input, password and number', () => {
 
     inputs = wrapper.findAll('input');
     expect(inputs.at(1).element.value).toBe(`${newValue}-default`);
+  });
+
+  test('Input with no message', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionInputNoMessage });
+    await Vue.nextTick();
+
+    const inputs = wrapper.findAll('p.question-label');
+    // message should default to question's name
+    expect(inputs.at(0).element.innerHTML).toBe(questionInputNoMessage[0].name);
   });
 });

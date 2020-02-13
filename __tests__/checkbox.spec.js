@@ -17,10 +17,39 @@ const questionCheckbox = [
   }
 ];
 
+const questionCheckboxChoicesAsFunction = [
+  {
+    type: "checkbox",
+    name: "citizenship",
+    message: "Your citizenship",
+    choices: function (answers) {
+      return [
+        "USA",
+        "Germany"
+      ]
+    }
+  }
+];
+
 describe('Question of type checkbox', () => {
   test('Checkbox', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(Form, {});
     wrapper.setProps({ questions: questionCheckbox });
+    await Vue.nextTick();
+
+    const citizenship = wrapper.find('input[role="checkbox"');
+    citizenship.trigger('click');
+
+    await Vue.nextTick();
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const answered = wrapper.emitted().answered[0];
+    // test answers
+    expect(answered[0].citizenship).toContain("USA");
+  });
+
+  test.only('Checkbox with choices as function', async () => {
+    const wrapper = mount(Form, {});
+    wrapper.setProps({ questions: questionCheckboxChoicesAsFunction });
     await Vue.nextTick();
 
     const citizenship = wrapper.find('input[role="checkbox"');
