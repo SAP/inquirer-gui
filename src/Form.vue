@@ -71,13 +71,14 @@ export default {
       switch (question.type) {
         case "input":
         case "password":
-          answer = question.default;
+        case "editor":
+          answer = question._default;
           if (answer === undefined) {
             answer = "";
           }
           return answer;
         case "number":
-          answer = question.default;
+          answer = question._default;
           if (answer === undefined) {
             answer = 0;
           }
@@ -92,7 +93,7 @@ export default {
           // handle complex choice cases below
           break;
         default:
-          return question.default;
+          return question._default;
       }
 
       // handle complex choice cases
@@ -103,12 +104,12 @@ export default {
           if (question._choices.length === 0) {
             return;
           }
-          if (typeof question.default === "number") {
-            index = question.default;
+          if (typeof question._default === "number") {
+            index = question._default;
           } else {
             index = question._choices.findIndex(choice => {
-              if (question.default) {
-                return choice.value === question.default.value;
+              if (question._default) {
+                return choice.value === question._default.value;
               }
             });
           }
@@ -120,8 +121,8 @@ export default {
           if (question._choices.length === 0) {
             return;
           }
-          if (typeof question.default === "number") {
-            index = question.default;
+          if (typeof question._default === "number") {
+            index = question._default;
           }
           if (index < 0 || index > question._choices.length - 1) {
             index = 0;
@@ -131,8 +132,8 @@ export default {
           const initialAnswersArray = [];
           for (let choice of question._choices) {
             // add to answers if choice is in default
-            if (Array.isArray(question.default)) {
-              let foundIndex = question.default.findIndex(
+            if (Array.isArray(question._default)) {
+              let foundIndex = question._default.findIndex(
                 currentDefaultValue => {
                   return choice.value === currentDefaultValue;
                 }
@@ -149,7 +150,10 @@ export default {
           }
 
           // add first choice to answers if there are no other defaults
-          if (initialAnswersArray.length === 0 && question._choices.length > 0) {
+          if (
+            initialAnswersArray.length === 0 &&
+            question._choices.length > 0
+          ) {
             initialAnswersArray.push(question._choices[0].value);
           }
 
@@ -214,8 +218,7 @@ export default {
 
           // evaluate default()
           if (typeof question.default === "function" && !question.isDirty) {
-            const response = await question.default(answers);
-            question.default = response;
+            question._default = await question.default(answers);
             question.answer = this.getInitialAnswer(question);
             // optimization: avoid repeatedly calling this.getAnswers()
             answers[question.name] = question.answer;
@@ -262,6 +265,15 @@ export default {
           this.$set(question, "_choices", choices);
         }
 
+        // default
+        if (question.default) {
+          let _default;
+          if (typeof question.default !== "function") {
+            _default = question.default;
+          }
+          this.$set(question, "_default", _default);
+        }
+
         // answer
         let answer = this.getInitialAnswer(question);
         this.$set(question, "answer", answer);
@@ -298,10 +310,8 @@ export default {
 
         // evaluate default()
         if (typeof question.default === "function") {
-          const response = await question.default(answers);
-          // TODO: perform transformation when needed (indexes for lists, etc.)
-          question.default = response;
-          question.answer = this.getInitialAnswer(question)
+          question._default = await question.default(answers);
+          question.answer = this.getInitialAnswer(question);
           // optimization: avoid repeatedly calling this.getAnswers()
           answers[question.name] = question.answer;
         }

@@ -27,7 +27,8 @@ const questionCheckboxChoicesAsFunction = [
         "USA",
         "Germany"
       ]
-    }
+    },
+    default: ["Germany"]
   }
 ];
 
@@ -47,7 +48,7 @@ describe('Question of type checkbox', () => {
     expect(answered[0].citizenship).toContain("USA");
   });
 
-  test.only('Checkbox with choices as function', async () => {
+  test('Checkbox with choices as function', async () => {
     const wrapper = mount(Form, {});
     wrapper.setProps({ questions: questionCheckboxChoicesAsFunction });
     await Vue.nextTick();

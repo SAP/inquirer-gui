@@ -8,7 +8,7 @@ const questionExpand = [
     name: "agree",
     message: "Do you agree to the conditions?",
     choices: ["Yes", "No", "Maybe"],
-    default: "No"
+    default: 1
   }
 ];
 

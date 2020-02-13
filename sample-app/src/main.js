@@ -113,8 +113,8 @@ const questions2 = [
     type: "expand",
     name: "agree",
     message: "Do you agree to the conditions?",
-    choices: ["Yes", "No", "Maybe"],
-    default: "No"
+    choices: ["Yes", "No", {type: "separator"}, "Maybe"],
+    default: 1
   },
   {
     type: "confirm",

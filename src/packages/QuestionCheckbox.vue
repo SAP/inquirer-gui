@@ -4,7 +4,7 @@
     <v-list-item-group
       multiple
       ref="itemsGroup"
-      v-model="options"
+      :value="question.answer"
       @change="onAnswerChanged"
       :error-messages="question.validationMessage"
     >
@@ -40,21 +40,14 @@
 </template>
 
 <script>
-// TODO: Support separators
 export default {
   name: "QuestionCheckbox",
   props: {
     question: Object
   },
-  data() {
-    return {
-      // TODO: doesn't work if default is a function 
-      options: this.question.answer
-    };
-  },
   methods: {
-    onAnswerChanged() {
-      this.$emit("answerChanged", this.question.name, this.$refs.itemsGroup.selectedValues);
+    onAnswerChanged(value) {
+      this.$emit("answerChanged", this.question.name, value);
     }
   }
 };
