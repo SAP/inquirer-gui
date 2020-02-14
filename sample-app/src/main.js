@@ -1,8 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
-// import Form from "@sap-devx/inquirer-gui";
+import Form from "@sap-devx/inquirer-gui";
 import "@sap-devx/inquirer-gui/dist/form.css";
-import Form from "../../src/index";
+// import Form from "../../src/index";
 
 const questions1 = [
   {
@@ -91,7 +91,7 @@ const questions2 = [
     message: "Your country code",
     choices: [
       { name: "+1", value: 1 },
-      { name: "+49", value: 49 },
+      { name: "+49" },
       { name: "+86", value: 86 },
       { name: "+972", value: 972 }
     ],

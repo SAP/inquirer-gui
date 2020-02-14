@@ -36,6 +36,14 @@ const questionNumber = [
   },
 ];
 
+const questionNumberNoDefault = [
+  {
+    type: "number",
+    name: "number",
+    message: "A number"
+  },
+];
+
 const questionsConditional = [
   {
     type: "input",
@@ -180,6 +188,17 @@ describe('Questions of type input, password and number', () => {
     const answered = wrapper.emitted().answered[0];
     // test answers
     expect(answered[0].number).toEqual(value1.toString());
+  });
+
+  test('Number without default', async () => {
+    const value1 = 5;
+
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionNumber });
+    await Vue.nextTick();
+
+    const name = wrapper.find('input');
+    expect(name.element.value).toBe("0");
   });
 
   test('Input with conditions', async () => {

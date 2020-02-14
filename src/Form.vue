@@ -46,12 +46,7 @@ export default {
     getAnswers() {
       let result = {};
       for (let question of this.questions) {
-        if (question._choices && question.answer && question.answer.value) {
-          // Vuetify returns objects instead of values for comboboxes: https://github.com/vuetifyjs/vuetify/issues/5479
-          result[question.name] = question.answer.value;
-        } else {
-          result[question.name] = question.answer;
-        }
+        result[question.name] = question.answer;
       }
       return result;
     },

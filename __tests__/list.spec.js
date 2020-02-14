@@ -13,8 +13,7 @@ const questionList = [
   }
 ];
 
-// TODO: fix 'infinite update loop' issues and unskip
-describe.skip('Question of type list', () => {
+describe('Question of type list', () => {
   test('List', async () => {
     const vuetify = new Vuetify({});
 
@@ -25,7 +24,7 @@ describe.skip('Question of type list', () => {
     wrapper.setProps({ questions: questionList });
 
     await Vue.nextTick();
-    const select = (wrapper.find('div.v-select__slot'))
+    const select = (wrapper.find('div.v-select'));
 
     // The following line causes this error:
     //   [Vue warn]: You may have an infinite update loop in a component render function.

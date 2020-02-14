@@ -13,7 +13,7 @@
       <v-list-item :disabled="item.type==='separator'" v-bind="attrs" v-on="on">
         <v-divider v-if="item.type==='separator'" disabled></v-divider>
         <v-list-item-content v-else>
-          <v-list-item-title :id="attrs['aria-labelledby']" v-text="item.value"></v-list-item-title>
+          <v-list-item-title :id="attrs['aria-labelledby']" v-text="item.name"></v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </template>
