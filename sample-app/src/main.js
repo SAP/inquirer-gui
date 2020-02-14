@@ -1,8 +1,9 @@
 import Vue from "vue";
 import App from "./App.vue";
-// import Form from "@sap-devx/inquirer-gui";
+import Form from "@sap-devx/inquirer-gui";
 import "@sap-devx/inquirer-gui/dist/form.css";
-import Form from "../../src/index";
+// For development use local file:
+// import Form from "../../src/index";
 
 const questions1 = [
   {
