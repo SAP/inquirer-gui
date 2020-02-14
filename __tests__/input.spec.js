@@ -126,7 +126,7 @@ describe('Questions of type input, password and number', () => {
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
-    expect(answered[1]).toEqual(true);
+    expect(answered[1]).toMatchObject({});
   });
 
   test('Input with invalid input', async () => {
@@ -148,7 +148,7 @@ describe('Questions of type input, password and number', () => {
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
-    expect(answered[1]).toEqual(false);
+    expect(answered[1]).toHaveProperty("input");
   });
 
   test('Password', async () => {

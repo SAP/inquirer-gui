@@ -5,12 +5,11 @@
         <Form ref="form" :questions="questions" @answered="onAnswered" />
       </v-col>
       <v-col>
-        <Answers v-if="this.allValid" :answers="answers" />
-        <h1 class="text-danger" v-if="!this.allValid">Some answers are invalid</h1>
+        <Answers v-if="Object.keys(this.issues).length===0" :answers="answers" />
+        <Issues v-if="Object.keys(this.issues).length>0" :issues="issues" />
         <div>
           <v-btn
-            :disabled="!allValid"
-            :class="{'btn-success': allValid, 'btn-danger': !allValid}"
+            :disabled="Object.keys(this.issues).length>0"
             @click="onNext"
           >Next</v-btn>
         </div>
@@ -22,6 +21,7 @@
 <script>
 import Vue from "vue";
 import Answers from "./Answers.vue";
+import Issues from "./Issues.vue";
 
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
@@ -39,20 +39,21 @@ import RemoteFileBrowserPlugin from "../../remote-file-browser-plugin/src/index"
 export default {
   name: "app",
   components: {
-    Answers
+    Answers,
+    Issues
   },
   data() {
     return {
       questions: [],
-      allValid: false,
+      issues: {},
       answers: {},
       rpc: {}
     };
   },
   methods: {
-    onAnswered(answers, allValid) {
+    onAnswered(answers, issues) {
       this.answers = answers;
-      this.allValid = allValid;
+      this.issues = issues;
     },
     onNext() {
       main.$emit("next");

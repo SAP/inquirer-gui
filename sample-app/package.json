@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@sap-devx/inquirer-gui": "0.0.6",
+    "@sap-devx/inquirer-gui": "0.0.7",
     "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
     "@sap-devx/webview-rpc": "^0.2.0",
     "@sap-devx/inquirer-gui-remote-file-browser-plugin": "0.0.1",

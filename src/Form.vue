@@ -50,6 +50,21 @@ export default {
       }
       return result;
     },
+    getIssues() {
+      let result = {};
+      for (let question of this.questions) {
+        if (!question.isValid) {
+          if (question.validationMessage === "") {
+            result[question.name] = "Invalid";
+          } else {
+            result[question.name] = question.validationMessage;
+          }
+        } else if (question.answer === undefined) {
+          result[question.name] = "Not answered";
+        }
+      }
+      return result;
+    },
     normalizeChoices(choices) {
       if (Array.isArray(choices)) {
         const mappedChoices = choices.map(value => {
@@ -221,10 +236,6 @@ export default {
         }
       }
 
-      const allValid = !this.questions.some(question => {
-        return question.isValid === false;
-      });
-
       // apply filters
       let filteredAnswers = {};
       Object.assign(filteredAnswers, answers);
@@ -236,8 +247,9 @@ export default {
         }
       }
 
+      const issues = this.getIssues();
       // fire 'answered' event
-      this.$emit("answered", filteredAnswers, allValid);
+      this.$emit("answered", filteredAnswers, issues);
     }
   },
   watch: {
