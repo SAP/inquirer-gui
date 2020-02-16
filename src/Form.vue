@@ -258,15 +258,6 @@ export default {
             }
           }
 
-          // evaluate choices()
-          if (typeof question.choices === "function") {
-            const response = await question.choices(answers);
-            question._choices = this.normalizeChoices(response);
-            question.answer = this.getInitialAnswer(question);
-            // optimization: avoid repeatedly calling this.getAnswers()
-            answers[question.name] = question.answer;
-          }
-
           // evaluate default()
           if (typeof question.default === "function" && !question.isDirty) {
             try {
