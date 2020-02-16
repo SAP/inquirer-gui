@@ -106,6 +106,17 @@ const questionInputNoMessage = [
   }
 ];
 
+const questionInputDefaultException = [
+  {
+    type: "input",
+    name: "inputDefaultException",
+    message: "An input",
+    default: function (input) {
+      throw("exception");
+    }
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -120,9 +131,9 @@ describe('Questions of type input, password and number', () => {
 
     // wait to account for debounce
     await utils.sleep(300);
-
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
@@ -144,7 +155,8 @@ describe('Questions of type input, password and number', () => {
     await utils.sleep(300);
 
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
@@ -166,7 +178,8 @@ describe('Questions of type input, password and number', () => {
     await utils.sleep(300);
 
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].password).toEqual(value1);
   });
@@ -185,7 +198,8 @@ describe('Questions of type input, password and number', () => {
     // wait to account for debounce
     await utils.sleep(300);
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].number).toEqual(value1.toString());
   });
@@ -259,5 +273,13 @@ describe('Questions of type input, password and number', () => {
     const inputs = wrapper.findAll('p.question-label');
     // message should default to question's name
     expect(inputs.at(0).element.innerHTML).toBe(questionInputNoMessage[0].name);
+  });
+
+  test('Input with exception in default()', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionInputDefaultException });
+    await Vue.nextTick();
+
+    expect(wrapper.props("questions")[0]._default).toBeUndefined();
   });
 });

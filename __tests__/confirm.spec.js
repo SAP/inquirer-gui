@@ -22,7 +22,8 @@ describe('Question of type confirm', () => {
 
     await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].confirm).toEqual(true);
   });
