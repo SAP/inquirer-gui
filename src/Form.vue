@@ -31,6 +31,9 @@ export default {
       plugins: Plugins.registerBuiltinPlugins()
     };
   },
+  computed: {
+    console: () => console
+  },
   methods: {
     getComponentByQuestionType(questionType) {
       const foundPlugin = this.plugins.find(plugin => {
@@ -181,9 +184,13 @@ export default {
       });
 
       if (typeof relevantQuestion[methodName] === "function") {
-        let response = await relevantQuestion[methodName](params);
-        if (callback) {
-          callback(response);
+        try {
+          let response = await relevantQuestion[methodName](params);
+          if (callback) {
+            callback(response);
+          }
+        } catch(e) {
+          this.console.error(`Could not evaluate ${methodName}() for ${relevantQuestion.name}`);
         }
       }
     },
@@ -196,10 +203,14 @@ export default {
         // evaluate validate()
         if (answeredQuestion.validate) {
           const answers = this.getAnswers();
-          let response = await answeredQuestion.validate(answer, answers);
-          answeredQuestion.isValid = response !== true ? false : true;
-          answeredQuestion.validationMessage =
-            typeof response === "string" ? response : "";
+          try {
+            let response = await answeredQuestion.validate(answer, answers);
+            answeredQuestion.isValid = response !== true ? false : true;
+            answeredQuestion.validationMessage =
+              typeof response === "string" ? response : "";
+          } catch(e) {
+            this.console.error(`Could not evaluate validate() for ${answeredQuestion.name}`);
+          }
         }
         // TODO: if input is invalid, should we update the answer?
         // set the answer
@@ -208,35 +219,55 @@ export default {
 
       const answers = this.getAnswers();
       // evaluate answers for all questions (e.g. when)
+      let shouldStart = false;
       for (let question of this.questions) {
-        if (question.name !== answeredQuestion.name) {
+        // start evaluating only for questions following answered question
+        if (question.name === answeredQuestion.name) {
+          shouldStart = true;
+        } else if (shouldStart) {
           // evaluate when()
           if (typeof question.when === "function") {
-            let response = await question.when(answers);
-            question.shouldShow = response;
+            try {
+              let response = await question.when(answers);
+              question.shouldShow = response;
+            } catch(e) {
+              this.console.error(`Could not evaluate when() for ${question.name}`);
+            }
           }
 
           // evaluate message()
           if (typeof question.message === "function") {
-            let response = await question.message(answers);
-            question._message = response;
+            try {
+              let response = await question.message(answers);
+              question._message = response;
+            } catch(e) {
+              this.console.error(`Could not evaluate message() for ${question.name}`);
+            }
           }
 
           // evaluate choices()
           if (typeof question.choices === "function") {
-            const response = await question.choices(answers);
-            question._choices = this.normalizeChoices(response);
-            question.answer = this.getInitialAnswer(question);
-            // optimization: avoid repeatedly calling this.getAnswers()
-            answers[question.name] = question.answer;
+            try {
+              const response = await question.choices(answers);
+              question._choices = this.normalizeChoices(response);
+              question.answer = this.getInitialAnswer(question);
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate choices() for ${question.name}`);
+            }
           }
 
           // evaluate default()
           if (typeof question.default === "function" && !question.isDirty) {
-            question._default = await question.default(answers);
-            question.answer = this.getInitialAnswer(question);
-            // optimization: avoid repeatedly calling this.getAnswers()
-            answers[question.name] = question.answer;
+            try {
+              question._default = await question.default(answers);
+              question.answer = this.getInitialAnswer(question);
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate default() for ${question.name}`);
+            }
           }
         }
       }
@@ -247,8 +278,12 @@ export default {
       for (let question of this.questions) {
         if (question.filter) {
           const currentAnswer = answers[question.name];
-          const filteredAnswer = await question.filter(currentAnswer);
-          filteredAnswers[question.name] = filteredAnswer;
+          try {
+            const filteredAnswer = await question.filter(currentAnswer);
+            filteredAnswers[question.name] = filteredAnswer;
+          } catch(e) {
+            this.console.error(`Could not evaluate filter() for ${question.name}`);
+          }
         }
       }
 
@@ -307,35 +342,56 @@ export default {
       for (let question of this.questions) {
         // evaluate message()
         if (typeof question.message === "function") {
-          const response = await question.message(answers);
-          question._message = response;
+          try {
+            const response = await question.message(answers);
+            question._message = response;
+          } catch(e) {
+            this.console.error(`Could not evaluate message() for ${question.name}`);
+          }
         }
 
         // evaluate choices()
         if (typeof question.choices === "function") {
-          const response = await question.choices(answers);
-          question._choices = this.normalizeChoices(response);
-          question.answer = this.getInitialAnswer(question);
-          // optimization: avoid repeatedly calling this.getAnswers()
-          answers[question.name] = question.answer;
+          try {
+            const response = await question.choices(answers);
+            question._choices = this.normalizeChoices(response);
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
+          } catch(e) {
+            this.console.error(`Could not evaluate choices() for ${question.name}`);
+          }
         }
 
         // evaluate default()
         if (typeof question.default === "function") {
-          question._default = await question.default(answers);
-          question.answer = this.getInitialAnswer(question);
-          // optimization: avoid repeatedly calling this.getAnswers()
-          answers[question.name] = question.answer;
+          try {
+            question._default = await question.default(answers);
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
+          } catch(e) {
+            this.console.error(`Could not evaluate default() for ${question.name}`);
+          }
         }
 
         // evaluate validate()
         if (typeof question.validate === "function") {
-          let response = await question.validate(question.answer, answers);
-          question.isValid = response !== true ? false : true;
-          question.validationMessage =
-            typeof response === "string" ? response : "";
+          try {
+            let response = await question.validate(question.answer, answers);
+            question.isValid = response !== true ? false : true;
+            question.validationMessage =
+              typeof response === "string" ? response : "";
+          } catch(e) {
+            this.console.error(`Could not evaluate validate() for ${question.name}`);
+          }
         }
       }
+
+      const issues = this.getIssues();
+      // fire 'answered' event
+      this.$emit("answered", answers, issues);
+
     }
   }
 };

@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Vue from 'vue';
 import Form from '../src/Form.vue';
+import utils from './utils';
 
 const questionCheckbox = [
   {
@@ -32,18 +33,40 @@ const questionCheckboxChoicesAsFunction = [
   }
 ];
 
+const questionCheckboxChoicesAsFunctionOnAnswerChange = [
+  {
+    type: "input",
+    name: "country"
+  },
+  {
+    type: "checkbox",
+    name: "citizenship",
+    message: "Your citizenship",
+    choices: function (answers) {
+      const response = ["USA", "Germany"];
+      if (answers.country) {
+        response.push(answers.country);
+      }
+      return response;
+    },
+    default: ["Germany"]
+  }
+];
+
 describe('Question of type checkbox', () => {
   test('Checkbox', async () => {
     const wrapper = mount(Form, {});
     wrapper.setProps({ questions: questionCheckbox });
     await Vue.nextTick();
 
-    const citizenship = wrapper.find('input[role="checkbox"');
+    const citizenship = wrapper.find('div[role="listitem"]');
     citizenship.trigger('click');
 
     await Vue.nextTick();
+
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].citizenship).toContain("USA");
   });
@@ -53,13 +76,31 @@ describe('Question of type checkbox', () => {
     wrapper.setProps({ questions: questionCheckboxChoicesAsFunction });
     await Vue.nextTick();
 
-    const citizenship = wrapper.find('input[role="checkbox"');
+    const citizenship = wrapper.find('div[role="listitem"]');
     citizenship.trigger('click');
 
     await Vue.nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].citizenship).toContain("USA");
+  });
+
+  test('Checkbox with choices as function', async () => {
+    const wrapper = mount(Form, {});
+    wrapper.setProps({ questions: questionCheckboxChoicesAsFunctionOnAnswerChange });
+    await Vue.nextTick();
+
+    const name = wrapper.find('input');
+    const country = "A country";
+    name.element.value = country;
+    name.trigger('input');
+
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    await Vue.nextTick();
+    expect(wrapper.props("questions")[1]._choices[2].value).toBe(country);
   });
 });

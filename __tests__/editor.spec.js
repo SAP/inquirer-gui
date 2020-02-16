@@ -36,7 +36,8 @@ describe('Question of type editor and filter func', () => {
     await utils.sleep(300);
 
     expect(wrapper.emitted().answered).toBeTruthy();
-    const answered = wrapper.emitted().answered[0];
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength-1];
     // test answers
     expect(answered[0].notes).toEqual(`${value1}${filterSuffix}`);
   });
