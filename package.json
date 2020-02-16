@@ -8,7 +8,11 @@
     "email": "eyal.barlev@sap.com"
   },
   "description": "Inquirer Graphical User Interface",
-  "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui"
+  },
+  "license": "Apache-2.0",
   "main": "dist/form.umd.js",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -19,10 +23,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@mdi/font": "^4.7.95",
     "@sap-devx/webview-rpc": "^0.2.0",
-    "core-js": "2.6.6",
-    "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
     "vuetify": "^2.2.3"
   },

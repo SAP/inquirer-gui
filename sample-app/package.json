@@ -5,17 +5,19 @@
   "main": "index.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --modren",
+    "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@mdi/font": "^4.9.95",
     "@sap-devx/inquirer-gui": "0.0.7",
     "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
-    "@sap-devx/webview-rpc": "^0.2.0",
     "@sap-devx/inquirer-gui-remote-file-browser-plugin": "0.0.1",
+    "@sap-devx/webview-rpc": "^0.2.0",
+    "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
     "vuetify": "^2.2.3"
   },

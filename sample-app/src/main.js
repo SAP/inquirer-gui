@@ -28,7 +28,7 @@ const questions1 = [
     type: "input",
     name: "name",
     message: "Your name (frontend)",
-    default: "Joe",
+    default: "J",
     validate: function (input) {
       if (input.length >= 2) {
         return true;

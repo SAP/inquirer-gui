@@ -5,11 +5,11 @@
         <Form ref="form" :questions="questions" @answered="onAnswered" />
       </v-col>
       <v-col>
-        <Answers v-if="Object.keys(this.issues).length===0" :answers="answers" />
-        <Issues v-if="Object.keys(this.issues).length>0" :issues="issues" />
+        <Answers v-if="this.issues === undefined" :answers="answers" />
+        <Issues v-if="this.issues !== undefined" :issues="issues" />
         <div>
           <v-btn
-            :disabled="Object.keys(this.issues).length>0"
+            :disabled="this.issues !== undefined"
             @click="onNext"
           >Next</v-btn>
         </div>

@@ -126,7 +126,7 @@ describe('Questions of type input, password and number', () => {
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
-    expect(answered[1]).toMatchObject({});
+    expect(answered[1]).toBeUndefined();
   });
 
   test('Input with invalid input', async () => {

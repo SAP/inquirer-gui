@@ -51,19 +51,23 @@ export default {
       return result;
     },
     getIssues() {
+      let someInvalid = false;
       let result = {};
       for (let question of this.questions) {
         if (!question.isValid) {
           if (question.validationMessage === "") {
             result[question.name] = "Invalid";
+            someInvalid = true;
           } else {
             result[question.name] = question.validationMessage;
+            someInvalid = true;
           }
         } else if (question.answer === undefined) {
           result[question.name] = "Not answered";
+          someInvalid = true;
         }
       }
-      return result;
+      return (someInvalid ? result : undefined);
     },
     normalizeChoices(choices) {
       if (Array.isArray(choices)) {
@@ -138,7 +142,7 @@ export default {
             index = 0;
           }
           return question._choices[index].value;
-        case "checkbox":
+        case "checkbox": {
           const initialAnswersArray = [];
           for (let choice of question._choices) {
             // add to answers if choice is in default
@@ -168,6 +172,7 @@ export default {
           }
 
           return initialAnswersArray;
+        }
       }
     },
     async onCustomEvent(questionName, methodName, callback, ...params) {
@@ -322,9 +327,15 @@ export default {
           // optimization: avoid repeatedly calling this.getAnswers()
           answers[question.name] = question.answer;
         }
-      }
 
-      // TODO: set defaults for choice functions after they were evaluated?
+        // evaluate validate()
+        if (typeof question.validate === "function") {
+          let response = await question.validate(question.answer, answers);
+          question.isValid = response !== true ? false : true;
+          question.validationMessage =
+            typeof response === "string" ? response : "";
+        }
+      }
     }
   }
 };
