@@ -1,35 +1,52 @@
 <template>
-  <v-card outlined>
-    <v-list>
-      <v-list-item-group :value="question.answer" @change="onClick">
-        <v-list-item v-for="(choice, i) in question._choices" :key="i" :value="choice.value">
-          <v-list-item-content>
-            <v-list-item-title v-text="choice.name"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
-  </v-card>
+<v-card>
+  <v-list>
+    <v-list-item-group
+      ref="itemsGroup"
+      :value="question.answer"
+      @change="onAnswerChanged"
+      :error-messages="question.validationMessage"
+    >
+      <template v-for="(item, i) in question._choices">
+        <v-divider
+            v-if="item.type === 'separator'"
+            :key="`divider-${i}`"
+          ></v-divider>
+        <v-list-item
+            v-else
+            :key="`item-${i}`"
+            :value="item.value"
+        >
+          <template v-slot:default="{ active, toggle }">
+              <v-list-item-content>
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+          </v-list-item>
+        </template>
+    </v-list-item-group>
+  </v-list>
+</v-card>
+
 </template>
 
 <script>
+// TODO: Support separators
 export default {
   name: "QuestionExpand",
   props: {
     question: Object
   },
   methods: {
-    onClick(answer) {
-      if (answer !== undefined) {
-        this.$emit("answerChanged", this.question.name, answer);
-      }
+    onAnswerChanged(value) {
+      this.$emit("answerChanged", this.question.name, value);
     }
   }
 };
 </script>
 
-<style scoped>
-.v-btn-toggle {
-  flex-direction: column;
+<style>
+.v-messages {
+  min-height: 0px;
 }
 </style>

@@ -5,12 +5,11 @@
         <Form ref="form" :questions="questions" @answered="onAnswered" />
       </v-col>
       <v-col>
-        <Answers v-if="this.allValid" :answers="answers" />
-        <h1 class="text-danger" v-if="!this.allValid">Some answers are invalid</h1>
+        <Answers v-if="this.issues === undefined" :answers="answers" />
+        <Issues v-if="this.issues !== undefined" :issues="issues" />
         <div>
           <v-btn
-            :disabled="!allValid"
-            :class="{'btn-success': allValid, 'btn-danger': !allValid}"
+            :disabled="this.issues !== undefined"
             @click="onNext"
           >Next</v-btn>
         </div>
@@ -22,6 +21,7 @@
 <script>
 import Vue from "vue";
 import Answers from "./Answers.vue";
+import Issues from "./Issues.vue";
 
 import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
@@ -39,20 +39,21 @@ import RemoteFileBrowserPlugin from "../../remote-file-browser-plugin/src/index"
 export default {
   name: "app",
   components: {
-    Answers
+    Answers,
+    Issues
   },
   data() {
     return {
       questions: [],
-      allValid: false,
+      issues: {},
       answers: {},
       rpc: {}
     };
   },
   methods: {
-    onAnswered(answers, allValid) {
+    onAnswered(answers, issues) {
       this.answers = answers;
-      this.allValid = allValid;
+      this.issues = issues;
     },
     onNext() {
       main.$emit("next");
@@ -69,6 +70,7 @@ export default {
       } else {
         const ws = new WebSocket("ws://127.0.0.1:8081");
         ws.onerror = () => {
+          // eslint-disable-next-line
           console.error("ws error");
         };
         ws.onopen = () => {
@@ -81,7 +83,6 @@ export default {
       for (let question of questions) {
         for (let prop in question) {
           if (question[prop] === "__Function") {
-            console.debug(`${question.name}.${prop}() is a function`);
             var that = this;
             question[prop] = async (...args) => {
               const response = await that.rpc.invoke("evaluateMethod", [
@@ -108,13 +109,6 @@ export default {
       this.rpc.invoke("onClientIsReady", []);
     }
   },
-  watch: {
-    "questions.answers": {
-      handler(val) {
-        console.log(val);
-      }
-    }
-  },
   mounted() {
     // register custom plugins
     let options = {};
@@ -132,9 +126,9 @@ export default {
           mutation.type === "attributes" &&
           mutation.attributeName === "class"
         ) {
-          const isVsCodeLight = mutation.target.classList.contains(
-            "vscode-light"
-          );
+          // const isVsCodeLight = mutation.target.classList.contains(
+          //   "vscode-light"
+          // );
           // if (isVsCodeLight) {
           //   this.$vuetify.theme.light = true;
           // } else {

@@ -1,17 +1,42 @@
 <template>
-  <div>
-    <v-checkbox
-      v-for="(item) in question._choices"
-      hide-details="auto"
-        dense
-      stacked
-      v-model="options"
-      :key="item.value"
-      :label="item.name"
-      :value="item.value"
+<v-card>
+  <v-list>
+    <v-list-item-group
+      multiple
+      ref="itemsGroup"
+      :value="question.answer"
+      @change="onAnswerChanged"
       :error-messages="question.validationMessage"
-    ></v-checkbox>
-  </div>
+    >
+      <template v-for="(item, i) in question._choices">
+        <v-divider
+            v-if="item.type === 'separator'"
+            :key="`divider-${i}`"
+          ></v-divider>
+        <v-list-item
+            v-else
+            :key="`item-${i}`"
+            :value="item.value"
+        >
+          <template v-slot:default="{ active, toggle }">
+              <v-list-item-action>
+                <v-checkbox
+                  dense
+                  :input-value="active"
+                  :true-value="item.value"
+                  @click="toggle"
+                ></v-checkbox>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.name"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+          </v-list-item>
+        </template>
+    </v-list-item-group>
+  </v-list>
+</v-card>
+
 </template>
 
 <script>
@@ -20,19 +45,11 @@ export default {
   props: {
     question: Object
   },
-  data() {
-    return {
-      options: this.question.default ? this.question.default : []
-    };
-  },
-  watch: {
-    options: {
-      handler(val) {
-        this.$emit("answerChanged", this.question.name, val);
-      }
+  methods: {
+    onAnswerChanged(value) {
+      this.$emit("answerChanged", this.question.name, value);
     }
   }
-  // TODO: handle default values of type object (with properties name, value and short)
 };
 </script>
 

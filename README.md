@@ -73,7 +73,7 @@ The `questions` property is an [inquirer.js-compliant](https://github.com/SBoudr
 
 The `answered` event is fired when any answer is changed:
 * The first parameter to the event handler, `answers`, contains all answers.
-* The second parameter, `allValid`, can be used to, for example, enable or disable a `Next` button.
+* The second parameter, `issues`, can be used to, for example, enable or disable a `Next` button.
 
 ## Custom form elements
 `inquirer-gui` provides *built-in form elements* for all built-in `inquirer.js` question types:

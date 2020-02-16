@@ -46,14 +46,28 @@ export default {
     getAnswers() {
       let result = {};
       for (let question of this.questions) {
-        if (question._choices && question.answer && question.answer.value) {
-          // Vuetify returns objects instead of values for comboboxes: https://github.com/vuetifyjs/vuetify/issues/5479
-          result[question.name] = question.answer.value;
-        } else {
-          result[question.name] = question.answer;
-        }
+        result[question.name] = question.answer;
       }
       return result;
+    },
+    getIssues() {
+      let someInvalid = false;
+      let result = {};
+      for (let question of this.questions) {
+        if (!question.isValid) {
+          if (question.validationMessage === "") {
+            result[question.name] = "Invalid";
+            someInvalid = true;
+          } else {
+            result[question.name] = question.validationMessage;
+            someInvalid = true;
+          }
+        } else if (question.answer === undefined) {
+          result[question.name] = "Not answered";
+          someInvalid = true;
+        }
+      }
+      return (someInvalid ? result : undefined);
     },
     normalizeChoices(choices) {
       if (Array.isArray(choices)) {
@@ -64,6 +78,101 @@ export default {
           return value;
         });
         return mappedChoices;
+      }
+    },
+    getInitialAnswer(question) {
+      let answer;
+      switch (question.type) {
+        case "input":
+        case "password":
+        case "editor":
+          answer = question._default;
+          if (answer === undefined) {
+            answer = "";
+          }
+          return answer;
+        case "number":
+          answer = question._default;
+          if (answer === undefined) {
+            answer = 0;
+          }
+          return answer;
+        case "list":
+        case "rawlist":
+        case "expand":
+        case "checkbox":
+          if (!Array.isArray(question._choices)) {
+            return;
+          }
+          // handle complex choice cases below
+          break;
+        default:
+          return question._default;
+      }
+
+      // handle complex choice cases
+      let index = -1;
+      switch (question.type) {
+        case "list":
+        case "rawlist":
+          if (question._choices.length === 0) {
+            return;
+          }
+          if (typeof question._default === "number") {
+            index = question._default;
+          } else {
+            index = question._choices.findIndex(choice => {
+              if (question._default) {
+                return choice.value === question._default.value;
+              }
+            });
+          }
+          if (index < 0 || index > question._choices.length - 1) {
+            index = 0;
+          }
+          return question._choices[index].value;
+        case "expand":
+          if (question._choices.length === 0) {
+            return;
+          }
+          if (typeof question._default === "number") {
+            index = question._default;
+          }
+          if (index < 0 || index > question._choices.length - 1) {
+            index = 0;
+          }
+          return question._choices[index].value;
+        case "checkbox": {
+          const initialAnswersArray = [];
+          for (let choice of question._choices) {
+            // add to answers if choice is in default
+            if (Array.isArray(question._default)) {
+              let foundIndex = question._default.findIndex(
+                currentDefaultValue => {
+                  return choice.value === currentDefaultValue;
+                }
+              );
+              if (foundIndex >= 0) {
+                initialAnswersArray.push(choice.value);
+              }
+            }
+
+            // add to answers if choice is marked as checked
+            if (choice.checked === true) {
+              initialAnswersArray.push(choice.value);
+            }
+          }
+
+          // add first choice to answers if there are no other defaults
+          if (
+            initialAnswersArray.length === 0 &&
+            question._choices.length > 0
+          ) {
+            initialAnswersArray.push(question._choices[0].value);
+          }
+
+          return initialAnswersArray;
+        }
       }
     },
     async onCustomEvent(questionName, methodName, callback, ...params) {
@@ -97,8 +206,8 @@ export default {
         answeredQuestion["answer"] = answer;
       }
 
-      // evaluate answers for all questions (e.g. when)
       const answers = this.getAnswers();
+      // evaluate answers for all questions (e.g. when)
       for (let question of this.questions) {
         if (question.name !== answeredQuestion.name) {
           // evaluate when()
@@ -113,21 +222,24 @@ export default {
             question._message = response;
           }
 
-          // evaluate default()
-          if (typeof question.default === "function" && !question.isDirty) {
-            const response = await question.default(answers);
-            // TODO: perform transformation when needed (indexes for lists, etc.)
-            question.answer = response;
-            answers[question.name] = response;
+          // evaluate choices()
+          if (typeof question.choices === "function") {
+            const response = await question.choices(answers);
+            question._choices = this.normalizeChoices(response);
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
           }
 
-          // TODO: evaluate choices if defined as a function
+          // evaluate default()
+          if (typeof question.default === "function" && !question.isDirty) {
+            question._default = await question.default(answers);
+            question.answer = this.getInitialAnswer(question);
+            // optimization: avoid repeatedly calling this.getAnswers()
+            answers[question.name] = question.answer;
+          }
         }
       }
-
-      const allValid = !this.questions.some(question => {
-        return question.isValid === false;
-      });
 
       // apply filters
       let filteredAnswers = {};
@@ -140,45 +252,88 @@ export default {
         }
       }
 
+      const issues = this.getIssues();
       // fire 'answered' event
-      this.$emit("answered", filteredAnswers, allValid);
+      this.$emit("answered", filteredAnswers, issues);
     }
   },
   watch: {
     questions: async function() {
-      // set initial values for properties
+      // 1st pass: set initial values
       for (let question of this.questions) {
-        const answer =
-          typeof question.default === "string" ? question.default : undefined;
-        this.$set(question, "answer", answer);
+        // message
         const message =
-          typeof question.message === "string" ? question.message : "";
+          typeof question.message === "string"
+            ? question.message
+            : question.name;
         this.$set(question, "_message", message);
+
+        // choices
         if (question.choices) {
-          this.$set(
-            question,
-            "_choices",
-            this.normalizeChoices(question.choices)
-          );
+          let choices = [];
+          if (typeof question.choices !== "function") {
+            choices = this.normalizeChoices(question.choices);
+          }
+          this.$set(question, "_choices", choices);
         }
+
+        // default
+        if (question.default) {
+          let _default;
+          if (typeof question.default !== "function") {
+            _default = question.default;
+          }
+          this.$set(question, "_default", _default);
+        }
+
+        // answer
+        let answer = this.getInitialAnswer(question);
+        this.$set(question, "answer", answer);
+
+        // visibility
         const shouldShow = question.when === false ? false : true;
         this.$set(question, "shouldShow", shouldShow);
+
+        // validity
         this.$set(question, "isValid", true);
-        this.$set(question, "isDirty", false);
         this.$set(question, "validationMessage", "");
+
+        // dirty
+        this.$set(question, "isDirty", false);
       }
 
+      const answers = this.getAnswers();
+      // 2nd pass: evaluate properties that are functions
       for (let question of this.questions) {
-        // evaluate default values that are functions
-        const answers = this.getAnswers();
-        if (typeof question.default === "function") {
-          const response = await question.default(answers);
-          // TODO: perform transformation when needed (indexes for lists, etc.)
-          question.answer = response;
-        }
+        // evaluate message()
         if (typeof question.message === "function") {
           const response = await question.message(answers);
           question._message = response;
+        }
+
+        // evaluate choices()
+        if (typeof question.choices === "function") {
+          const response = await question.choices(answers);
+          question._choices = this.normalizeChoices(response);
+          question.answer = this.getInitialAnswer(question);
+          // optimization: avoid repeatedly calling this.getAnswers()
+          answers[question.name] = question.answer;
+        }
+
+        // evaluate default()
+        if (typeof question.default === "function") {
+          question._default = await question.default(answers);
+          question.answer = this.getInitialAnswer(question);
+          // optimization: avoid repeatedly calling this.getAnswers()
+          answers[question.name] = question.answer;
+        }
+
+        // evaluate validate()
+        if (typeof question.validate === "function") {
+          let response = await question.validate(question.answer, answers);
+          question.isValid = response !== true ? false : true;
+          question.validationMessage =
+            typeof response === "string" ? response : "";
         }
       }
     }

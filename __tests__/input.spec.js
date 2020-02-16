@@ -36,6 +36,14 @@ const questionNumber = [
   },
 ];
 
+const questionNumberNoDefault = [
+  {
+    type: "number",
+    name: "number",
+    message: "A number"
+  },
+];
+
 const questionsConditional = [
   {
     type: "input",
@@ -91,6 +99,13 @@ const questionsDefaultAsFunction = [
   }
 ];
 
+const questionInputNoMessage = [
+  {
+    type: "input",
+    name: "input with no message"
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -111,7 +126,7 @@ describe('Questions of type input, password and number', () => {
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
-    expect(answered[1]).toEqual(true);
+    expect(answered[1]).toBeUndefined();
   });
 
   test('Input with invalid input', async () => {
@@ -133,7 +148,7 @@ describe('Questions of type input, password and number', () => {
     // test answers
     expect(answered[0].input).toEqual(value1);
     // test validation
-    expect(answered[1]).toEqual(false);
+    expect(answered[1]).toHaveProperty("input");
   });
 
   test('Password', async () => {
@@ -173,6 +188,17 @@ describe('Questions of type input, password and number', () => {
     const answered = wrapper.emitted().answered[0];
     // test answers
     expect(answered[0].number).toEqual(value1.toString());
+  });
+
+  test('Number without default', async () => {
+    const value1 = 5;
+
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionNumber });
+    await Vue.nextTick();
+
+    const name = wrapper.find('input');
+    expect(name.element.value).toBe("0");
   });
 
   test('Input with conditions', async () => {
@@ -223,5 +249,15 @@ describe('Questions of type input, password and number', () => {
 
     inputs = wrapper.findAll('input');
     expect(inputs.at(1).element.value).toBe(`${newValue}-default`);
+  });
+
+  test('Input with no message', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionInputNoMessage });
+    await Vue.nextTick();
+
+    const inputs = wrapper.findAll('p.question-label');
+    // message should default to question's name
+    expect(inputs.at(0).element.innerHTML).toBe(questionInputNoMessage[0].name);
   });
 });
