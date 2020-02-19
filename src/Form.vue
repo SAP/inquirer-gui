@@ -38,7 +38,7 @@ export default {
   methods: {
     setInvalid(question, message) {
       question.isValid = false;
-      question.validationMessage = NOT_ANSWERED;
+      question.validationMessage = message;
     },
     setValid(question) {
       question.isValid = true;
@@ -107,6 +107,12 @@ export default {
           answer = question._default;
           if (answer === undefined) {
             answer = 0;
+          }
+          return answer;
+        case "confirm":
+          answer = question._default;
+          if (answer !== false) {
+            answer = true;
           }
           return answer;
         case "list":
@@ -351,7 +357,7 @@ export default {
         }
 
         // default
-        if (question.default) {
+        if (question.default !== undefined) {
           let _default;
           if (typeof question.default !== "function") {
             _default = question.default;

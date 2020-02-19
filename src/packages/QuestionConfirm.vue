@@ -1,11 +1,16 @@
 <template>
-<div>
-  <v-btn-toggle dense :value="question.answer" @change="onClick">
-    <v-btn :value="true">Yes</v-btn>
-    <v-btn :value="false">No</v-btn>
-  </v-btn-toggle>
-  <div v-if="!question.isValid" class="error-validation-text">{{question.validationMessage}}</div>
-</div>
+  <div>
+    <v-radio-group
+      :error-messages="question.isValid ? '' : question.validationMessage"
+      :value="question.answer"
+      @change="onClick"
+      row
+      dense
+    >
+      <v-radio label="Yes" :value="true"></v-radio>
+      <v-radio label="No" :value="false"></v-radio>
+    </v-radio-group>
+  </div>
 </template>
 
 <script>

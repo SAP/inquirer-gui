@@ -17,7 +17,7 @@ describe('Question of type confirm', () => {
     wrapper.setProps({ questions: questionConfirm });
     await Vue.nextTick();
 
-    const confirm = wrapper.find('button');
+    const confirm = wrapper.find('label');
     confirm.trigger('click');
 
     await Vue.nextTick();
