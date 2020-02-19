@@ -26,6 +26,7 @@
         </template>
     </v-list-item-group>
   </v-list>
+  <div v-if="!question.isValid" class="error-validation-text">{{question.validationMessage}}</div>
 </v-card>
 
 </template>

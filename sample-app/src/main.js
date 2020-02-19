@@ -92,11 +92,11 @@ const questions2 = [
     message: "Your country code",
     choices: [
       { name: "+1", value: 1 },
-      { name: "+49" },
+      "+49",
       { name: "+86", value: 86 },
       { name: "+972", value: 972 }
     ],
-    default: { name: "+49", value: 49 }
+    default: 86
   },
   {
     type: "checkbox",
@@ -108,14 +108,19 @@ const questions2 = [
       { name: "People's Republic of China", value: "China" },
       "Israel"
     ],
-    default: ["Germany"]
-  },
+    default: ["Germany"],
+    validate: function(input, answers) {
+      return (input.length === 0 ? "Must choose at least one country" : true)
+    }
+   },
   {
     type: "expand",
     name: "agree",
     message: "Do you agree to the conditions?",
     choices: ["Yes", "No", {type: "separator"}, "Maybe"],
-    default: 1
+    validate: function(input, answers) {
+      return (input ? true : "Must choose an answer");
+    }
   },
   {
     type: "confirm",

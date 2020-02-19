@@ -21,6 +21,15 @@ const questionExpandNoDefault = [
   }
 ];
 
+const questionExpandEmptyChoices = [
+  {
+    type: "expand",
+    name: "agree",
+    message: "Do you agree to the conditions?",
+    choices: []
+  }
+];
+
 const questionExpandWithSeparator = [
   {
     type: "expand",
@@ -65,10 +74,22 @@ describe('Question of type expand', () => {
 
   test('Expand with separator', async () => {
     const wrapper = mount(Form, { });
-    wrapper.setProps({ questions: questionExpandNoDefault });
+    wrapper.setProps({ questions: questionExpandWithSeparator });
     await Vue.nextTick();
 
     const divider = wrapper.find('hr[role="separator"');
     expect(divider).not.toBeUndefined();
   });
+});
+
+test('Expand with empty choices', async () => {
+  const wrapper = mount(Form, { });
+  wrapper.setProps({ questions: questionExpandEmptyChoices });
+  await Vue.nextTick();
+
+  expect(wrapper.emitted().answered).toBeTruthy();
+  const answeredLength = wrapper.emitted().answered.length;
+  const answered = wrapper.emitted().answered[answeredLength - 1];
+  // test answers
+  expect(answered[0].country).toBeUndefined();
 });

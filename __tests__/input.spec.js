@@ -205,8 +205,6 @@ describe('Questions of type input, password and number', () => {
   });
 
   test('Number without default', async () => {
-    const value1 = 5;
-
     const wrapper = mount(Form, { });
     wrapper.setProps({ questions: questionNumber });
     await Vue.nextTick();

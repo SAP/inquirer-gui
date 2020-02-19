@@ -21,6 +21,7 @@
 <script>
 import Plugins from "./Plugins";
 
+const NOT_ANSWERED = "Not answered";
 export default {
   name: "Form",
   props: {
@@ -28,13 +29,21 @@ export default {
   },
   data() {
     return {
-      plugins: Plugins.registerBuiltinPlugins()
+      plugins: null
     };
   },
   computed: {
     console: () => console
   },
   methods: {
+    setInvalid(question, message) {
+      question.isValid = false;
+      question.validationMessage = NOT_ANSWERED;
+    },
+    setValid(question) {
+      question.isValid = true;
+      question.validationMessage = "";
+    },
     getComponentByQuestionType(questionType) {
       const foundPlugin = this.plugins.find(plugin => {
         return plugin.questionType === questionType;
@@ -66,7 +75,7 @@ export default {
             someInvalid = true;
           }
         } else if (question.answer === undefined) {
-          result[question.name] = "Not answered";
+          result[question.name] = NOT_ANSWERED;
           someInvalid = true;
         }
       }
@@ -105,11 +114,15 @@ export default {
         case "expand":
         case "checkbox":
           if (!Array.isArray(question._choices)) {
+            this.setInvalid(question, NOT_ANSWERED);
             return;
           }
           // handle complex choice cases below
           break;
         default:
+          if (question._default === undefined) {
+            this.setInvalid(question, NOT_ANSWERED);
+          }
           return question._default;
       }
 
@@ -119,6 +132,7 @@ export default {
         case "list":
         case "rawlist":
           if (question._choices.length === 0) {
+            this.setInvalid(question, NOT_ANSWERED);
             return;
           }
           if (typeof question._default === "number") {
@@ -126,25 +140,30 @@ export default {
           } else {
             index = question._choices.findIndex(choice => {
               if (question._default) {
-                return choice.value === question._default.value;
+                return choice.value === question._default;
               }
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            index = 0;
+            this.setInvalid(question, NOT_ANSWERED);
+            return;
+          } else {
+            return question._choices[index].value;
           }
-          return question._choices[index].value;
         case "expand":
           if (question._choices.length === 0) {
+            this.setInvalid(question, NOT_ANSWERED);
             return;
           }
           if (typeof question._default === "number") {
             index = question._default;
           }
           if (index < 0 || index > question._choices.length - 1) {
-            index = 0;
+            this.setInvalid(question, NOT_ANSWERED);
+            return;
+          } else {
+            return question._choices[index].value;
           }
-          return question._choices[index].value;
         case "checkbox": {
           const initialAnswersArray = [];
           for (let choice of question._choices) {
@@ -195,27 +214,39 @@ export default {
       }
     },
     async onAnswerChanged(name, answer) {
-      const answeredQuestion = this.questions.find(value => {
+      if (answer === undefined) {
+        // we regard undefined as unaswered, so we do not
+        // call question methods or emit the answered event
+        return;
+      }
+      const index = this.questions.findIndex(value => {
         return value["name"] === name;
       });
-      if (answeredQuestion) {
-        answeredQuestion.isDirty = true;
-        // evaluate validate()
-        if (answeredQuestion.validate) {
-          const answers = this.getAnswers();
-          try {
-            let response = await answeredQuestion.validate(answer, answers);
-            answeredQuestion.isValid = response !== true ? false : true;
-            answeredQuestion.validationMessage =
-              typeof response === "string" ? response : "";
-          } catch(e) {
-            this.console.error(`Could not evaluate validate() for ${answeredQuestion.name}`);
-          }
-        }
-        // TODO: if input is invalid, should we update the answer?
-        // set the answer
-        answeredQuestion["answer"] = answer;
+
+      if (index === -1) {
+        return;
       }
+
+      const answeredQuestion = this.questions[index];
+      answeredQuestion.isDirty = true;
+      this.setValid(answeredQuestion);
+
+      // evaluate validate()
+      if (answeredQuestion.validate) {
+        const answers = this.getAnswers();
+        try {
+          let response = await answeredQuestion.validate(answer, answers);
+          answeredQuestion.isValid = response !== true ? false : true;
+          if (!answeredQuestion.isValid) {
+            this.setInvalid(answeredQuestion, typeof response === "string" ? response : "");
+          }
+        } catch(e) {
+          this.console.error(`Could not evaluate validate() for ${answeredQuestion.name}`);
+        }
+      }
+      // TODO: if input is invalid, should we update the answer?
+      // set the answer
+      answeredQuestion["answer"] = answer;
 
       const answers = this.getAnswers();
       // evaluate answers for all questions (e.g. when)
@@ -265,9 +296,16 @@ export default {
               question.answer = this.getInitialAnswer(question);
               // optimization: avoid repeatedly calling this.getAnswers()
               answers[question.name] = question.answer;
+              if (question.answer !== undefined) {
+                this.setValid(question);
+              }
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
+          }
+
+          if (question.answer === undefined) {
+            this.setInvalid(question, NOT_ANSWERED);
           }
         }
       }
@@ -321,6 +359,13 @@ export default {
           this.$set(question, "_default", _default);
         }
 
+        // validity
+        this.$set(question, "isValid", true);
+        this.$set(question, "validationMessage", "");
+
+        // dirty
+        this.$set(question, "isDirty", false);
+
         // answer
         let answer = this.getInitialAnswer(question);
         this.$set(question, "answer", answer);
@@ -329,12 +374,6 @@ export default {
         const shouldShow = question.when === false ? false : true;
         this.$set(question, "shouldShow", shouldShow);
 
-        // validity
-        this.$set(question, "isValid", true);
-        this.$set(question, "validationMessage", "");
-
-        // dirty
-        this.$set(question, "isDirty", false);
       }
 
       const answers = this.getAnswers();
@@ -368,6 +407,9 @@ export default {
           try {
             question._default = await question.default(answers);
             question.answer = this.getInitialAnswer(question);
+            if (question.answer !== undefined) {
+              this.setValid(question);
+            }
             // optimization: avoid repeatedly calling this.getAnswers()
             answers[question.name] = question.answer;
           } catch(e) {
@@ -380,12 +422,19 @@ export default {
           try {
             let response = await question.validate(question.answer, answers);
             question.isValid = response !== true ? false : true;
-            question.validationMessage =
-              typeof response === "string" ? response : "";
+            if (!question.isValid) {
+            this.setInvalid(question,
+                typeof response === "string" ? response : "");
+            }
           } catch(e) {
             this.console.error(`Could not evaluate validate() for ${question.name}`);
           }
         }
+
+        if (question.answer === undefined) {
+            this.setInvalid(question, NOT_ANSWERED);
+        }
+
       }
 
       const issues = this.getIssues();
@@ -393,6 +442,9 @@ export default {
       this.$emit("answered", answers, issues);
 
     }
+  },
+  created() {
+    this.plugins = Plugins.registerBuiltinPlugins();
   }
 };
 </script>
@@ -410,4 +462,12 @@ export default {
 .inquirer-gui .v-text-field input {
   padding: 0px;
 }
+
+/* Error validation text div */
+.error-validation-text{
+  font-size: 12px;
+  padding-left: 12px;
+  color: #ff5252;
+}
+
 </style>

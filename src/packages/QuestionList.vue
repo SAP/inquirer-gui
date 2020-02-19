@@ -1,6 +1,7 @@
 <template>
   <v-select
-    v-model="selected"
+    :value="question.answer"
+    @change="onAnswerChanged"
     :items="this.question._choices"
     item-text="name"
     item-value="value"
@@ -23,17 +24,9 @@
 <script>
 export default {
   name: "QuestionList",
-  data() {
-    return {
-      selected: this.question.answer
-    };
-  },
-  watch: {
-    selected: {
-      immediate: true,
-      handler: function(selectedvalue) {
-        this.$emit("answerChanged", this.question.name, selectedvalue);
-      }
+  methods: {
+    onAnswerChanged(value) {
+      this.$emit("answerChanged", this.question.name, value);
     }
   },
   props: {
