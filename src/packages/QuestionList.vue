@@ -8,6 +8,7 @@
     :error-messages="question.validationMessage"
     hide-details="auto"
     :label="clickToDisplay"
+    single-line="true"
     outlined
     dense
   >
