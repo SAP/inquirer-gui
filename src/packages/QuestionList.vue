@@ -7,6 +7,7 @@
     item-value="value"
     :error-messages="question.validationMessage"
     hide-details="auto"
+    :label="clickToDisplay"
     outlined
     dense
   >
@@ -27,6 +28,11 @@ export default {
   methods: {
     onAnswerChanged(value) {
       this.$emit("answerChanged", this.question.name, value);
+    }
+  },
+  data() {
+    return {
+      clickToDisplay: "Click to display the list of options"
     }
   },
   props: {
