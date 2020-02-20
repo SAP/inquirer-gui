@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquier GUI",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "publisher": "SAP",
   "author": {
     "name": "Eyal Barlev",

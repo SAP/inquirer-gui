@@ -9,6 +9,7 @@
     hide-details="auto"
     :label="clickToDisplay"
     single-line="true"
+    :append-icon="'mdi-chevron-down'"
     outlined
     dense
   >
