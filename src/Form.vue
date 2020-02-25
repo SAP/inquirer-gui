@@ -14,6 +14,12 @@
         @answerChanged="onAnswerChanged"
         @customEvent="onCustomEvent"
       ></component>
+      <div
+        v-if="question.shouldShow && !question.isValid" 
+        class="error-validation-text"
+        :key="'validation-' + index"
+      ><span class="error-validation-asterisk">*</span> {{question.validationMessage}}</div>
+
     </template>
   </v-form>
 </template>
@@ -36,6 +42,34 @@ export default {
     console: () => console
   },
   methods: {
+    async doValidate(question, answer) {
+      // evaluate validate()
+      if (typeof question.validate === "function") {
+        try {
+          const answers = this.getAnswers();
+          let response = await question.validate(answer, answers);
+          const isValid = response !== true ? false : true;
+          if (isValid) {
+            if (question.answer === undefined) {
+              this.setInvalid(question, NOT_ANSWERED);
+            } else {
+              this.setValid(question);
+            }
+          } else {
+            this.setInvalid(question,
+              typeof response === "string" ? response : "");
+          }
+        } catch(e) {
+          this.console.error(`Could not evaluate validate() for ${question.name}`);
+        }
+      } else {
+        if (question.answer === undefined) {
+          this.setInvalid(question, NOT_ANSWERED);
+        } else {
+          this.setValid(question);
+        }
+      }
+    },
     setInvalid(question, message) {
       question.isValid = false;
       question.validationMessage = message;
@@ -235,24 +269,11 @@ export default {
 
       const answeredQuestion = this.questions[index];
       answeredQuestion.isDirty = true;
-      this.setValid(answeredQuestion);
 
-      // evaluate validate()
-      if (answeredQuestion.validate) {
-        const answers = this.getAnswers();
-        try {
-          let response = await answeredQuestion.validate(answer, answers);
-          answeredQuestion.isValid = response !== true ? false : true;
-          if (!answeredQuestion.isValid) {
-            this.setInvalid(answeredQuestion, typeof response === "string" ? response : "");
-          }
-        } catch(e) {
-          this.console.error(`Could not evaluate validate() for ${answeredQuestion.name}`);
-        }
-      }
       // TODO: if input is invalid, should we update the answer?
       // set the answer
-      answeredQuestion["answer"] = answer;
+      answeredQuestion.answer = answer;
+      await this.doValidate(answeredQuestion, answer);
 
       const answers = this.getAnswers();
       // evaluate answers for all questions (e.g. when)
@@ -287,9 +308,12 @@ export default {
             try {
               const response = await question.choices(answers);
               question._choices = this.normalizeChoices(response);
+
               question.answer = this.getInitialAnswer(question);
               // optimization: avoid repeatedly calling this.getAnswers()
               answers[question.name] = question.answer;
+
+              await this.doValidate(question, question.answer);
             } catch(e) {
               this.console.error(`Could not evaluate choices() for ${question.name}`);
             }
@@ -302,9 +326,8 @@ export default {
               question.answer = this.getInitialAnswer(question);
               // optimization: avoid repeatedly calling this.getAnswers()
               answers[question.name] = question.answer;
-              if (question.answer !== undefined) {
-                this.setValid(question);
-              }
+
+              await this.doValidate(question, question.answer);
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
@@ -413,9 +436,7 @@ export default {
           try {
             question._default = await question.default(answers);
             question.answer = this.getInitialAnswer(question);
-            if (question.answer !== undefined) {
-              this.setValid(question);
-            }
+
             // optimization: avoid repeatedly calling this.getAnswers()
             answers[question.name] = question.answer;
           } catch(e) {
@@ -424,23 +445,7 @@ export default {
         }
 
         // evaluate validate()
-        if (typeof question.validate === "function") {
-          try {
-            let response = await question.validate(question.answer, answers);
-            question.isValid = response !== true ? false : true;
-            if (!question.isValid) {
-            this.setInvalid(question,
-                typeof response === "string" ? response : "");
-            }
-          } catch(e) {
-            this.console.error(`Could not evaluate validate() for ${question.name}`);
-          }
-        }
-
-        if (question.answer === undefined) {
-            this.setInvalid(question, NOT_ANSWERED);
-        }
-
+        await this.doValidate(question, question.answer);
       }
 
       const issues = this.getIssues();

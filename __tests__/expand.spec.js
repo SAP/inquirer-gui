@@ -86,6 +86,7 @@ test('Expand with empty choices', async () => {
   const wrapper = mount(Form, { });
   wrapper.setProps({ questions: questionExpandEmptyChoices });
   await Vue.nextTick();
+  await Vue.nextTick();
 
   expect(wrapper.emitted().answered).toBeTruthy();
   const answeredLength = wrapper.emitted().answered.length;

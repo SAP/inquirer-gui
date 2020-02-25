@@ -4,7 +4,6 @@
     :value="question.answer"
     class="pa-0 ma-0"
     :type="getInputType(question.type)"
-    :error-messages="question.validationMessage"
     hide-details="auto"
     outlined
     dense

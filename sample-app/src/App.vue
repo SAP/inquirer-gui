@@ -186,4 +186,13 @@ form.inquirer-gui div.theme--light.v-input input,
 form.inquirer-gui div.theme--light.v-input textarea {
   color: var(--vscode-input-foreground, white);
 }
+
+form.inquirer-gui .error-validation-text {
+  color: brown;
+}
+
+form.inquirer-gui .error-validation-asterisk {
+  color: red;
+}
+
 </style>

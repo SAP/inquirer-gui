@@ -5,7 +5,6 @@
       ref="itemsGroup"
       :value="question.answer"
       @change="onAnswerChanged"
-      :error-messages="question.validationMessage"
     >
       <template v-for="(item, i) in question._choices">
         <v-divider
@@ -26,7 +25,6 @@
         </template>
     </v-list-item-group>
   </v-list>
-  <div v-if="!question.isValid" class="error-validation-text">{{question.validationMessage}}</div>
 </v-card>
 
 </template>

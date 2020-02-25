@@ -3,8 +3,8 @@
     @input="onInput"
     :value="question.answer"
     aria-describedby="validation-message"
-    :error-messages="question.validationMessage"
     hide-details="auto"
+    rows=7
     dense
     outlined
   ></v-textarea>

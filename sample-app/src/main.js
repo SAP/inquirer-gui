@@ -7,84 +7,88 @@ import "@sap-devx/inquirer-gui/dist/form.css";
 
 const questions1 = [
   {
-    type: "input",
-    name: "A string"
-  },
-  {
-    type: "remote-file-browser",
-    name: "configFile",
-    message: "Config file",
-    default: "/home/",
-    getFilePath: async function (currentPath) {
-      return `${currentPath}user`;
-    }
-  },
-  {
-    type: "date",
-    name: "birthday",
-    message: "Birthday"
-  },
-  {
-    type: "input",
-    name: "name",
-    message: "Your name (frontend)",
-    default: "J",
-    validate: function (input) {
-      if (input.length >= 2) {
-        return true;
-      } else {
-        return "Name must be at least 2 characters long";
+      type: "remote-file-browser",
+      name: "configFile",
+      message: "Config file (vscode)",
+      default: "/home/",
+      getFilePath: async function (currentPath, showOpenDialog) {
+          return await showOpenDialog(currentPath);
       }
-    }
   },
   {
-    type: "input",
-    name: "conditional",
-    message: "Conditional",
-    default: "Never shows",
-    when: false
+      type: "date",
+      name: "birthday",
+      message: "Birthday"
   },
   {
-    type: "editor",
-    name: "notes",
-    message: function (answers) {
-      return `Information about ${answers.name}`;
-    },
-    default: function (answers) {
-      return `Information about ${answers.name}`;
-    },
-    filter: function (input) {
-      return `${input}!!!`
-    }
+      type: "input",
+      name: "name",
+      message: "Your name (frontend)",
+      default: "Joe",
+      validate: function (input) {
+          if (input.length >= 2) {
+              return true;
+          } else {
+              return "Name must be at least 2 characters long";
+          }
+      }
   },
   {
-    type: "password",
-    name: "password",
-    message: "A password"
+      type: "input",
+      name: "notes",
+      message: function (answers) {
+          return `Information about ${answers.name}`;
+      },
+      default: function (answers) {
+          return `Information about ${answers.name}`;
+      },
+      filter: function (input) {
+          return `${input}!!!`
+      }
   },
   {
-    type: "number",
-    name: "number",
-    message: "A number",
-    default: "0"
+      type: "password",
+      name: "password",
+      message: "A password"
   },
   {
-    type: "input",
-    name: "street address",
-    message: "Your address",
-    default: "1 Main street",
-    when: function (answers) {
-      return answers.name !== "Joker";
-    }
+      type: "number",
+      name: "number",
+      message: "A number",
+      default: "0"
   },
   {
-    type: "list",
-    name: "country",
-    message: "The country where you live",
-      
-    choices: ["USA", { type: 'separator'}, "Germany", "China", "Israel"]
+      type: "input",
+      name: "street address",
+      message: "Your address",
+      default: "1 Main street",
+      when: function (answers) {
+          return answers.name !== "Joker";
+      }
+  },
+  {
+      type: "list",
+      name: "country",
+      message: "The country where you live",
+      choices: ["USA", "Germany", "China", "Israel"],
+      default: "USA"
+  },
+  {
+      type: "checkbox",
+      name: "citizenship",
+      message: "Your citizenship",
+      choices: ["USA", "Germany", "China", "Israel"],
+      default: ["Germany"]
+  },
+  {
+      type: "expand",
+      name: "agree",
+      message: "Do you agree to the conditions?",
+      choices: ["Yes", "No", "Maybe"],
+      default: "No"
   }
 ];
+
 const questions2 = [
   {
     type: "list",

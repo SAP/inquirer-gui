@@ -5,7 +5,6 @@
     :items="this.question._choices"
     item-text="name"
     item-value="value"
-    :error-messages="question.validationMessage"
     hide-details="auto"
     :label="clickToDisplay"
     single-line

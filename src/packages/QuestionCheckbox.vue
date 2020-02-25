@@ -17,13 +17,12 @@
             :key="`item-${i}`"
             :value="item.value"
         >
-          <template v-slot:default="{ active, toggle }">
+          <template v-slot:default="{ active }">
               <v-list-item-action>
                 <v-checkbox
                   dense
                   :input-value="active"
                   :true-value="item.value"
-                  @click="toggle"
                 ></v-checkbox>
               </v-list-item-action>
               <v-list-item-content>
@@ -34,7 +33,6 @@
         </template>
     </v-list-item-group>
   </v-list>
-  <div v-if="!question.isValid" class="error-validation-text">{{question.validationMessage}}</div>
 </v-card>
 
 </template>

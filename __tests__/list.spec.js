@@ -62,11 +62,7 @@ describe('Question of type list', () => {
 
     await Vue.nextTick();
 
-    expect(wrapper.emitted().answered).toBeTruthy();
-    const answeredLength = wrapper.emitted().answered.length;
-    const answered = wrapper.emitted().answered[answeredLength - 1];
-    // test answers
-    expect(answered[0].country).toBe("China");
+    expect(wrapper.vm.$props.questions[0].answer).toBe(questionList[0].default);
   });
 
   test('List without default', async () => {
@@ -78,6 +74,7 @@ describe('Question of type list', () => {
     const wrapper = mount(Form, { vuetify, attachToDocument: true });
     wrapper.setProps({ questions: questionListNoDefault });
 
+    await Vue.nextTick();
     await Vue.nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
@@ -97,6 +94,7 @@ describe('Question of type list', () => {
     wrapper.setProps({ questions: questionListInvalidChoices });
 
     await Vue.nextTick();
+    await Vue.nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -115,6 +113,7 @@ describe('Question of type list', () => {
     wrapper.setProps({ questions: questionListDefaultAsIndex });
 
     await Vue.nextTick();
+    await Vue.nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -132,6 +131,7 @@ describe('Question of type list', () => {
     const wrapper = mount(Form, { vuetify, attachToDocument: true });
     wrapper.setProps({ questions: questionListEmptyChoices });
 
+    await Vue.nextTick();
     await Vue.nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();

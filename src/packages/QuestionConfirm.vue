@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-radio-group
-      :error-messages="question.isValid ? '' : question.validationMessage"
       :value="question.answer"
       @change="onClick"
       row
