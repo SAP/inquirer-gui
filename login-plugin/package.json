@@ -1,0 +1,22 @@
+{
+  "name": "@sap-devx/inquirer-gui-login-plugin",
+  "version": "0.0.1",
+  "description": "Login plugin for inquirer-gui",
+  "main": "dist/loginPlugin.umd.js",
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name loginPlugin src/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/login-plugin"
+  },
+  "author": "Eyal Barlev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.11.0"
+  }
+}

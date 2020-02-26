@@ -29,7 +29,7 @@ describe('Question of type remote file browser', () => {
     await Vue.nextTick();
     wrapper.setProps({ questions: questionRemoteFileBrowser });
     await Vue.nextTick();
-    const icon = wrapper.find('i');
+    const icon = wrapper.find('button');
     icon.trigger('click');
     await Vue.nextTick();
     expect(wrapper.props().questions[0].answer).toBe('/home/user');

@@ -7,6 +7,21 @@ import "@sap-devx/inquirer-gui/dist/form.css";
 
 const questions1 = [
   {
+    type: "password",
+    guiType: "login",
+    name: "login",
+    message: "Login",
+    default: "",
+    validate: async function (answer, answers) {
+      if (!answer) {
+        return "Must enter password"
+      } else {
+        // perform login
+        return true;
+      }
+    }
+},
+{
       type: "remote-file-browser",
       name: "configFile",
       message: "Config file (vscode)",

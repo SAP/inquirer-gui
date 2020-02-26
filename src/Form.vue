@@ -8,7 +8,7 @@
       >{{question._message}}</p>
       <component
         v-if="question.shouldShow"
-        :is="getComponentByQuestionType(question.type)"
+        :is="getComponentByQuestionType(question.guiType ? question.guiType: question.type)"
         :key="index"
         :question="question"
         @answerChanged="onAnswerChanged"
