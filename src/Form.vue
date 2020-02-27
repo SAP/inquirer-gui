@@ -79,6 +79,9 @@ export default {
       question.validationMessage = "";
     },
     getComponentByQuestionType(questionType) {
+      if (questionType === undefined) {
+        questionType = "input";
+      }
       const foundPlugin = this.plugins.find(plugin => {
         return plugin.questionType === questionType;
       });

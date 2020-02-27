@@ -7,6 +7,9 @@ import "@sap-devx/inquirer-gui/dist/form.css";
 
 const questions1 = [
   {
+    name: "noType",
+  },
+  {
     type: "password",
     guiType: "login",
     name: "login",
