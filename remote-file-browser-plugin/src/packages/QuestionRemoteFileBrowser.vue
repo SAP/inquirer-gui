@@ -2,9 +2,9 @@
   <v-text-field
     ref="path"
     :value="question.answer"
-    append-outer-icon="folder"
+    append-outer-icon="mdi-folder-outline"
     @click:append-outer="onSelectFile"
-    readonly
+    @input="onAnswerChanged"
     hide-details="auto"
     outlined
     dense
@@ -34,7 +34,7 @@ export default {
         this.question.answer
       );
     },
-    onInput(answer) {
+    onAnswerChanged(answer) {
       if (answer !== undefined) {
         this.$emit("answerChanged", this.question.name, answer);
       }

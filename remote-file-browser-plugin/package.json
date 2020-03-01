@@ -1,15 +1,21 @@
 {
   "name": "@sap-devx/inquirer-gui-remote-file-browser-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Remote file browser plugin for inquirer-gui",
   "main": "dist/remoteFileBrowserPlugin.umd.js",
+  "keywords": [
+    "inquirer",
+    "inquirer-gui",
+    "file",
+    "browse"
+  ],
   "scripts": {
     "build": "vue-cli-service build --target lib --name remoteFileBrowserPlugin src/index.js",
     "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/remote-file-browser-plugin"
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/remote-file-browser-plugin"
   },
   "author": "Eyal Barlev",
   "license": "Apache-2.0",

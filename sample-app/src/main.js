@@ -29,8 +29,8 @@ const questions1 = [
       name: "configFile",
       message: "Config file (vscode)",
       default: "/home/",
-      getFilePath: async function (currentPath, showOpenDialog) {
-          return await showOpenDialog(currentPath);
+      getFilePath: async function (currentPath) {
+          return `${currentPath}subdir/`;
       }
   },
   {
