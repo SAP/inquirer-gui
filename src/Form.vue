@@ -279,10 +279,9 @@ export default {
       await this.doValidate(answeredQuestion, answer);
 
       const answers = this.getAnswers();
-      // evaluate answers for all questions (e.g. when)
+      // evaluate methods for questions following answered question (e.g. when)
       let shouldStart = false;
       for (let question of this.questions) {
-        // start evaluating only for questions following answered question
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
         } else if (shouldStart) {
@@ -296,48 +295,51 @@ export default {
             }
           }
 
-          // evaluate message()
-          if (typeof question.message === "function") {
-            try {
-              let response = await question.message(answers);
-              question._message = response;
-            } catch(e) {
-              this.console.error(`Could not evaluate message() for ${question.name}`);
+          if (question.shouldShow) {
+            // evaluate message()
+            if (typeof question.message === "function") {
+              try {
+                let response = await question.message(answers);
+                question._message = response;
+              } catch(e) {
+                this.console.error(`Could not evaluate message() for ${question.name}`);
+              }
             }
-          }
 
-          // evaluate choices()
-          if (typeof question.choices === "function") {
-            try {
-              const response = await question.choices(answers);
-              question._choices = this.normalizeChoices(response);
-
-              question.answer = this.getInitialAnswer(question);
-              // optimization: avoid repeatedly calling this.getAnswers()
-              answers[question.name] = question.answer;
-
-              await this.doValidate(question, question.answer);
-            } catch(e) {
-              this.console.error(`Could not evaluate choices() for ${question.name}`);
+            // evaluate choices()
+            if (typeof question.choices === "function") {
+              try {
+                const response = await question.choices(answers);
+                question._choices = this.normalizeChoices(response);
+                if (!question.isDirty) {
+                  question.answer = this.getInitialAnswer(question);
+                  // optimization: avoid repeatedly calling this.getAnswers()
+                  answers[question.name] = question.answer;
+  
+                  await this.doValidate(question, question.answer);
+                }
+              } catch(e) {
+                this.console.error(`Could not evaluate choices() for ${question.name}`);
+              }
             }
-          }
 
-          // evaluate default()
-          if (typeof question.default === "function" && !question.isDirty) {
-            try {
-              question._default = await question.default(answers);
-              question.answer = this.getInitialAnswer(question);
-              // optimization: avoid repeatedly calling this.getAnswers()
-              answers[question.name] = question.answer;
+            // evaluate default()
+            if (typeof question.default === "function" && !question.isDirty) {
+              try {
+                question._default = await question.default(answers);
+                question.answer = this.getInitialAnswer(question);
+                // optimization: avoid repeatedly calling this.getAnswers()
+                answers[question.name] = question.answer;
 
-              await this.doValidate(question, question.answer);
-            } catch(e) {
-              this.console.error(`Could not evaluate default() for ${question.name}`);
+                await this.doValidate(question, question.answer);
+              } catch(e) {
+                this.console.error(`Could not evaluate default() for ${question.name}`);
+              }
             }
-          }
 
-          if (question.answer === undefined) {
-            this.setInvalid(question, NOT_ANSWERED);
+            if (question.answer === undefined) {
+              this.setInvalid(question, NOT_ANSWERED);
+            }
           }
         }
       }
@@ -411,44 +413,56 @@ export default {
       const answers = this.getAnswers();
       // 2nd pass: evaluate properties that are functions
       for (let question of this.questions) {
-        // evaluate message()
-        if (typeof question.message === "function") {
+        // evaluate when()
+        if (typeof question.when === "function") {
           try {
-            const response = await question.message(answers);
-            question._message = response;
+            let response = await question.when(answers);
+            question.shouldShow = response;
           } catch(e) {
-            this.console.error(`Could not evaluate message() for ${question.name}`);
+            this.console.error(`Could not evaluate when() for ${question.name}`);
           }
         }
 
-        // evaluate choices()
-        if (typeof question.choices === "function") {
-          try {
-            const response = await question.choices(answers);
-            question._choices = this.normalizeChoices(response);
-            question.answer = this.getInitialAnswer(question);
-            // optimization: avoid repeatedly calling this.getAnswers()
-            answers[question.name] = question.answer;
-          } catch(e) {
-            this.console.error(`Could not evaluate choices() for ${question.name}`);
+        if (question.shouldShow) {
+          // evaluate message()
+          if (typeof question.message === "function") {
+            try {
+              const response = await question.message(answers);
+              question._message = response;
+            } catch(e) {
+              this.console.error(`Could not evaluate message() for ${question.name}`);
+            }
           }
-        }
 
-        // evaluate default()
-        if (typeof question.default === "function") {
-          try {
-            question._default = await question.default(answers);
-            question.answer = this.getInitialAnswer(question);
-
-            // optimization: avoid repeatedly calling this.getAnswers()
-            answers[question.name] = question.answer;
-          } catch(e) {
-            this.console.error(`Could not evaluate default() for ${question.name}`);
+          // evaluate choices()
+          if (typeof question.choices === "function") {
+            try {
+              const response = await question.choices(answers);
+              question._choices = this.normalizeChoices(response);
+              question.answer = this.getInitialAnswer(question);
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate choices() for ${question.name}`);
+            }
           }
-        }
 
-        // evaluate validate()
-        await this.doValidate(question, question.answer);
+          // evaluate default()
+          if (typeof question.default === "function") {
+            try {
+              question._default = await question.default(answers);
+              question.answer = this.getInitialAnswer(question);
+
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate default() for ${question.name}`);
+            }
+          }
+
+          // evaluate validate()
+          await this.doValidate(question, question.answer);
+        }
       }
 
       const issues = this.getIssues();
