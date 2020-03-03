@@ -8,7 +8,7 @@ const questionList = [
     type: "list",
     name: "country",
     message: "The country where you live",
-    choices: ["USA", "Germany", "China", "Israel"],
+    choices: ["USA", "Germany", {name:"China"}, "Israel"],
     default: "China"
   }
 ];

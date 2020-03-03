@@ -121,8 +121,12 @@ export default {
     normalizeChoices(choices) {
       if (Array.isArray(choices)) {
         const mappedChoices = choices.map(value => {
-          if (typeof value === "string" || typeof value === "number") {
-            return { name: value, value: value, short: value };
+          if (value === undefined || typeof value === "string" || typeof value === "number") {
+            return { name: value, value: value };
+          } else {
+            if (value.hasOwnProperty("name") && !value.hasOwnProperty("value")) {
+              return { name: value.name, value: value.name };
+            }
           }
           return value;
         });

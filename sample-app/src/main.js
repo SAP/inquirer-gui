@@ -10,6 +10,17 @@ const questions1 = [
     name: "noType",
   },
   {
+    name: "forced default",
+    default: () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("hello");
+        },2000);  
+      });
+    },
+    __forcedDefault: "hello world!"
+  },
+  {
     type: "password",
     guiType: "login",
     name: "login",
@@ -88,8 +99,8 @@ const questions1 = [
       type: "list",
       name: "country",
       message: "The country where you live",
-      choices: ["USA", "Germany", "China", "Israel"],
-      default: "USA"
+      choices: ["USA", {name:"Germany"}, "China", "Israel"],
+      default: "Germany"
   },
   {
       type: "checkbox",
