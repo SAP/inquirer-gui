@@ -87,9 +87,6 @@ export default {
       question.validationMessage = "";
     },
     getComponentByQuestionType(questionType) {
-      if (questionType === undefined) {
-        questionType = "input";
-      }
       const foundPlugin = this.plugins.find(plugin => {
         return plugin.questionType === questionType;
       });
@@ -297,14 +294,17 @@ export default {
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
         } else if (shouldStart) {
+          let shouldValidate = false;
           // evaluate when()
           if (typeof question.when === "function") {
             try {
               let response = await question.when(answers);
+              // When question was shouldShow === false, and
+              //   it becomes shouldShow === true, call validate()
+              if (!question.shouldShow && response) {
+                shouldValidate = true;
+              }
               question.shouldShow = response;
-              // TODO: when question was shouldShow === false, and
-              //   it becomes shouldShow === true, we should call
-              //   evaluate()
             } catch(e) {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
@@ -330,8 +330,7 @@ export default {
                   question.answer = this.getInitialAnswer(question);
                   // optimization: avoid repeatedly calling this.getAnswers()
                   answers[question.name] = question.answer;
-  
-                  await this.doValidate(question, question.answer);
+                  shouldValidate = true;
                 }
               } catch(e) {
                 this.console.error(`Could not evaluate choices() for ${question.name}`);
@@ -345,11 +344,14 @@ export default {
                 question.answer = this.getInitialAnswer(question);
                 // optimization: avoid repeatedly calling this.getAnswers()
                 answers[question.name] = question.answer;
-
-                await this.doValidate(question, question.answer);
+                shouldValidate = true;
               } catch(e) {
                 this.console.error(`Could not evaluate default() for ${question.name}`);
               }
+            }
+
+            if (shouldValidate) {
+              await this.doValidate(question, question.answer);
             }
 
             if (question.answer === undefined) {
@@ -389,6 +391,11 @@ export default {
 
       // 1st pass: set initial values
       for (let question of this.questions) {
+        // question type
+        if (!question.type) {
+          question.type = "input";
+        }
+
         // message
         const message =
           typeof question.message === "string"

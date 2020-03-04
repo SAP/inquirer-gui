@@ -10,17 +10,6 @@ const questions1 = [
     name: "noType",
   },
   {
-    name: "forced default",
-    default: () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve("hello");
-        },2000);  
-      });
-    },
-    __forcedDefault: "hello world!"
-  },
-  {
     type: "password",
     guiType: "login",
     name: "login",
