@@ -117,6 +117,21 @@ const questionInputDefaultException = [
   }
 ];
 
+const questionsWhen = [
+  {
+    name: "first",
+    type: "input",
+  },
+  {
+    type: "input",
+    when: function(answers) {return false},
+    name: "second",
+    validate: async function (answer, answers) {
+        return "Must enter value"
+    }
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -279,5 +294,16 @@ describe('Questions of type input, password and number', () => {
     await Vue.nextTick();
 
     expect(wrapper.props("questions")[0]._default).toBeUndefined();
+  });
+
+  test('when() evaluates to false', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionsWhen });
+    await Vue.nextTick();
+    await Vue.nextTick();
+    await Vue.nextTick();
+
+    expect(wrapper.vm.questions[1].shouldShow).toBe(false);
+    expect(wrapper.vm.getIssues()).toBe(undefined);
   });
 });

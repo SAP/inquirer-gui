@@ -42,6 +42,14 @@ export default {
     console: () => console
   },
   methods: {
+    removeShouldntShows(questions, answers) {
+      for (let question of this.questions) {
+        // remove answers to questions whose when() evaluated to false
+        if (!question.shouldShow) {
+          delete answers[question.name];
+        }
+      }
+    },
     async doValidate(question, answer) {
       // evaluate validate()
       if (typeof question.validate === "function") {
@@ -103,7 +111,7 @@ export default {
       let someInvalid = false;
       let result = {};
       for (let question of this.questions) {
-        if (!question.isValid) {
+        if (question.shouldShow && !question.isValid) {
           if (question.validationMessage === "") {
             result[question.name] = "Invalid";
             someInvalid = true;
@@ -111,7 +119,7 @@ export default {
             result[question.name] = question.validationMessage;
             someInvalid = true;
           }
-        } else if (question.answer === undefined) {
+        } else if (question.shouldShow && question.answer === undefined) {
           result[question.name] = NOT_ANSWERED;
           someInvalid = true;
         }
@@ -294,6 +302,9 @@ export default {
             try {
               let response = await question.when(answers);
               question.shouldShow = response;
+              // TODO: when question was shouldShow === false, and
+              //   it becomes shouldShow === true, we should call
+              //   evaluate()
             } catch(e) {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
@@ -353,6 +364,7 @@ export default {
       Object.assign(filteredAnswers, answers);
       for (let question of this.questions) {
         if (question.filter) {
+          // call filter()
           const currentAnswer = answers[question.name];
           try {
             const filteredAnswer = await question.filter(currentAnswer);
@@ -364,12 +376,17 @@ export default {
       }
 
       const issues = this.getIssues();
+      this.removeShouldntShows(this.questions, filteredAnswers);
       // fire 'answered' event
       this.$emit("answered", filteredAnswers, issues);
     }
   },
   watch: {
-    questions: async function() {
+    questions: async function(newVal, oldVal) {
+      if (newVal === oldVal) {
+        return;
+      }
+
       // 1st pass: set initial values
       for (let question of this.questions) {
         // message
@@ -470,9 +487,9 @@ export default {
       }
 
       const issues = this.getIssues();
+      this.removeShouldntShows(this.questions, answers);
       // fire 'answered' event
       this.$emit("answered", answers, issues);
-
     }
   },
   created() {

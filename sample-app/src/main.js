@@ -93,6 +93,9 @@ const questions1 = [
       default: "1 Main street",
       when: function (answers) {
           return answers.name !== "Joker";
+      },
+      validate: function(answer, answers) {
+        return (answer.length < 2 ? "Must enter at least 2 characters" : true);
       }
   },
   {
