@@ -36,7 +36,17 @@ const questions1 = [
   {
     type: "password",
     name: "password",
-    message: "A password"
+    message: "A password",
+    when: function (answers) {
+      return answers.name !== "root";
+    },
+    validate: function(input) {
+      if (input.length >= 4) {
+        return true;
+      } else {
+        return "Password be at least 4 characters long";
+      }
+    }
   },
   {
     type: "number",
