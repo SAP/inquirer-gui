@@ -1,6 +1,6 @@
 # sample-vscode-extension
 
-[![alt text](inquirer-gui-vscode-browse-remote-file.png "Screenshot of remote file browser")](inquirer-gui-vscode-browse-remote-file.mp4 "Video of remote file browser")
+[![alt text](inquirer-gui-vscode-browse-file.png "Screenshot of file browser")](inquirer-gui-vscode-browse-file.mp4 "Video of file browser")
 
 ## Requirements
 

@@ -23,15 +23,16 @@ const questions1 = [
         return true;
       }
     }
-},
-{
-      type: "remote-file-browser",
-      name: "configFile",
-      message: "Config file (vscode)",
-      default: "/home/",
-      getFilePath: async function (currentPath) {
-          return `${currentPath}subdir/`;
-      }
+  },
+  {
+    type: "input",
+    guiType: "file-browser",
+    name: "configFile",
+    message: "Config file (vscode)",
+    default: "/home/",
+    getFilePath: async function (currentPath) {
+        return `${currentPath}subdir/`;
+    }
   },
   {
       type: "date",

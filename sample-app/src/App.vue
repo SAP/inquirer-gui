@@ -27,14 +27,14 @@ import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
 import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
-import RemoteFileBrowserPlugin from "@sap-devx/inquirer-gui-remote-file-browser-plugin";
+import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
 
 /**
  * If you want to make changes to the plugins from source in this repo
  * do not consume them from npm:
 import DatePlugin from "../../sample-plugin/src/index";
-import RemoteFileBrowserPlugin from "../../remote-file-browser-plugin/src/index";
+import FileBrowserPlugin from "../../file-browser-plugin/src/index";
  */
 
 export default {
@@ -117,7 +117,7 @@ export default {
     this.$refs.form.registerPlugin(options.plugin);
 
     options = {};
-    Vue.use(RemoteFileBrowserPlugin, options);
+    Vue.use(FileBrowserPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
     options = {};

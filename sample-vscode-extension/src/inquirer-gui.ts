@@ -11,7 +11,7 @@ function normalizeFunctions(questions: Array<any>) {
 const questions1 = [
     {
         type: "input",
-        guiType: "remote-file-browser",
+        guiType: "file-browser",
         name: "configFile",
         message: "Config file (vscode)",
         default: "/home/",

@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "QuestionRemoteFileBrowser",
+  name: "QuestionFileBrowser",
   props: {
     question: Object
   },

@@ -1,0 +1,28 @@
+{
+  "name": "@sap-devx/inquirer-gui-file-browser-plugin",
+  "version": "0.0.3",
+  "description": "File browser plugin for inquirer-gui",
+  "main": "dist/fileBrowserPlugin.umd.js",
+  "keywords": [
+    "inquirer",
+    "inquirer-gui",
+    "file",
+    "browse"
+  ],
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name fileBrowserPlugin src/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/file-browser-plugin"
+  },
+  "author": "Eyal Barlev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.11.0"
+  }
+}

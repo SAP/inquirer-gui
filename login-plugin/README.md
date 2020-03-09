@@ -1,5 +1,3 @@
-# Remote File Browser Plugin for Inquirer-gui
+# Login Plugin for Inquirer-gui
 
-This plugin enables selecting a file from a backend.
-
-It is to be used in Visual Studio Code.
+This plugin presents a password prompt and enables logging in to a backend system.

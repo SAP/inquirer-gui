@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils';
 import Vue from 'vue';
 import Form from '../src/Form.vue';
-import QuestionRemoteFileBrowser from './QuestionRemoteFileBrowser.vue';
+import QuestionFileBrowser from './QuestionFileBrowser.vue';
 
-const questionRemoteFileBrowser = [
+const questionFileBrowser = [
   {
-    type: "remote-file-browser",
+    type: "file-browser",
     name: "configFile",
     message: "Config file",
     default: "/home/",
@@ -15,19 +15,19 @@ const questionRemoteFileBrowser = [
   }
 ];
 
-describe('Question of type remote file browser', () => {
-  test('Remote File Browser', async () => {
-    Vue.component('QuestionRemoteFileBrowser', QuestionRemoteFileBrowser);
+describe('Question of type file browser', () => {
+  test('File Browser', async () => {
+    Vue.component('QuestionFileBrowser', QuestionFileBrowser);
     await Vue.nextTick();
-    const remoteFileBrowserPlugin = {
-      questionType: "remote-file-browser",
-      component: QuestionRemoteFileBrowser
+    const fileBrowserPlugin = {
+      questionType: "file-browser",
+      component: QuestionFileBrowser
     };
 
     const wrapper = mount(Form, {});
-    wrapper.vm.registerPlugin(remoteFileBrowserPlugin);
+    wrapper.vm.registerPlugin(fileBrowserPlugin);
     await Vue.nextTick();
-    wrapper.setProps({ questions: questionRemoteFileBrowser });
+    wrapper.setProps({ questions: questionFileBrowser });
     await Vue.nextTick();
     const icon = wrapper.find('button');
     icon.trigger('click');
