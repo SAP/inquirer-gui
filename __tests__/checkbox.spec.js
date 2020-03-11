@@ -53,6 +53,21 @@ const questionCheckboxChoicesAsFunctionOnAnswerChange = [
   }
 ];
 
+const questionCheckboxChecked = [
+  {
+    type: "checkbox",
+    name: "citizenship",
+    message: "Your citizenship",
+    choices: [
+      { name: "United States of America", value: "USA" },
+      "Germany",
+      { name: "People's Republic of China", value: "China", checked: true },
+      "Israel"
+    ],
+    default: ["Germany"]
+  }
+];
+
 describe('Question of type checkbox', () => {
   test('Checkbox', async () => {
     const wrapper = mount(Form, {});
@@ -102,5 +117,14 @@ describe('Question of type checkbox', () => {
 
     await Vue.nextTick();
     expect(wrapper.props("questions")[1]._choices[2].value).toBe(country);
+  });
+
+  test('Checkbox with checked choice', async () => {
+    const wrapper = mount(Form, {});
+    wrapper.setProps({ questions: questionCheckboxChecked });
+    await Vue.nextTick();
+    await Vue.nextTick();
+
+    expect(wrapper.props("questions")[0].answer[1]).toBe("China");
   });
 });

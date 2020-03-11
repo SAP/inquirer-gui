@@ -209,6 +209,12 @@ export default {
           }
           if (typeof question._default === "number") {
             index = question._default;
+          } else {
+            index = question._choices.findIndex(function (choice) {
+              if (question._default) {
+                return choice.value === question._default;
+              }
+            });
           }
           if (index < 0 || index > question._choices.length - 1) {
             this.setInvalid(question, NOT_ANSWERED);

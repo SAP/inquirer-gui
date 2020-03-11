@@ -99,8 +99,8 @@ const questions1 = [
       type: "checkbox",
       name: "citizenship",
       message: "Your citizenship",
-      choices: ["USA", "Germany", "China", "Israel"],
-      default: ["Germany"]
+      choices: ["USA", {name:"Germany", value:"Germany"}, "China", "Israel"],
+      default: ["Germany", "USA"]
   },
   {
       type: "expand",
