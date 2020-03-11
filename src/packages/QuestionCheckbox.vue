@@ -1,6 +1,12 @@
 <template>
-<v-card>
-  <v-list>
+<v-card
+  outlined
+  tile
+>
+  <v-list
+    dense
+    subheader
+  >
     <v-list-item-group
       multiple
       ref="itemsGroup"

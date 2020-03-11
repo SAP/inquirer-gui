@@ -165,6 +165,12 @@ body {
   border-radius: 0;
 }
 
+.inquirer-gui .v-card.v-card--outlined.v-sheet.theme--light {
+  border-radius: 0;
+  border-width: medium;
+  border-color: black;
+}
+
 div.v-application.theme--light {
   background-color: var(--vscode-editor-background, white);
   color: var(--vscode-editor-foreground, black);
