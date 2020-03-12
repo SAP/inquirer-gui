@@ -68,6 +68,22 @@ const questionCheckboxChecked = [
   }
 ];
 
+const questionCheckboxCheckedForceDefault = [
+  {
+    type: "checkbox",
+    name: "citizenship",
+    message: "Your citizenship",
+    choices: [
+      { name: "United States of America", value: "USA" },
+      "Germany",
+      { name: "People's Republic of China", value: "China", checked: true },
+      "Israel"
+    ],
+    default: ["Germany"],
+    __ForceDefault: true
+  }
+];
+
 describe('Question of type checkbox', () => {
   test('Checkbox', async () => {
     const wrapper = mount(Form, {});
@@ -127,5 +143,15 @@ describe('Question of type checkbox', () => {
 
     expect(wrapper.props("questions")[0].answer[1]).toBe("China");
     expect(wrapper.props("questions")[0].answer).toHaveLength(2);
+  });
+
+  test('Checkbox with checked choice, but force default', async () => {
+    const wrapper = mount(Form, {});
+    wrapper.setProps({ questions: questionCheckboxCheckedForceDefault });
+    await Vue.nextTick();
+    await Vue.nextTick();
+
+    expect(wrapper.props("questions")[0].answer[0]).toBe("Germany");
+    expect(wrapper.props("questions")[0].answer).toHaveLength(1);
   });
 });

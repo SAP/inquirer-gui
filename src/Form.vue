@@ -241,7 +241,7 @@ export default {
             }
 
             // add to answers if choice is marked as checked
-            if (choice.checked === true && !wasPushed) {
+            if (choice.checked === true && !(question.__ForceDefault === true) && !wasPushed) {
               initialAnswersArray.push(choice.value);
             }
           }
