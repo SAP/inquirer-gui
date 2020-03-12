@@ -64,7 +64,7 @@ const questionCheckboxChecked = [
       { name: "People's Republic of China", value: "China", checked: true },
       "Israel"
     ],
-    default: ["Germany"]
+    default: ["Germany", "China"]
   }
 ];
 
@@ -126,5 +126,6 @@ describe('Question of type checkbox', () => {
     await Vue.nextTick();
 
     expect(wrapper.props("questions")[0].answer[1]).toBe("China");
+    expect(wrapper.props("questions")[0].answer).toHaveLength(2);
   });
 });

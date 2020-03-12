@@ -225,6 +225,8 @@ export default {
         case "checkbox": {
           const initialAnswersArray = [];
           for (let choice of question._choices) {
+            let wasPushed = false;
+
             // add to answers if choice is in default
             if (Array.isArray(question._default)) {
               let foundIndex = question._default.findIndex(
@@ -234,11 +236,12 @@ export default {
               );
               if (foundIndex >= 0) {
                 initialAnswersArray.push(choice.value);
+                wasPushed = true;
               }
             }
 
             // add to answers if choice is marked as checked
-            if (choice.checked === true) {
+            if (choice.checked === true && !wasPushed) {
               initialAnswersArray.push(choice.value);
             }
           }
