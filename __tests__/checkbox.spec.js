@@ -33,7 +33,7 @@ const questionCheckboxChoicesAsFunction = [
   }
 ];
 
-const questionCheckboxChoicesAsFunctionOnAnswerChange = [
+const questionCheckboxDynamicChoicesAsFunction = [
   {
     type: "input",
     name: "country"
@@ -118,9 +118,9 @@ describe('Question of type checkbox', () => {
     expect(answered[0].citizenship).toContain("USA");
   });
 
-  test('Checkbox with choices as function', async () => {
+  test('Checkbox with choices as function that return dynamic values', async () => {
     const wrapper = mount(Form, {});
-    wrapper.setProps({ questions: questionCheckboxChoicesAsFunctionOnAnswerChange });
+    wrapper.setProps({ questions: questionCheckboxDynamicChoicesAsFunction });
     await Vue.nextTick();
 
     const name = wrapper.find('input');

@@ -246,14 +246,6 @@ export default {
             }
           }
 
-          // add first choice to answers if there are no other defaults
-          if (
-            initialAnswersArray.length === 0 &&
-            question._choices.length > 0
-          ) {
-            initialAnswersArray.push(question._choices[0].value);
-          }
-
           return initialAnswersArray;
         }
       }
