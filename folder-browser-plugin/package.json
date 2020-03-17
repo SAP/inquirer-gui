@@ -1,0 +1,28 @@
+{
+  "name": "@sap-devx/inquirer-gui-folder-browser-plugin",
+  "version": "0.0.1",
+  "description": "Folder browser plugin for inquirer-gui",
+  "main": "dist/folderBrowserPlugin.umd.js",
+  "keywords": [
+    "inquirer",
+    "inquirer-gui",
+    "folder",
+    "browse"
+  ],
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name folderBrowserPlugin src/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/folder-browser-plugin"
+  },
+  "author": "Eyal Barlev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.11.0"
+  }
+}
