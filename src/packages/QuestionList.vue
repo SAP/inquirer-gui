@@ -1,5 +1,5 @@
 <template>
-  <v-select
+  <v-autocomplete
     :value="question.answer"
     @change="onAnswerChanged"
     :items="this.question._choices"
@@ -20,7 +20,7 @@
         </v-list-item-content>
       </v-list-item>
     </template>
-  </v-select>
+  </v-autocomplete>
 </template>
 
 <script>
