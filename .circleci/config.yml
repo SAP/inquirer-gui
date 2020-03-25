@@ -58,6 +58,7 @@ workflows:
             tags:
               only: /.*/
       - publish:
+          context: npm
           requires:
             - build-and-test
           filters:
