@@ -1,26 +1,19 @@
 <template>
-  <v-autocomplete
-    :value="question.answer"
-    @change="onAnswerChanged"
-    :items="this.question._choices"
-    item-text="name"
-    item-value="value"
-    hide-details="auto"
-    :label="clickToDisplay"
-    single-line
-    :append-icon="'mdi-chevron-down'"
+  <div>
+  <v-card
+    v-for="(item, index) in question._choices"
+    :key="index"
     outlined
-    dense
   >
-    <template v-slot:item="{ item, attrs, on }">
-      <v-list-item :disabled="item.type==='separator'" v-bind="attrs" v-on="on">
-        <v-divider v-if="item.type==='separator'" disabled></v-divider>
-        <v-list-item-content v-else>
-          <v-list-item-title :id="attrs['aria-labelledby']" v-text="item.name"></v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </template>
-  </v-autocomplete>
+  <v-list-item>
+    <v-list-item-content>
+      <v-list-item-title class="headline mb-1">{{ item.name }}</v-list-item-title>
+      <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+    </v-list-item-content>
+  </v-list-item>
+    
+  </v-card>
+  </div>
 </template>
 
 <script>

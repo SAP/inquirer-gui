@@ -9,6 +9,7 @@
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
     "test": "vue-cli-service test:unit",
+    "prep-local": "cd .. && npm run build-for-sample",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
