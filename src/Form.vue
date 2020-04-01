@@ -257,7 +257,7 @@ export default {
 
       if (typeof relevantQuestion[methodName] === "function") {
         try {
-          let response = await relevantQuestion[methodName](params);
+          let response = await relevantQuestion[methodName](...params);
           if (callback) {
             callback(response);
           }
