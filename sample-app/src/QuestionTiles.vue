@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tiles">
     <v-item-group mandatory>
       <v-container class="pa-0">
         <v-row class="generators">
@@ -15,8 +15,7 @@
               <v-card
                 width="400"
                 class="d-flex flex-column mx-auto"
-                @click="onAnswerChanged(item.name)"
-                v-on:click="select"
+                @click="onAnswerChanged(item.value)"
                 height="380"
                 tile
                 hover
