@@ -1,0 +1,70 @@
+<template>
+  <div>
+    <v-item-group mandatory>
+      <v-container class="pa-0">
+        <v-row class="generators">
+          <v-col
+            v-for="(item, itemIndex) in question._choices"
+            :key="itemIndex"
+            cols="12"
+            md="4"
+            sm="6"
+          
+          >
+            <v-item v-slot:default="{ active, toggle }">
+              <v-card
+                width="400"
+                class="d-flex flex-column mx-auto"
+                @click="onAnswerChanged(item.name)"
+                v-on:click="select"
+                height="380"
+                tile
+                hover
+                flat
+                dark
+                elevation=2
+              >
+                <v-card-title>{{item.name}}</v-card-title>
+                <v-card-text>
+                  {{item.description}}
+                </v-card-text>
+                <v-spacer></v-spacer>
+                <v-card-actions>
+                  <v-img class :src="item.image" height="194" v-if="item.image"></v-img>
+                </v-card-actions>
+              </v-card>
+            </v-item>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-item-group>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "QuestionTiles",
+  methods: {
+    onAnswerChanged(value) {
+      this.$emit("answerChanged", this.question.name, value);
+    }
+  },
+  data() {
+    return {
+      clickToDisplay: "Click to display the list of options"
+    }
+  },
+  props: {
+    question: Object
+  }
+};
+</script>
+
+<style scoped>
+.list-group {
+  margin-bottom: 15px;
+}
+.list-group-item:hover {
+  cursor: pointer;
+}
+</style>

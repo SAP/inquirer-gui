@@ -5,7 +5,6 @@ import QuestionList from "./packages/QuestionList";
 import QuestionConfirm from "./packages/QuestionConfirm";
 import QuestionCheckbox from "./packages/QuestionCheckbox";
 import QuestionExpand from "./packages/QuestionExpand";
-import QuestionTiles from "./packages/QuestionTiles";
 
 export default {
   registerBuiltinPlugins: function() {
@@ -16,7 +15,6 @@ export default {
     Vue.component('QuestionConfirm', QuestionConfirm);
     Vue.component('QuestionCheckbox', QuestionCheckbox);
     Vue.component('QuestionExpand', QuestionExpand);
-    Vue.component('QuestionTiles', QuestionTiles);
 
     const plugins = [
       {
@@ -54,10 +52,6 @@ export default {
       {
         questionType: "expand",
         component: QuestionExpand
-      },
-      {
-        questionType: "tiles",
-        component: QuestionTiles
       }
     ];
     return plugins;

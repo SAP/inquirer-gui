@@ -29,6 +29,7 @@ import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
+import QuestionTiles from "./QuestionTiles";
 
 /**
  * If you want to make changes to the plugins from source in this repo
@@ -123,6 +124,12 @@ export default {
     options = {};
     Vue.use(LoginPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
+
+    const plugin = {
+      questionType: "tiles",
+      component: QuestionTiles
+    };
+    this.$refs.form.registerPlugin(plugin);
 
     this.setupRpc();
     const mutationCallback = mutationsList => {
