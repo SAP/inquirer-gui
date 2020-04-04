@@ -1,0 +1,22 @@
+{
+  "name": "@sap-devx/inquirer-gui-tiles-plugin",
+  "version": "0.0.1",
+  "description": "Tiles plugin for inquirer-gui",
+  "main": "dist/tilesPlugin.umd.js",
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name tilesPlugin src/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tiles-plugin"
+  },
+  "author": "Tomer Epstein",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.11.0"
+  }
+}

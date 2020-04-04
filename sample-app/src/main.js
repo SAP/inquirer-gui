@@ -14,7 +14,7 @@ const questions1 = [
     type: "list",
     guiType: "tiles",
     choices: [
-      { value: "listReport", name: "List Report", description: "With a list report, ...", image: SAP_IMAGE },
+      { value: "listReport", name: "List Report", description: "With a list report, ...", homepage: "http://www.sap.com", image: SAP_IMAGE },
       { value: "masterDetail", name: "Master-Detail Application", description: "Create an SAP HANA data model, ..."}
     ]
   }];

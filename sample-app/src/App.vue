@@ -178,6 +178,10 @@ body {
   border-color: black;
 }
 
+.inquirer-gui .v-card .v-image__image--cover {
+    background-size: contain;
+}
+
 div.v-application.theme--light {
   background-color: var(--vscode-editor-background, white);
   color: var(--vscode-editor-foreground, black);
