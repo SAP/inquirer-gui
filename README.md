@@ -84,7 +84,7 @@ The `answered` event is fired when any answer is changed:
 * `input` (number, password and input)
 * `editor`
 
-`inquirer-gui` supports *custom form elements* via its `plugin` mechanism.
+`inquirer-gui` supports *custom form elements* via its `plugin` mechanism (see more [here](PLUGINS.md)).
 
 ### Creating a custom form element
 A form element plugin is a `javascript` object with this structure:
