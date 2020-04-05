@@ -1,10 +1,26 @@
 import Vue from "vue";
 import App from "./App.vue";
-import Form from "@sap-devx/inquirer-gui";
 import "@sap-devx/inquirer-gui/dist/form.css";
-// For development use local file:
-// import Form from "../../src/index";
+import Form from "@sap-devx/inquirer-gui";
+const SAP_IMAGE = require("./sapImage").default;
+/** During development:
+ *    in terminal type: npm run prep-local
+ *    uncomment line below and comment line above*/
+// import Form from "../form/form.umd";
 
+const questions0 = [
+  {
+    name: "appType",
+    message: "",
+    type: "list",
+    guiType: "tiles",
+    choices: [
+      { value: "listReport", name: "List Report", description: "With a list report, ...", homepage: "http://www.sap.com", image: SAP_IMAGE },
+      { value: "masterDetail", name: "Master-Detail Application", description: "Create an SAP HANA data model, ..."}
+    ]
+  }
+];
+  
 const questions1 = [
   {
     name: "noType",
@@ -167,7 +183,8 @@ const questions2 = [
     }
   }
 ];
-const questionsArray = [questions1, questions2];
+
+const questionsArray = [questions0, questions1, questions2];
 
 import vuetify from "./plugins/vuetify";
 
@@ -202,9 +219,9 @@ if (options.vuetify) {
 export default new Vue(
   vueOptions
 ).$on('next', function () {
-  if (this.questionsIndex === 0) {
-    this.questionsIndex = 1;
-    this.prompt(questionsArray[1]);
+  if (this.questionsIndex < questionsArray.length-1) {
+    this.questionsIndex++;
+    this.prompt(questionsArray[this.questionsIndex]);
   }
 }
 ).$mount('#app');

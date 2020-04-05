@@ -29,6 +29,8 @@ import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
+import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
+import QuestionSampleTiles from "./QuestionSampleTiles";
 
 /**
  * If you want to make changes to the plugins from source in this repo
@@ -124,6 +126,16 @@ export default {
     Vue.use(LoginPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
+    options = {};
+    Vue.use(TilesPlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
+    const plugin = {
+      questionType: "sample-tiles",
+      component: QuestionSampleTiles
+    };
+    this.$refs.form.registerPlugin(plugin);
+
     this.setupRpc();
     const mutationCallback = mutationsList => {
       for (let mutation of mutationsList) {
@@ -169,6 +181,10 @@ body {
   border-radius: 0;
   border-width: medium;
   border-color: black;
+}
+
+.inquirer-gui .v-card .v-image__image--cover {
+    background-size: contain;
 }
 
 div.v-application.theme--light {

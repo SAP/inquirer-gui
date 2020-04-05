@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "QuestionExpand",
+  name: "QuestionConfirm",
   props: {
     question: Object
   },
