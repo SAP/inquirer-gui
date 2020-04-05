@@ -73,23 +73,12 @@ export default {
 </script>
 
 <style scoped>
-.v-card {
-  background-color: var(--vscode-editorWidget-background, #252526);
-}
-.v-card:hover {
-  background-color: var(--vscode-list-hoverBackground,#2a2d2e) !important;
-}
 .v-card.selected {
-  border: 1px solid var(--vscode-button-background, #0e639c);
-  background-color: var(--vscode-list-hoverBackground,#2a2d2e) ;
+  border: 1px solid;
 }
 .v-card__title {
-  color: var(--vscode-foreground, #cccccc);
   word-wrap: break-word;
   word-break: normal;
-}
-.v-card > div.v-card__text {
-  color: var(--vscode-editorCodeLens-foreground, #999999);
 }
 a {
   font-size: 11px;

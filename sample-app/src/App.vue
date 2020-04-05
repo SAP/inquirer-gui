@@ -29,7 +29,8 @@ import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
-import QuestionTiles from "./QuestionTiles";
+import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
+import QuestionSampleTiles from "./QuestionSampleTiles";
 
 /**
  * If you want to make changes to the plugins from source in this repo
@@ -125,9 +126,13 @@ export default {
     Vue.use(LoginPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
+    options = {};
+    Vue.use(TilesPlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
     const plugin = {
-      questionType: "tiles",
-      component: QuestionTiles
+      questionType: "sample-tiles",
+      component: QuestionSampleTiles
     };
     this.$refs.form.registerPlugin(plugin);
 
