@@ -17,7 +17,8 @@ const questions0 = [
     choices: [
       { value: "listReport", name: "List Report", description: "With a list report, ...", homepage: "http://www.sap.com", image: SAP_IMAGE },
       { value: "masterDetail", name: "Master-Detail Application", description: "Create an SAP HANA data model, ..."}
-    ]
+    ],
+    default: "masterDetail"
   }
 ];
   

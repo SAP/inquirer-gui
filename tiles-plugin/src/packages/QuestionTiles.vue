@@ -9,14 +9,13 @@
             cols="12"
             md="4"
             sm="6"
-          
           >
             <v-item v-slot:default="{ active, toggle }">
               <v-card
                 width="400"
                 class="d-flex flex-column mx-auto"
                 @click="onAnswerChanged(item.value)"
-                v-on:click="select"
+                :data-itemvalue="item.value"
                 height="380"
                 tile
                 hover
@@ -46,28 +45,35 @@
 <script>
 export default {
   name: "QuestionTiles",
-  methods: {
-    select(event) {
-      if (this.selectedItem) {
-        // deselect old selection
-        this.selectedItem.classList.toggle("selected");
-        this.selectedItem.setAttribute("border-style", "none");
+  watch: {
+    "question.answer": {
+      handler: function (newValue, oldValue) {
+        this.applyStyles(newValue, oldValue);
       }
-      this.selectedItem = event.currentTarget;
-      this.selectedItem.setAttribute("border-style", "solid");
-      this.selectedItem.classList.toggle("selected");
+    }
+  },
+  methods: {
+    applyStyles(newAnswer, oldAnswer) {
+      this.toggleSelected(oldAnswer); // deselect old selection
+      this.toggleSelected(newAnswer); // select new selection
+    },
+    toggleSelected(answer) {
+      if (answer) {
+        const element = document.querySelector(`.v-card[data-itemvalue='${answer}']`);
+        if (element) {
+          element.classList.toggle("selected");
+        }
+      }
     },
     onAnswerChanged(value) {
       this.$emit("answerChanged", this.question.name, value);
     }
   },
-  data() {
-    return {
-      selectedItem: undefined
-    }
-  },
   props: {
     question: Object
+  },
+  mounted: function() {
+    this.applyStyles(this.question.answer, undefined);
   }
 };
 </script>
@@ -75,6 +81,9 @@ export default {
 <style scoped>
 .v-card.selected {
   border: 1px solid;
+}
+.v-card {
+  border: none;
 }
 .v-card__title {
   word-wrap: break-word;
