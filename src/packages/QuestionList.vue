@@ -24,11 +24,16 @@
 </template>
 
 <script>
+const stripAnsi = require("strip-ansi");
+
 export default {
   name: "QuestionList",
   methods: {
     onAnswerChanged(value) {
       this.$emit("answerChanged", this.question.name, value);
+    },
+    stripEscapeChars(value) {
+      return stripAnsi(value);
     }
   },
   data() {
