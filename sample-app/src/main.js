@@ -109,7 +109,14 @@ const questions1 = [
       type: "list",
       name: "country",
       message: "The country where you live",
-      choices: ["USA", {name:"Germany"}, "China", "Israel"],
+      choices: [
+        "USA",
+        {name:"Germany"},
+        {type: 'separator', line: '\u001b[2m──────────────\u001b[22m'},
+        "China",
+        {type: 'separator', line: '\u001b[2mCustom Separator\u001b[22m'},
+        "Israel"
+      ],
       default: "Germany"
   },
   {

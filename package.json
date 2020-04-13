@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquier GUI",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publisher": "SAP",
   "author": {
     "name": "Eyal Barlev",
@@ -24,6 +24,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "strip-ansi": "^6.0.0",
     "vue": "^2.6.10",
     "vuetify": "^2.2.11"
   },
@@ -34,6 +35,7 @@
     "@vue/cli-plugin-unit-jest": "^4.1.1",
     "@vue/cli-service": "^3.11.0",
     "@vue/test-utils": "^1.0.0-beta.29",
+    "inquirer": "^6.2.2",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.9.0",
     "eslint": "^5.16.0",

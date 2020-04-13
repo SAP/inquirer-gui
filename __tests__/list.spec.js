@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import Vue from 'vue';
+var Inquirer = require('inquirer');
 import Form from '../src/Form.vue';
 
 const questionList = [
@@ -19,6 +20,15 @@ const questionListNoDefault = [
     name: "country",
     message: "The country where you live",
     choices: ["USA", "Germany", "China", "Israel"]
+  }
+];
+
+const questionListWithSeparator = [
+  {
+    type: "list",
+    name: "country",
+    message: "The country where you live",
+    choices: ["USA", "Germany", new Inquirer.Separator("Custom Separator"), "China", "Israel"]
   }
 ];
 
@@ -75,6 +85,29 @@ describe('Question of type list', () => {
     wrapper.setProps({ questions: questionListNoDefault });
 
     await Vue.nextTick();
+    await Vue.nextTick();
+
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const answeredLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[answeredLength - 1];
+    // test answers
+    expect(answered[0].country).toBeUndefined();
+  });
+
+  test('List with separator', async () => {
+    const vuetify = new Vuetify({});
+
+    new Vue({ vuetify });
+
+    document.body.setAttribute('data-app', 'true');
+    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    wrapper.setProps({ questions: questionListWithSeparator });
+
+    await Vue.nextTick();
+
+    const list = wrapper.find('div[role="combobox"]');
+    list.trigger('click');
+
     await Vue.nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
