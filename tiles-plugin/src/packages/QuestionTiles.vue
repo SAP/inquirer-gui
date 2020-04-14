@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="tiles">
     <v-item-group mandatory>
       <v-container class="pa-0">
-        <v-row class="tiles">
+        <v-row class="tiles-row">
           <v-col
             v-for="(item, itemIndex) in question._choices"
             :key="itemIndex"
@@ -92,7 +92,7 @@ export default {
 a {
   font-size: 11px;
 }
-.tiles {
+.tiles-row {
   margin: 0px;
 }
 </style>
