@@ -508,7 +508,7 @@ export default {
 
 <style>
 .inquirer-gui p.question-label {
-  margin-top: 0.25rem;
+  margin-top: 0.6rem;
   margin-bottom: 0.05rem;
 }
 
@@ -518,6 +518,10 @@ export default {
 
 .inquirer-gui .v-text-field input {
   padding: 0px;
+}
+
+.inquirer-gui .v-input--selection-controls {
+  margin-top: 0rem;
 }
 
 /* Error validation text div */
