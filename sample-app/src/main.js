@@ -10,7 +10,7 @@ const SAP_IMAGE = require("./sapImage").default;
 
 const questions0 = [
   {
-    name: "appType",
+    name: "appType", 
     message: "",
     type: "list",
     guiType: "tiles",
