@@ -13,7 +13,7 @@ const questions0 = [
     name: "appType", 
     message: "",
     type: "list",
-    guiType: "tiles",
+    guiType: "sample-tiles",
     choices: [
       { value: "listReport", name: "List Report", description: "A List report is similar to a table report with rows and columns of data. Each row is one record and each column is a Field. This type of report is often used when you want to see more number of records at a time. It is a simple yet powerful report type that can display any columns you want and in the required order.", homepage: "http://www.sap.com", image: SAP_IMAGE },
       { value: "masterDetail", name: "Master-Detail Application", description: "Create an SAP HANA data model " , homepage: "http://www.sap.com", image: SAP_IMAGE}
