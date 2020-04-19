@@ -24,14 +24,15 @@
                 elevation=2
               >
                 <v-card-title>{{item.name}}</v-card-title>
-                <v-card-text>
+                <v-card-text id="description">
                   {{item.description}}
-                  <br />
+                </v-card-text>
+                <v-spacer></v-spacer>
+                <v-card-text id="homepage">
                   <a :href="item.homepage">More Information</a>
                  </v-card-text>
-                <v-spacer></v-spacer>
                 <v-card-actions>
-                  <v-img class :src="item.image" height="194" v-if="item.image"></v-img>
+                  <v-img class :src="item.image" v-if="item.image"></v-img>
                 </v-card-actions>
               </v-card>
             </v-item>
@@ -88,6 +89,13 @@ export default {
 .v-card__title {
   word-wrap: break-word;
   word-break: normal;
+}
+#description.v-card__text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#homepage.v-card__text {
+  padding-bottom: 0;
 }
 a {
   font-size: 11px;
