@@ -222,12 +222,4 @@ form.inquirer-gui .error-validation-asterisk {
   color: red;
 }
 
-.description.v-card__text {
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.homepage.v-card__text {
-  padding-bottom: 0;
-}
-
 </style>

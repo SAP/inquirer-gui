@@ -79,7 +79,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .v-card.selected {
   border: 1px solid;
 }
