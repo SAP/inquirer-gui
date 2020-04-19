@@ -32,7 +32,7 @@
                   <a :href="item.homepage">More Information</a>
                  </v-card-text>
                 <v-card-actions>
-                  <v-img class :src="item.image" v-if="item.image"></v-img>
+                  <v-img class :src="item.image" height="150" v-if="item.image"></v-img>
                 </v-card-actions>
               </v-card>
             </v-item>
