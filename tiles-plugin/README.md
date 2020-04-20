@@ -13,7 +13,7 @@ npm install --save @sap-devx/inquirer-gui-tiles-plugin
 * Typically, this would be a single question in a prompt. In this case, consider setting the `message` member to an empty string because the prompt's title sufficiently descirbes the question. However, note that if your question is an Inquirer.js question or part of a Yeoman generator and the question is shown in a command-line interface (CLI), the `name` member will be shown instead.
 
 ### Sample Question
-```json
+```js
 {
     name: "appType",
     message: "",

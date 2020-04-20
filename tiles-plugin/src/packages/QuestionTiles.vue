@@ -31,8 +31,8 @@
                 <v-card-text class="homepage">
                   <a :href="item.homepage">More Information</a>
                  </v-card-text>
-                <v-card-actions>
-                  <v-img class :src="item.image" v-if="item.image"></v-img>
+                <v-card-actions class="tile-image-container">
+                  <img :src="item.image" v-if="item.image"/>
                 </v-card-actions>
               </v-card>
             </v-item>
@@ -102,5 +102,13 @@ a {
 }
 .tiles-row {
   margin: 0px;
+}
+.tile-image-container {
+  max-height:40%;
+}
+.tile-image-container > img {
+  object-fit: scale-down;
+  width: 100%;
+  height: 100%;
 }
 </style>
