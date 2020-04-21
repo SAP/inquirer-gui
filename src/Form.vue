@@ -18,7 +18,7 @@
         v-if="question.shouldShow && !question.isValid" 
         class="error-validation-text"
         :key="'validation-' + index"
-      ><span class="error-validation-asterisk">*</span> {{question.validationMessage}}</div>
+      ><span v-if="question.isDirty" class="error-validation-asterisk">*</span> {{question.validationMessage}}</div>
 
     </template>
   </v-form>
