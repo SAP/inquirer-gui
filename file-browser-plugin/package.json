@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-file-browser-plugin",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "File browser plugin for inquirer-gui",
   "main": "dist/fileBrowserPlugin.umd.js",
   "keywords": [
