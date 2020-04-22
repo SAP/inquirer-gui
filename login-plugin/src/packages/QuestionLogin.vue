@@ -9,7 +9,7 @@
     dense
   >
     <template slot="append">
-      <v-tooltip left>
+      <v-tooltip top>
         <template v-slot:activator="{on}">
           <v-icon v-on="on" @click="onLogin">mdi-account-arrow-right-outline</v-icon>
         </template>
