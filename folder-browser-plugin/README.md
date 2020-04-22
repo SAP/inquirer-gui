@@ -15,6 +15,9 @@ See the [sample-vscode-extension](https://github.com/SAP/inquirer-gui/tree/maste
         guiType: "folder-browser",
         name: "dump",
         message: "Choose dump folder",
-        default: "/"
+        default: "/",
+        getPath: async function (currentPath) {
+              return `${currentPath}subfolder/`;
+        }
       },
 ```
