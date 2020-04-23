@@ -27,7 +27,7 @@
 <script>
 import Plugins from "./Plugins";
 
-const NOT_ANSWERED = "Not answered";
+const NOT_ANSWERED = "Mandatory field";
 export default {
   name: "Form",
   props: {
