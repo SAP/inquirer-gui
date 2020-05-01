@@ -8,7 +8,9 @@ This plugin presents a password prompt and enables logging in to a backend syste
 ```js
   {
     type: "password",
-    guiType: "login",
+    guiOptions: {
+      type: "login",
+    },
     name: "login",
     message: "Login",
     default: "",

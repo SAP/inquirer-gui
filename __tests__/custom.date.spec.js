@@ -30,7 +30,8 @@ describe('Question of custom type date', () => {
     wrapper.setProps({ questions: questionDate });
     await Vue.nextTick();
     
-    expect(wrapper.find('p.question-label').element.innerHTML).toBe("birthday");
+    expect(wrapper.find('p.question-label > span.error-validation-asterisk').element.innerHTML).toBe("*");
+    expect(wrapper.find('p.question-label > span.question-message').element.innerHTML).toBe("birthday");
   });
 
 });

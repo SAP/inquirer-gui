@@ -5,20 +5,31 @@
         :key="'label-' + index"
         class="question-label"
         v-if="question.shouldShow"
-      >{{question._message}}</p>
+      >
+        <span class="question-message">{{question._message}}</span>
+        <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
+          <v-tooltip top>
+            <template v-slot:activator="{on}">
+              <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+            </template>
+            <span>{{question.guiOptions.hint}}</span>
+          </v-tooltip>
+        </span>
+        <span class="error-validation-asterisk" v-if="!question.isValid">*</span>
+      </p>
       <component
         v-if="question.shouldShow"
-        :is="getComponentByQuestionType(question.guiType ? question.guiType: question.type)"
+        :is="getComponentByQuestionType(question)"
         :key="index"
         :question="question"
         @answerChanged="onAnswerChanged"
         @customEvent="onCustomEvent"
       ></component>
       <div
-        v-if="question.shouldShow && !question.isValid" 
+        v-if="question.shouldShow && !question.isValid && !(question.guiOptions && question.guiOptions.hint && !question.isDirty)" 
         class="error-validation-text"
         :key="'validation-' + index"
-      ><span class="error-validation-asterisk">*</span> {{question.validationMessage}}</div>
+      >{{question.validationMessage}}</div>
 
     </template>
   </v-form>
@@ -86,9 +97,19 @@ export default {
       question.isValid = true;
       question.validationMessage = "";
     },
-    getComponentByQuestionType(questionType) {
-      const foundPlugin = this.plugins.find(plugin => {
-        return plugin.questionType === questionType;
+    getComponentByQuestionType(question) {
+      const guiType= question.guiOptions && question.guiOptions.type ? question.guiOptions.type : question.guiType;
+      let foundPlugin;
+      if (guiType) {
+        foundPlugin = this.plugins.find(plugin => {
+          return plugin.questionType === guiType;
+        });
+        if (foundPlugin) {
+          return foundPlugin.component;
+        }
+      }
+      foundPlugin = this.plugins.find(plugin => {
+        return plugin.questionType === question.type;
       });
       if (foundPlugin) {
         return foundPlugin.component;
@@ -524,11 +545,21 @@ export default {
   margin-top: 0rem;
 }
 
+/* Error validation asterisk div */
+.error-validation-asterisk {
+  padding-left: 4px;
+}
+
 /* Error validation text div */
-.error-validation-text{
+.error-validation-text {
   font-size: 12px;
   padding-left: 12px;
   color: #ff5252;
+}
+
+/* Question hint div */
+.question-hint {
+  padding-left: 4px;
 }
 
 </style>

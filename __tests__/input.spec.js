@@ -132,6 +132,40 @@ const questionsWhen = [
   }
 ];
 
+const questionInputHint = [
+  {
+    type: "input",
+    name: "hint_validation",
+    message: "message for input 0",
+    guiOptions: {
+      hint: "hint for input 0"
+    },
+    validate: function (input) {
+      return (input.length >= 2) ? true : "Name must be at least 2 characters long";
+    }
+  },
+  {
+    type: "input",
+    name: "hint_deault_validation",
+    message: "message for input 1",
+    guiOptions: {
+      hint: "hint for input 1"
+    },
+    default: "default input",
+    validate: function (input) {
+      return (input.length >= 2) ? true : "Name must be at least 2 characters long";
+    }
+  },
+  {
+    type: "input",
+    name: "no_hint_no_deault_validation",
+    message: "message for input 2",
+    validate: function (input) {
+      return (input.length >= 2) ? true : "Name must be at least 2 characters long";
+    }
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -257,7 +291,7 @@ describe('Questions of type input, password and number', () => {
     // wait to account for debounce
     await utils.sleep(300);
 
-    inputs = wrapper.findAll('p.question-label');
+    inputs = wrapper.findAll('p.question-label > span.question-message');
     expect(inputs.at(1).element.innerHTML).toBe(`${newValue}-message`);
   });
 
@@ -283,7 +317,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionInputNoMessage });
     await Vue.nextTick();
 
-    const inputs = wrapper.findAll('p.question-label');
+    const inputs = wrapper.findAll('p.question-label > span.question-message');
     // message should default to question's name
     expect(inputs.at(0).element.innerHTML).toBe(questionInputNoMessage[0].name);
   });
@@ -305,5 +339,34 @@ describe('Questions of type input, password and number', () => {
 
     expect(wrapper.vm.questions[1].shouldShow).toBe(false);
     expect(wrapper.vm.getIssues()).toBe(undefined);
+  });
+
+  test('Input with hint', async (done) => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionInputHint });
+    await Vue.nextTick();
+    await utils.sleep(300);
+
+    const labels = wrapper.findAll('p.question-label');
+
+    expect(labels.at(0).findAll('span.error-validation-asterisk').at(0).element.innerHTML).toBe('*');
+    expect(labels.at(0).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputHint[0].message);
+    expect(labels.at(0).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
+
+    expect(labels.at(1).findAll('span.error-validation-asterisk').exists()).toBe(false);
+    expect(labels.at(1).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputHint[1].message);
+    expect(labels.at(1).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
+
+    expect(labels.at(2).findAll('span.error-validation-asterisk').exists()).toBe(true);
+    expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputHint[2].message);
+    expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
+
+    labels.at(0).find({name: 'v-icon'}).trigger('mouseenter');
+    await Vue.nextTick();
+    requestAnimationFrame(() => { // https://github.com/vuejs/vue-test-utils/issues/1421
+      expect(wrapper.text()).toContain(questionInputHint[0].guiOptions.hint);
+      done();
+    })
+
   });
 });
