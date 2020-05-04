@@ -12,7 +12,9 @@ See the [sample-vscode-extension](https://github.com/SAP/inquirer-gui/tree/maste
 ```js
   {
     type: "input",
-    guiType: "file-browser",
+    guiOptions: {
+      type: "file-browser",
+    },
     name: "configFile",
     message: "Config file (vscode)",
     default: "/home/",

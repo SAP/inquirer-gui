@@ -2,19 +2,22 @@ import Vue from "vue";
 import App from "./App.vue";
 import "@sap-devx/inquirer-gui/dist/form.css";
 import Form from "@sap-devx/inquirer-gui";
-const SAP_IMAGE = require("./sapImage").default;
-const WORKFLOW_IMAGE = require("./workflowImage").default;
 /** During development:
  *    in terminal type: npm run prep-local
- *    uncomment line below and comment line above*/
+ *    uncomment lines below and comment lines above*/
+// import "../form/form.css";
 // import Form from "../form/form.umd";
+const SAP_IMAGE = require("./sapImage").default;
+const WORKFLOW_IMAGE = require("./workflowImage").default;
 
 const questions0 = [
   {
     name: "appType", 
     message: "",
     type: "list",
-    guiType: "sample-tiles",
+    guiOptions: {
+      type: "sample-tiles",
+    },
     choices: [
       { value: "listReport", name: "List Report", description: "A List report is similar to a table report with rows and columns of data. Each row is one record and each column is a Field. This type of report is often used when you want to see more number of records at a time. It is a simple yet powerful report type that can display any columns you want and in the required order.", homepage: "http://www.sap.com", image: SAP_IMAGE },
       { value: "masterDetail", name: "Master-Detail Application", description: "Create an SAP HANA data model " , homepage: "http://www.sap.com", image: WORKFLOW_IMAGE}
@@ -29,7 +32,10 @@ const questions1 = [
   },
   {
     type: "password",
-    guiType: "login",
+    guiOptions: {
+      type: "login",
+      hint: "Please enter your password"
+    },
     name: "login",
     message: "Login",
     default: "",
@@ -44,7 +50,9 @@ const questions1 = [
   },
   {
     type: "input",
-    guiType: "file-browser",
+    guiOptions: {
+      type: "file-browser",
+    },
     name: "configFile",
     message: "Config file (vscode)",
     default: "/home/",
@@ -60,13 +68,16 @@ const questions1 = [
   {
       type: "input",
       name: "name",
+      guiOptions: {
+        hint: "Write your first name"
+      },
       message: "Your name (frontend)",
       default: "Joe",
       validate: function (input) {
           if (input.length >= 2) {
               return true;
           } else {
-              return "Name must be at least 2 characters long";
+              return "Must be at least 2 characters long";
           }
       }
   },
@@ -148,6 +159,20 @@ const questions2 = [
       { name: "+972", value: 972 }
     ],
     default: 86
+  },
+  {
+    type: "list",
+    name: "countryCode2",
+    message: "Your country code2",
+    guiOptions: {
+      hint: "Please select your country code"
+    },
+    choices: [
+      { name: "+1", value: 1 },
+      "+49",
+      { name: "+86", value: 86 },
+      { name: "+972", value: 972 }
+    ]
   },
   {
     type: "checkbox",

@@ -22,6 +22,34 @@ const questionListNoDefault = [
   }
 ];
 
+const questionListWithHint = [
+  {
+    type: "list",
+    name: "country_0",
+    message: "The country where you live 0",
+    guiOptions: {
+      hint: "hint for list 0"
+    },
+    choices: ["USA", "Germany", {name:"China"}, "Israel"],
+  },
+  {
+    type: "list",
+    name: "country_1",
+    message: "The country where you live 1",
+    guiOptions: {
+      hint: "hint for list 1"
+    },
+    choices: ["USA", "Germany", {name:"China"}, "Israel"],
+    default: "China"
+  },
+  {
+    type: "list",
+    name: "country_2",
+    message: "The country where you live 2",
+    choices: ["USA", "Germany", {name:"China"}, "Israel"],
+  }
+];
+
 const Inquirer_Default_Separator = {type:"separator",line:'\u001b[2m──────────────\u001b[22m'};
 const Inquirer_Sample_Separator = {type:"separator",line:'\u001b[2mCustom Separator\u001b[22m'};
 const questionListWithSeparator = [
@@ -93,6 +121,11 @@ describe('Question of type list', () => {
     const answered = wrapper.emitted().answered[answeredLength - 1];
     // test answers
     expect(answered[0].country).toBeUndefined();
+
+    // test validation text
+    const errors = wrapper.findAll('div.error-validation-text');
+    expect(errors.at(0).element.innerHTML).toBe('Mandatory field');
+
   });
 
   test('List with separator', async () => {
@@ -174,5 +207,30 @@ describe('Question of type list', () => {
     const answered = wrapper.emitted().answered[answeredLength - 1];
     // test answers
     expect(answered[0].country).toBeUndefined();
+  });
+
+  test('List with hint', async () => {
+    const vuetify = new Vuetify({});
+    new Vue({ vuetify });
+    document.body.setAttribute('data-app', 'true');
+
+    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    wrapper.setProps({ questions: questionListWithHint });
+    await Vue.nextTick();
+
+    const labels = wrapper.findAll('p.question-label');
+
+    expect(labels.at(0).findAll('span.error-validation-asterisk').at(0).element.innerHTML).toBe('*');
+    expect(labels.at(0).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[0].message);
+    expect(labels.at(0).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
+
+    expect(labels.at(1).findAll('span.error-validation-asterisk').exists()).toBe(false);
+    expect(labels.at(1).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[1].message);
+    expect(labels.at(1).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
+
+    expect(labels.at(2).findAll('span.error-validation-asterisk').exists()).toBe(true);
+    expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[2].message);
+    expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
+
   });
 });

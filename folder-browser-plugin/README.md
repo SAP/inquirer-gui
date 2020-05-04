@@ -12,7 +12,9 @@ See the [sample-vscode-extension](https://github.com/SAP/inquirer-gui/tree/maste
 ```js
       {
         type: "input",
-        guiType: "folder-browser",
+        guiOptions: {
+              type: "folder-browser",
+        },
         name: "dump",
         message: "Choose dump folder",
         default: "/",

@@ -54,11 +54,13 @@ Import and register the custom control as follows:
     this.$refs.form.registerPlugin(plugin);
     ```
 ### Writing a Question
-In order to show a question using a custom control, define a `guiType` member on your question. For example:
+In order to show a question using a custom control, define a `guiOptions` member with `type` property on your question. For example:
 ```js
 {
     type: "input",
-    guiType: "file-browser",
+    guiOptions: {
+      type: "file-browser",
+    },
     name: "configFile",
     message: "Config file",
     default: "/home/",
