@@ -8,7 +8,7 @@
       >
         <span class="question-message">{{question._message}}</span>
         <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
-          <v-tooltip top>
+          <v-tooltip top max-width="350px">
             <template v-slot:activator="{on}">
               <v-icon v-on="on">mdi-help-circle-outline</v-icon>
             </template>
