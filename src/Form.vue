@@ -392,7 +392,7 @@ export default {
           const currentAnswer = answers[question.name];
           try {
             const filteredAnswer = await question.filter(currentAnswer);
-            filteredAnswers[question.name] = filteredAnswer;
+            filteredAnswers[question.name] = question.answer = filteredAnswer;
           } catch(e) {
             this.console.error(`Could not evaluate filter() for ${question.name}`);
           }
