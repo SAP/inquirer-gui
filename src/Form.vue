@@ -360,7 +360,8 @@ export default {
             }
 
             // evaluate default()
-            if (typeof question.default === "function" && !question.isDirty) {
+            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
+            if (typeof question.default === "function" && applyDefaultWhenDirty) {
               try {
                 question._default = await question.default(answers);
                 question.answer = this.getInitialAnswer(question);
