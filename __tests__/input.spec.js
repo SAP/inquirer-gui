@@ -99,6 +99,24 @@ const questionsDefaultAsFunction = [
   }
 ];
 
+const questionsWithApplyDefaultWhenDirty = [
+  {
+    type: "input",
+    name: "trigger",
+    default: "some value"
+  },
+  {
+    type: "input",
+    guiOptions: {
+      applyDefaultWhenDirty: true
+    },
+    name: "default",
+    default: function (answers) {
+      return (`${answers.trigger}-default`);
+    }
+  }
+];
+
 const questionInputNoMessage = [
   {
     type: "input",
@@ -310,6 +328,63 @@ describe('Questions of type input, password and number', () => {
 
     inputs = wrapper.findAll('input');
     expect(inputs.at(1).element.value).toBe(`${newValue}-default`);
+
+    // Test that default() is not being called when qustion is dirty
+    const dirtyValue = "dirty value";
+    const anotherValue = "another value";
+
+    inputs.at(1).element.value = dirtyValue;
+    inputs.at(1).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(dirtyValue);
+
+    inputs.at(0).element.value = anotherValue;
+    inputs.at(0).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(dirtyValue);
+  });
+
+  test('Input with guiOptions.applyDefaultWhenDirty', async () => {
+    const newValue = "new value";
+
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionsWithApplyDefaultWhenDirty });
+    await Vue.nextTick();
+
+    let inputs = wrapper.findAll('input');
+    inputs.at(0).element.value = newValue;
+    inputs.at(0).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(`${newValue}-default`);
+
+    // Test that default() is being called when qustion is dirty
+    const dirtyValue = "dirty value";
+    const anotherValue = "another value";
+
+    inputs.at(1).element.value = dirtyValue;
+    inputs.at(1).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(dirtyValue);
+
+    inputs.at(0).element.value = anotherValue;
+    inputs.at(0).trigger('input');
+    // wait to account for debounce
+    await utils.sleep(300);
+
+    inputs = wrapper.findAll('input');
+    expect(inputs.at(1).element.value).toBe(`${anotherValue}-default`);
   });
 
   test('Input with no message', async () => {

@@ -88,13 +88,29 @@ const questions1 = [
           return `Information about ${answers.name}`;
       },
       default: function (answers) {
-          return `Information about ${answers.name}`;
+        return `Information about ${answers.name}`;
       },
       filter: function (input) {
           return `${input}!!!`
       }
   },
   {
+    type: "input",
+    guiOptions: {
+      applyDefaultWhenDirty: true
+    },
+    name: "applyDefaultWhenDirty",
+    message: function (answers) {
+        return `Information about ${answers.name}`;
+    },
+    default: function (answers) {
+      return `Information about ${answers.name}`;
+    },
+    filter: function (input) {
+        return `${input}!!!`
+    }
+},
+{
       type: "password",
       name: "password",
       message: "A password"
