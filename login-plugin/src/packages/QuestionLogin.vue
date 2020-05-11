@@ -1,6 +1,7 @@
 <template>
   <v-text-field
     ref="login"
+    v-on:keyup.enter="onLogin"
     :value="question.answer"
     @input="onInput"
     hide-details="auto"
