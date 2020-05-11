@@ -285,6 +285,9 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionsConditional });
     await Vue.nextTick();
 
+    await utils.sleep(300);
+    expect(wrapper.emitted().whensEvaluated).toBeTruthy();
+
     let inputs = wrapper.findAll('input');
     expect(inputs.length).toEqual(3);
     inputs.at(0).element.value = "hide";

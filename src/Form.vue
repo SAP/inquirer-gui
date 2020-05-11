@@ -312,6 +312,7 @@ export default {
       const answers = this.getAnswers();
       // evaluate methods for questions following answered question (e.g. when)
       let shouldStart = false;
+      const whenPromises = []; 
       for (let question of this.questions) {
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
@@ -320,7 +321,9 @@ export default {
           // evaluate when()
           if (typeof question.when === "function") {
             try {
-              let response = await question.when(answers);
+              const whenPromise = question.when(answers);
+              whenPromises.push(whenPromise);
+              let response = await whenPromise; 
               // When question was shouldShow === false, and
               //   it becomes shouldShow === true, call validate()
               if (!question.shouldShow && response) {
@@ -400,6 +403,10 @@ export default {
         }
       }
 
+      Promise.all(whenPromises).then(() => {
+        this.$emit("whensEvaluated");
+      });
+      
       const issues = this.getIssues();
       this.removeShouldntShows(this.questions, filteredAnswers);
       // fire 'answered' event
@@ -456,18 +463,20 @@ export default {
         this.$set(question, "answer", answer);
 
         // visibility
-        const shouldShow = question.when === false ? false : true;
+        const shouldShow = (question.when === false || (typeof question.when === "function")) ? false : true;
         this.$set(question, "shouldShow", shouldShow);
-
       }
 
       const answers = this.getAnswers();
       // 2nd pass: evaluate properties that are functions
+      const whenPromises = [];
       for (let question of this.questions) {
         // evaluate when()
         if (typeof question.when === "function") {
           try {
-            let response = await question.when(answers);
+            const whenPromise = question.when(answers);
+            whenPromises.push(whenPromise);
+            let response = await whenPromise;
             question.shouldShow = response;
           } catch(e) {
             this.console.error(`Could not evaluate when() for ${question.name}`);
@@ -515,6 +524,10 @@ export default {
           await this.doValidate(question, question.answer);
         }
       }
+
+      Promise.all(whenPromises).then(() => {
+        this.$emit("whensEvaluated");
+      });
 
       const issues = this.getIssues();
       this.removeShouldntShows(this.questions, answers);
