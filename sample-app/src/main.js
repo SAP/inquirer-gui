@@ -138,6 +138,7 @@ const questions1 = [
       name: "country",
       message: "The country where you live",
       choices: [
+        {type: 'separator', line: '──────────────'},
         "USA",
         {name:"Germany"},
         {type: 'separator', line: '\u001b[2m──────────────\u001b[22m'},

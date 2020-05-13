@@ -38,7 +38,7 @@ export default {
     getDividerType(item) {
       let type = undefined;
       if (item.type==='separator') {
-        type = item.line === Inquirer_Default_Separator ? "divider" : "header";
+        type = (item.line === Inquirer_Default_Separator || item.line === this.stripEscapeChars(Inquirer_Default_Separator)) ? "divider" : "header";
       }
       return type ;
     },
@@ -63,5 +63,8 @@ export default {
 }
 .list-group-item:hover {
   cursor: pointer;
+}
+.v-list-item .v-subheader {
+  padding: 8px 0 8px 0;
 }
 </style>
