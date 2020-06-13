@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "publisher": "SAP",
   "author": {
     "name": "Eyal Barlev",
@@ -26,7 +26,7 @@
   "dependencies": {
     "strip-ansi": "^6.0.0",
     "vue": "^2.6.10",
-    "vuetify": "^2.2.11"
+    "vuetify": "^2.2.19"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.8.3",

@@ -204,13 +204,20 @@ export default {
       switch (question.type) {
         case "list":
         case "rawlist":
+          if (question._default === undefined) {
+            question.answer = undefined;
+          }
           if (question._choices.length === 0) {
             this.setInvalid(question, NOT_ANSWERED);
             return;
           }
           if (typeof question._default === "number") {
             index = question._default;
-          } else {
+             if (index > question._choices.length - 1) {
+               index = -1;
+             }
+          }
+          if (index < 0) {
             index = question._choices.findIndex(choice => {
               if (question._default) {
                 return choice.value === question._default;
@@ -346,6 +353,20 @@ export default {
               }
             }
 
+            // evaluate default()
+            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
+            if (typeof question.default === "function" && applyDefaultWhenDirty) {
+              try {
+                question._default = await question.default(answers);
+                question.answer = this.getInitialAnswer(question);
+                // optimization: avoid repeatedly calling this.getAnswers()
+                answers[question.name] = question.answer;
+                shouldValidate = true;
+              } catch(e) {
+                this.console.error(`Could not evaluate default() for ${question.name}`);
+              }
+            }
+
             // evaluate choices()
             if (typeof question.choices === "function") {
               try {
@@ -359,20 +380,6 @@ export default {
                 }
               } catch(e) {
                 this.console.error(`Could not evaluate choices() for ${question.name}`);
-              }
-            }
-
-            // evaluate default()
-            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
-            if (typeof question.default === "function" && applyDefaultWhenDirty) {
-              try {
-                question._default = await question.default(answers);
-                question.answer = this.getInitialAnswer(question);
-                // optimization: avoid repeatedly calling this.getAnswers()
-                answers[question.name] = question.answer;
-                shouldValidate = true;
-              } catch(e) {
-                this.console.error(`Could not evaluate default() for ${question.name}`);
               }
             }
 
@@ -494,19 +501,6 @@ export default {
             }
           }
 
-          // evaluate choices()
-          if (typeof question.choices === "function") {
-            try {
-              const response = await question.choices(answers);
-              question._choices = this.normalizeChoices(response);
-              question.answer = this.getInitialAnswer(question);
-              // optimization: avoid repeatedly calling this.getAnswers()
-              answers[question.name] = question.answer;
-            } catch(e) {
-              this.console.error(`Could not evaluate choices() for ${question.name}`);
-            }
-          }
-
           // evaluate default()
           if (typeof question.default === "function") {
             try {
@@ -517,6 +511,19 @@ export default {
               answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
+            }
+          }
+
+          // evaluate choices()
+          if (typeof question.choices === "function") {
+            try {
+              const response = await question.choices(answers);
+              question._choices = this.normalizeChoices(response);
+              question.answer = this.getInitialAnswer(question);
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate choices() for ${question.name}`);
             }
           }
 

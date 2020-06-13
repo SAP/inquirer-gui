@@ -9,6 +9,7 @@
     :label="clickToDisplay"
     single-line
     :append-icon="'mdi-chevron-down'"
+    :search-input.sync="searchInput"
     outlined
     dense
   >
@@ -48,6 +49,7 @@ export default {
   },
   data() {
     return {
+      searchInput: null,
       clickToDisplay: "Click to display the list of options"
     }
   },

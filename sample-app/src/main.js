@@ -181,15 +181,30 @@ const questions2 = [
     type: "list",
     name: "countryCode2",
     message: "Your country code2",
+    default: function (answers) {
+      return (answers.countryCode === 1) ? undefined : "+0";
+    },
     guiOptions: {
+      applyDefaultWhenDirty: true,
       hint: "Please select your country code"
     },
-    choices: [
-      { name: "+1", value: 1 },
-      "+49",
-      { name: "+86", value: 86 },
-      { name: "+972", value: 972 }
-    ]
+    choices: function (answers) {
+      return answers.countryCode === 972 ?
+        [
+          "+0",
+          { name: "+1", value: 1 },
+          "+2",
+          { name: "+3", value: 3 },
+          { name: "+4", value: 4 }
+        ] :
+        [
+          "+0",
+          { name: "+10", value: 10 },
+          "+9",
+          { name: "+8", value: 8 },
+          { name: "+7", value: 7 }
+        ];
+    }
   },
   {
     type: "checkbox",
