@@ -80,6 +80,16 @@ const questionListDefaultAsIndex = [
   }
 ];
 
+const questionListDefaultAsInvalidIndex = [
+  {
+    type: "list",
+    name: "country",
+    message: "The country where you live",
+    choices: ["USA", "Germany", "China", "Israel"],
+    default: 10
+  }
+];
+
 const questionListEmptyChoices = [
   {
     type: "list",
@@ -188,6 +198,25 @@ describe('Question of type list', () => {
     const answered = wrapper.emitted().answered[answeredLength - 1];
     // test answers
     expect(answered[0].country).toBe("Germany");
+  });
+
+  test('List with default as invalid index', async () => {
+    const vuetify = new Vuetify({});
+
+    new Vue({ vuetify });
+
+    document.body.setAttribute('data-app', 'true');
+    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    wrapper.setProps({ questions: questionListDefaultAsInvalidIndex });
+
+    await Vue.nextTick();
+    await Vue.nextTick();
+
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const answeredLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[answeredLength - 1];
+    // test answers
+    expect(answered[0].country).toBe(undefined);
   });
 
   test('List with empty choices', async () => {

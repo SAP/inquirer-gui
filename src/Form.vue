@@ -204,10 +204,7 @@ export default {
       switch (question.type) {
         case "list":
         case "rawlist":
-          if (question._default === undefined) {
-            question.answer = undefined;
-          }
-          if (question._choices.length === 0) {
+          if (question._choices.length === 0 || question._default === undefined) {
             this.setInvalid(question, NOT_ANSWERED);
             return;
           }
@@ -353,20 +350,6 @@ export default {
               }
             }
 
-            // evaluate default()
-            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
-            if (typeof question.default === "function" && applyDefaultWhenDirty) {
-              try {
-                question._default = await question.default(answers);
-                question.answer = this.getInitialAnswer(question);
-                // optimization: avoid repeatedly calling this.getAnswers()
-                answers[question.name] = question.answer;
-                shouldValidate = true;
-              } catch(e) {
-                this.console.error(`Could not evaluate default() for ${question.name}`);
-              }
-            }
-
             // evaluate choices()
             if (typeof question.choices === "function") {
               try {
@@ -380,6 +363,20 @@ export default {
                 }
               } catch(e) {
                 this.console.error(`Could not evaluate choices() for ${question.name}`);
+              }
+            }
+
+            // evaluate default()
+            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
+            if (typeof question.default === "function" && applyDefaultWhenDirty) {
+              try {
+                question._default = await question.default(answers);
+                question.answer = this.getInitialAnswer(question);
+                // optimization: avoid repeatedly calling this.getAnswers()
+                answers[question.name] = question.answer;
+                shouldValidate = true;
+              } catch(e) {
+                this.console.error(`Could not evaluate default() for ${question.name}`);
               }
             }
 
@@ -501,19 +498,6 @@ export default {
             }
           }
 
-          // evaluate default()
-          if (typeof question.default === "function") {
-            try {
-              question._default = await question.default(answers);
-              question.answer = this.getInitialAnswer(question);
-
-              // optimization: avoid repeatedly calling this.getAnswers()
-              answers[question.name] = question.answer;
-            } catch(e) {
-              this.console.error(`Could not evaluate default() for ${question.name}`);
-            }
-          }
-
           // evaluate choices()
           if (typeof question.choices === "function") {
             try {
@@ -524,6 +508,19 @@ export default {
               answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate choices() for ${question.name}`);
+            }
+          }
+
+          // evaluate default()
+          if (typeof question.default === "function") {
+            try {
+              question._default = await question.default(answers);
+              question.answer = this.getInitialAnswer(question);
+
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
+            } catch(e) {
+              this.console.error(`Could not evaluate default() for ${question.name}`);
             }
           }
 
