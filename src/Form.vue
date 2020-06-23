@@ -204,13 +204,17 @@ export default {
       switch (question.type) {
         case "list":
         case "rawlist":
-          if (question._choices.length === 0) {
+          if (question._choices.length === 0 || question._default === undefined) {
             this.setInvalid(question, NOT_ANSWERED);
             return;
           }
           if (typeof question._default === "number") {
             index = question._default;
-          } else {
+             if (index > question._choices.length - 1) {
+               index = -1;
+             }
+          }
+          if (index < 0) {
             index = question._choices.findIndex(choice => {
               if (question._default) {
                 return choice.value === question._default;
