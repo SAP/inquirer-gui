@@ -1,5 +1,6 @@
 <template>
   <v-form class="inquirer-gui">
+    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
     <template v-for="(question, index) in questions">
       <p
         :key="'label-' + index"
