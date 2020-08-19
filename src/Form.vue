@@ -1,6 +1,5 @@
 <template>
   <v-form class="inquirer-gui">
-    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
     <template v-for="(question, index) in questions">
       <p
         :key="'label-' + index"
@@ -31,8 +30,8 @@
         class="error-validation-text"
         :key="'validation-' + index"
       >{{question.validationMessage}}</div>
-
     </template>
+    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
   </v-form>
 </template>
 
