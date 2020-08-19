@@ -36,14 +36,6 @@ const questionNumber = [
   },
 ];
 
-const questionNumberNoDefault = [
-  {
-    type: "number",
-    name: "number",
-    message: "A number"
-  },
-];
-
 const questionsConditional = [
   {
     type: "input",
@@ -129,7 +121,7 @@ const questionInputDefaultException = [
     type: "input",
     name: "inputDefaultException",
     message: "An input",
-    default: function (input) {
+    default: function () {
       throw("exception");
     }
   }
@@ -142,9 +134,9 @@ const questionsWhen = [
   },
   {
     type: "input",
-    when: function(answers) {return false},
+    when: function() {return false},
     name: "second",
-    validate: async function (answer, answers) {
+    validate: async function () {
         return "Must enter value"
     }
   }
@@ -289,14 +281,14 @@ describe('Questions of type input, password and number', () => {
     expect(wrapper.emitted().whensEvaluated).toBeTruthy();
 
     let inputs = wrapper.findAll('input');
-    expect(inputs.length).toEqual(3);
+    expect(inputs.length).toEqual(4);
     inputs.at(0).element.value = "hide";
     inputs.at(0).trigger('input');
     // wait to account for debounce
     await utils.sleep(300);
 
     inputs = wrapper.findAll('input');
-    expect(inputs.length).toEqual(2);
+    expect(inputs.length).toEqual(3);
   });
 
   test('Input with message as a function', async () => {
