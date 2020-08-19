@@ -23,7 +23,7 @@ const questionCheckboxChoicesAsFunction = [
     type: "checkbox",
     name: "citizenship",
     message: "Your citizenship",
-    choices: function (answers) {
+    choices: function () {
       return [
         "USA",
         "Germany"
