@@ -337,7 +337,10 @@ export default {
             } catch(e) {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
-          }
+          } else if (question.when !== false) {
+	      question.shouldShow = true;
+	      shouldValidate = true;
+	  }
 
           if (question.shouldShow) {
             // evaluate message()
@@ -449,18 +452,18 @@ export default {
         // default
         if (question.default !== undefined) {
 	let _default;
-		if (typeof question.default !== "function") {
-			if (question.__origAnswer === undefined) {
-				_default = question.default;
-			} else {
-				_default = question.__origAnswer; 
-			}
-		}
-		this.$set(question, "_default", _default);
+	  if (typeof question.default !== "function") {
+	     if (question.__origAnswer === undefined) {
+		_default = question.default;
+	     } else {
+		_default = question.__origAnswer; 
+	     }
+	  }
+	  this.$set(question, "_default", _default);
 	}
 
 	if (question._default === undefined) {
-		this.$set(question, "_default", question.__origAnswer);
+	   this.$set(question, "_default", question.__origAnswer);
 	}
 
         // validity
