@@ -451,7 +451,7 @@ export default {
 
         // default
         if (question.default !== undefined) {
-	let _default;
+	  let _default;
 	  if (typeof question.default !== "function") {
 	     if (question.__origAnswer === undefined) {
 		_default = question.default;
