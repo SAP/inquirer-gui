@@ -448,20 +448,20 @@ export default {
 
         // default
         if (question.default !== undefined) {
-			let _default;
-			if (typeof question.default !== "function") {
-				if (question.__origAnswer === undefined) {
-					_default = question.default;
-				} else {
-					_default = question.__origAnswer; 
-				}
+	let _default;
+		if (typeof question.default !== "function") {
+			if (question.__origAnswer === undefined) {
+				_default = question.default;
+			} else {
+				_default = question.__origAnswer; 
 			}
-			this.$set(question, "_default", _default);
 		}
-		
-		if (question._default === undefined) {
-			this.$set(question, "_default", question.__origAnswer);
-		}
+		this.$set(question, "_default", _default);
+	}
+
+	if (question._default === undefined) {
+		this.$set(question, "_default", question.__origAnswer);
+	}
 
         // validity
         this.$set(question, "isValid", true);
@@ -522,15 +522,15 @@ export default {
           // evaluate default()
           if (typeof question.default === "function") {
             try {
-				if (question.__origAnswer === undefined) {
-					question._default = await question.default(answers);
-				} else {
-					question._default = question.__origAnswer; 
-				}
-				question.answer = this.getInitialAnswer(question);
+		if (question.__origAnswer === undefined) {
+			question._default = await question.default(answers);
+		} else {
+			question._default = question.__origAnswer; 
+		}
+		question.answer = this.getInitialAnswer(question);
 
-				// optimization: avoid repeatedly calling this.getAnswers()
-				answers[question.name] = question.answer;
+		// optimization: avoid repeatedly calling this.getAnswers()
+		answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
