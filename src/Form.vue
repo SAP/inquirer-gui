@@ -31,7 +31,7 @@
         :key="'validation-' + index"
       >{{question.validationMessage}}</div>
     </template>
-    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
+	<v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
   </v-form>
 </template>
 
@@ -337,7 +337,10 @@ export default {
             } catch(e) {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
-          }
+          } else if (question.when !== false) {
+	      question.shouldShow = true;
+	      shouldValidate = true;
+	  }
 
           if (question.shouldShow) {
             // evaluate message()
@@ -448,12 +451,18 @@ export default {
 
         // default
         if (question.default !== undefined) {
-          let _default;
-          if (typeof question.default !== "function") {
-            _default = question.default;
-          }
-          this.$set(question, "_default", _default);
-        }
+	  let _default;
+	  if (typeof question.default !== "function") {
+	     if (question.__origAnswer === undefined) {
+		_default = question.default;
+	     } else {
+		_default = question.__origAnswer; 
+	     }
+	  }
+	  this.$set(question, "_default", _default);
+	} else if (question._default === undefined) {
+	   this.$set(question, "_default", question.__origAnswer);
+	}
 
         // validity
         this.$set(question, "isValid", true);
@@ -514,11 +523,15 @@ export default {
           // evaluate default()
           if (typeof question.default === "function") {
             try {
-              question._default = await question.default(answers);
-              question.answer = this.getInitialAnswer(question);
+		if (question.__origAnswer === undefined) {
+			question._default = await question.default(answers);
+		} else {
+			question._default = question.__origAnswer; 
+		}
+		question.answer = this.getInitialAnswer(question);
 
-              // optimization: avoid repeatedly calling this.getAnswers()
-              answers[question.name] = question.answer;
+		// optimization: avoid repeatedly calling this.getAnswers()
+		answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
