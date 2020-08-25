@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/SAP/inquirer-gui.svg?style=svg)](https://circleci.com/gh/SAP/inquirer-gui)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 
 # Inquirer GUI
