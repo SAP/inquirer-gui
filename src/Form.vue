@@ -460,9 +460,7 @@ export default {
 	     }
 	  }
 	  this.$set(question, "_default", _default);
-	}
-
-	if (question._default === undefined) {
+	} else if (question._default === undefined) {
 	   this.$set(question, "_default", question.__origAnswer);
 	}
 
