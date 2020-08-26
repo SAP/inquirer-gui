@@ -37,6 +37,7 @@
 
 <script>
 import Plugins from "./Plugins";
+const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
 export default {
@@ -217,7 +218,12 @@ export default {
           if (index < 0) {
             index = question._choices.findIndex(choice => {
               if (question._default) {
-                return choice.value === question._default;
+				  try {
+					  assert.deepEqual(choice.value, question._default);
+					  return true;
+				  } catch (error) {
+					  return false;
+				  } 
               }
             });
           }
@@ -274,7 +280,7 @@ export default {
           return initialAnswersArray;
         }
       }
-    },
+	},
     async onCustomEvent(questionName, methodName, callback, ...params) {
       const relevantQuestion = this.questions.find(value => {
         return value["name"] === questionName;
@@ -297,8 +303,8 @@ export default {
         // call question methods or emit the answered event
         return;
       }
-      const index = this.questions.findIndex(value => {
-        return value["name"] === name;
+      const index = this.questions.findIndex(question => {
+        return question["name"] === name;
       });
 
       if (index === -1) {
@@ -338,9 +344,9 @@ export default {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
           } else if (question.when !== false) {
-	      question.shouldShow = true;
-	      shouldValidate = true;
-	  }
+			question.shouldShow = true;
+			shouldValidate = true;
+		}
 
           if (question.shouldShow) {
             // evaluate message()
@@ -451,18 +457,18 @@ export default {
 
         // default
         if (question.default !== undefined) {
-	  let _default;
-	  if (typeof question.default !== "function") {
-	     if (question.__origAnswer === undefined) {
-		_default = question.default;
-	     } else {
-		_default = question.__origAnswer; 
-	     }
-	  }
-	  this.$set(question, "_default", _default);
-	} else if (question._default === undefined) {
-	   this.$set(question, "_default", question.__origAnswer);
-	}
+			let _default;
+			if (typeof question.default !== "function") {
+				if (question.__origAnswer === undefined) {
+					_default = question.default;
+				} else {
+					_default = question.__origAnswer; 
+				}
+			}
+			this.$set(question, "_default", _default);
+		} else if (question._default === undefined) {
+			this.$set(question, "_default", question.__origAnswer);
+		}
 
         // validity
         this.$set(question, "isValid", true);
@@ -523,15 +529,15 @@ export default {
           // evaluate default()
           if (typeof question.default === "function") {
             try {
-		if (question.__origAnswer === undefined) {
-			question._default = await question.default(answers);
-		} else {
-			question._default = question.__origAnswer; 
-		}
-		question.answer = this.getInitialAnswer(question);
+				if (question.__origAnswer === undefined) {
+					question._default = await question.default(answers);
+				} else {
+					question._default = question.__origAnswer; 
+				}
+				question.answer = this.getInitialAnswer(question);
 
-		// optimization: avoid repeatedly calling this.getAnswers()
-		answers[question.name] = question.answer;
+				// optimization: avoid repeatedly calling this.getAnswers()
+				answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
