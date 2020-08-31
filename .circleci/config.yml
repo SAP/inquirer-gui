@@ -6,6 +6,17 @@ defaults: &defaults
     - image: circleci/node:10.17.0
 
 jobs: # a collection of steps
+  compliance:
+    docker:
+      - image: circleci/python:3.6.4
+    working_directory: ~/workdir
+    steps:
+      - checkout
+      - run:
+          name: compliance check
+          command: |
+            pip3 install --user reuse
+            ~/.local/bin/reuse lint
   build-and-test:
     <<: *defaults  
     steps:
@@ -53,6 +64,7 @@ workflows:
   version: 2
   test-publish:
     jobs:
+      - compliance
       - build-and-test:
           filters:
             tags:
