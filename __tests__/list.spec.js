@@ -249,15 +249,12 @@ describe('Question of type list', () => {
 
     const labels = wrapper.findAll('p.question-label');
 
-    expect(labels.at(0).findAll('span.error-validation-asterisk').at(0).element.innerHTML).toBe('*');
     expect(labels.at(0).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[0].message);
     expect(labels.at(0).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
 
-    expect(labels.at(1).findAll('span.error-validation-asterisk').exists()).toBe(false);
     expect(labels.at(1).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[1].message);
     expect(labels.at(1).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
 
-    expect(labels.at(2).findAll('span.error-validation-asterisk').exists()).toBe(true);
     expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[2].message);
     expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
 
