@@ -1,5 +1,6 @@
 [![CircleCI](https://circleci.com/gh/SAP/inquirer-gui.svg?style=svg)](https://circleci.com/gh/SAP/inquirer-gui)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/inquirer-gui)](https://api.reuse.software/info/github.com/SAP/inquirer-gui)
 
 # Inquirer GUI
 ![alt text](screenshot.png "Screenshot of sample form")
@@ -117,6 +118,3 @@ To get more help, support and information please open a github issue.
 
 ## Contributing
 Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
-
-## License
-Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, v. 2 except as noted otherwise in the [LICENSE](LICENSE) file.
