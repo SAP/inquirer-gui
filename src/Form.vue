@@ -103,7 +103,7 @@ export default {
       question.validationMessage = "";
     },
     setIsMandatory(question) {
-	question.isMandatory = ["list", "rawlist", "checkbox", "expand"].includes(question.type) ||
+	question.isMandatory = ["list", "rawlist", "expand"].includes(question.type) ||
 		((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
     },
     getComponentByQuestionType(question) {
