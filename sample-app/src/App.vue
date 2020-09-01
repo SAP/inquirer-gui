@@ -218,7 +218,7 @@ form.inquirer-gui .error-validation-text {
   color: brown;
 }
 
-form.inquirer-gui .error-validation-asterisk {
+form.inquirer-gui .mandatory-asterisk {
   color: red;
 }
 

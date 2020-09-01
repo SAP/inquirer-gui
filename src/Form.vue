@@ -15,7 +15,7 @@
             <span>{{question.guiOptions.hint}}</span>
           </v-tooltip>
         </span>
-        <span class="error-validation-asterisk" v-if="!question.isValid">*</span>
+        <span class="mandatory-asterisk" v-if="question.isMandatory">*</span>
       </p>
       <component
         v-if="question.shouldShow"
@@ -26,7 +26,7 @@
         @customEvent="onCustomEvent"
       ></component>
       <div
-        v-if="question.shouldShow && !question.isValid && !(question.guiOptions && question.guiOptions.hint && !question.isDirty)" 
+        v-if="shouldShowValidationMessage(question)"
         class="error-validation-text"
         :key="'validation-' + index"
       >{{question.validationMessage}}</div>
@@ -54,6 +54,10 @@ export default {
     console: () => console
   },
   methods: {
+    shouldShowValidationMessage(question) {
+	return question.shouldShow && !question.isValid && 
+		((question.__origAnswer !== undefined) || !(question.guiOptions && question.guiOptions.hint && !question.isDirty));
+    },
     removeShouldntShows(questions, answers) {
       for (let question of this.questions) {
         // remove answers to questions whose when() evaluated to false
@@ -97,6 +101,10 @@ export default {
     setValid(question) {
       question.isValid = true;
       question.validationMessage = "";
+    },
+    setIsMandatory(question) {
+	question.isMandatory = ["list", "rawlist", "expand"].includes(question.type) ||
+		((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
     },
     getComponentByQuestionType(question) {
       const guiType= question.guiOptions && question.guiOptions.type ? question.guiOptions.type : question.guiType;
@@ -473,6 +481,9 @@ export default {
         // validity
         this.$set(question, "isValid", true);
         this.$set(question, "validationMessage", "");
+	
+	// mandatory
+	this.setIsMandatory(question);
 
         // dirty
         this.$set(question, "isDirty", false);
@@ -582,8 +593,8 @@ export default {
   margin-top: 0rem;
 }
 
-/* Error validation asterisk div */
-.error-validation-asterisk {
+/* mandatory asterisk div */
+.mandatory-asterisk {
   padding-left: 4px;
 }
 
