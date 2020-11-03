@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/SAP/inquirer-gui.svg?style=svg)](https://circleci.com/gh/SAP/inquirer-gui)
+[![Coverage Status](https://coveralls.io/repos/github/SAP/inquirer-gui/badge.svg?branch=master)](https://coveralls.io/github/SAP/inquirer-gui?branch=master)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/inquirer-gui)](https://api.reuse.software/info/github.com/SAP/inquirer-gui)
 [![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/inquirer-gui)](https://dependabot.com/)
