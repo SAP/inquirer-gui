@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/SAP/inquirer-gui.svg?style=svg)](https://circleci.com/gh/SAP/inquirer-gui)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/inquirer-gui)](https://api.reuse.software/info/github.com/SAP/inquirer-gui)
+[![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/inquirer-gui)](https://dependabot.com/)
 
 # Inquirer GUI
 ![alt text](screenshot.png "Screenshot of sample form")
