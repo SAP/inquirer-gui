@@ -33,8 +33,11 @@ jobs: # a collection of steps
           name: run tests
           command: npm test
       - run:
-          name: ls
-          command: ls
+          name: ls coverage
+          command: ls coverage
+      - run:
+          name: ls reports
+          command: ls reports
       - run:
           name: coverall
           command: cat ./reports/junit/lcov.info | ./node_modules/.bin/coveralls
