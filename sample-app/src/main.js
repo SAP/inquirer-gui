@@ -52,6 +52,7 @@ const questions1 = [
     type: "input",
     guiOptions: {
       type: "file-browser",
+      applyDefaultWhenDirty: true
     },
     name: "configFile",
     message: "Config file (vscode)",
