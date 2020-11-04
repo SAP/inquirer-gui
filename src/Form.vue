@@ -226,12 +226,12 @@ export default {
           if (index < 0) {
             index = question._choices.findIndex(choice => {
               if (question._default) {
-		  try {
-			  assert.deepEqual(choice.value, question._default);
-			  return true;
-		  } catch (error) {
-			  return false;
-		  } 
+                try {
+                  assert.deepEqual(choice.value, question._default);
+                  return true;
+                } catch (error) {
+                  return false;
+                } 
               }
             });
           }
@@ -352,9 +352,9 @@ export default {
               this.console.error(`Could not evaluate when() for ${question.name}`);
             }
           } else if (question.when !== false) {
-	     question.shouldShow = true;
-	     shouldValidate = true;
-	 }
+            question.shouldShow = true;
+            shouldValidate = true;
+          }
 
           if (question.shouldShow) {
             // evaluate message()
@@ -465,18 +465,19 @@ export default {
 
         // default
         if (question.default !== undefined) {
-	   let _default;
-	   if (typeof question.default !== "function") {
-	     if (question.__origAnswer === undefined) {
-		_default = question.default;
-	     } else {
-		_default = question.__origAnswer; 
-	     }
-	   }
-	   this.$set(question, "_default", _default);
-	} else if (question._default === undefined) {
-	   this.$set(question, "_default", question.__origAnswer);
-	}
+          let _default;
+          if (typeof question.default !== "function") {
+            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
+            if (question.__origAnswer === undefined || applyDefaultWhenDirty) {
+              _default = question.default;
+            } else {
+              _default = question.__origAnswer; 
+            }
+          }
+          this.$set(question, "_default", _default);
+        } else if (question._default === undefined) {
+          this.$set(question, "_default", question.__origAnswer);
+        }
 
         // validity
         this.$set(question, "isValid", true);
