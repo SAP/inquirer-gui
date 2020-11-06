@@ -16,7 +16,7 @@
                 class="d-flex flex-column mx-auto"
                 @click="onAnswerChanged(item.value)"
                 :data-itemvalue="item.value"
-                height="{{ !!item.description ? 380 : 100 }}"
+                :data-height="!!item.description ? 380 : 0"
                 tile
                 hover
                 flat
