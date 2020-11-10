@@ -332,10 +332,9 @@ export default {
       let shouldStart = false;
       const whenPromises = []; 
       for (let question of this.questions) {
-        const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
-        } else if (shouldStart || applyDefaultWhenDirty) {
+        } else if (shouldStart) {
           let shouldValidate = false;
           // evaluate when()
           if (typeof question.when === "function") {
@@ -385,6 +384,7 @@ export default {
             }
 
             // evaluate default()
+            const applyDefaultWhenDirty = !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
             if (applyDefaultWhenDirty) {
               if (typeof question.default === "function") {
                 try {
@@ -393,7 +393,7 @@ export default {
                   this.console.error(`Could not evaluate default() for ${question.name}`);
                 }
               } else {
-                  question._default = await question.default;
+                  question._default = question.default;
               }
               question.answer = this.getInitialAnswer(question);
               // optimization: avoid repeatedly calling this.getAnswers()
