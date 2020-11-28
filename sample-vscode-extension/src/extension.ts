@@ -154,15 +154,6 @@ class InquirerUIPanel {
 		}
 	}
 
-function getNonce() {
-	let text = '';
-	const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	for (let i = 0; i < 32; i++) {
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-	}
-	return text;
-}
-
 async function showOpenDialog(currentPath: string): Promise<string> {
 	let uri;
 	try {
