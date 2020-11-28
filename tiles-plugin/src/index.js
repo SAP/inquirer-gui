@@ -1,4 +1,3 @@
-import Vue from "vue";
 import QuestionTiles from "./packages/QuestionTiles";
 
 export default {
@@ -12,5 +11,3 @@ export default {
     }
   }
 }
-
-
