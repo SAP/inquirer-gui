@@ -1,4 +1,3 @@
-import Vue from "vue";
 import QuestionFileBrowser from "./packages/QuestionFileBrowser";
 
 export default {
@@ -12,5 +11,3 @@ export default {
     }
   }
 }
-
-
