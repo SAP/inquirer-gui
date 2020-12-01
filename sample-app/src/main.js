@@ -12,6 +12,19 @@ const WORKFLOW_IMAGE = require("./workflowImage").default;
 
 const questions0 = [
   {
+    name: "simpleTiles", 
+    message: "",
+    type: "list",
+    guiOptions: {
+      type: "sample-tiles",
+    },
+    choices: [
+      { value: "listReport", name: "List Report", image: SAP_IMAGE },
+      { value: "masterDetail", name: "Master-Detail Application", image: WORKFLOW_IMAGE}
+    ],
+    default: "masterDetail"
+  },
+  {
     name: "appType", 
     message: "",
     type: "list",

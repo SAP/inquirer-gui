@@ -16,21 +16,30 @@
                 class="d-flex flex-column mx-auto"
                 @click="onAnswerChanged(item.value)"
                 :data-itemvalue="item.value"
-                height="380"
+                :data-height="!!item.description ? 380 : 0"
                 tile
                 hover
                 flat
                 dark
                 elevation=2
               >
-                <v-card-title>{{item.name}}</v-card-title>
-                <v-card-text class="description">
-                  {{item.description}}
-                </v-card-text>
-                <v-spacer></v-spacer>
-                <v-card-text class="homepage">
-                  <a :href="item.homepage">More Information</a>
-                 </v-card-text>
+                <template v-if="item.description">
+                  <v-card-title>{{item.name}}</v-card-title>
+                  <v-card-text class="description">
+                    {{item.description}}
+                  </v-card-text>
+                </template>
+                <template v-else>
+                  <v-card-text class="description">
+                    {{item.name}}
+                  </v-card-text>
+                </template>
+                <template v-if="item.homepage">
+                  <v-spacer></v-spacer>
+                  <v-card-text class="homepage">
+                    <a :href="item.homepage">More Information</a>
+                  </v-card-text>
+                </template>
                 <v-card-actions class="tile-image-container">
                   <img :src="item.image" v-if="item.image"/>
                 </v-card-actions>
