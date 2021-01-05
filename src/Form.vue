@@ -6,7 +6,7 @@
         class="question-label"
         v-if="question.shouldShow"
       >
-        <span class="question-message">{{question._message}}</span>
+        <span class="question-message" v-html="question._message"></span>
         <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
           <v-tooltip top max-width="350px">
             <template v-slot:activator="{on}">
