@@ -176,6 +176,39 @@ const questionInputHint = [
   }
 ];
 
+const questionInputLink = [
+  {
+    type: "input",
+    name: "link_uri",
+    message: "message for input 0",
+    guiOptions: {
+      link: {
+        text: "link for input 0",
+        url: "https://uri.for.input.0"
+      } 
+    }
+  },
+  {
+    type: "input",
+    name: "link_command",
+    message: "message for input 1",
+    guiOptions: {
+      hint: "hint for input 1",
+      link: {
+        text: "link for input 1",
+        command: {
+          id: "workbench.action.showCommands"
+        }
+      } 
+    }
+  },
+  {
+    type: "input",
+    name: "no_link",
+    message: "message for input 2"
+  }
+];
+
 describe('Questions of type input, password and number', () => {
   test('Input', async () => {
     const value1 = "my input";
@@ -436,4 +469,30 @@ describe('Questions of type input, password and number', () => {
     })
 
   });
+
+  test('Input with link', async () => {
+    const wrapper = mount(Form, { });
+    wrapper.setProps({ questions: questionInputLink });
+    await Vue.nextTick();
+    await utils.sleep(300);
+
+    const labels = wrapper.findAll('p.question-label');
+
+    expect(labels.at(0).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputLink[0].message);
+    expect(labels.at(0).findAll('span.question-link').at(0).element.innerHTML).toContain('a');
+    expect(labels.at(0).findAll('span.question-link').at(0).element.innerHTML).toContain('href');
+    expect(labels.at(0).findAll('a').at(0).element.innerHTML).toBe(questionInputLink[0].guiOptions.link.text);
+    expect(labels.at(0).findAll('a').at(0).element.href).toContain(questionInputLink[0].guiOptions.link.url);
+
+    expect(labels.at(1).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputLink[1].message);
+    expect(labels.at(1).findAll('span.question-link').at(0).element.innerHTML).toContain('a');
+    expect(labels.at(1).findAll('span.question-link').at(0).element.innerHTML).toContain('command');
+    expect(labels.at(1).findAll('a').at(0).element.innerHTML).toBe(questionInputLink[1].guiOptions.link.text);
+    expect(labels.at(1).findAll('a').at(0).element.attributes.command.value).toBe(questionInputLink[1].guiOptions.link.command.id);
+
+    expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputLink[2].message);
+    expect(labels.at(2).findAll('span.question-link').exists()).toBe(false);
+
+  });
+
 });
