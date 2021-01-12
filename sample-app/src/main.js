@@ -52,8 +52,15 @@ const questions1 = [
     type: "input",
     guiOptions: {
       type: "file-browser",
-      applyDefaultWhenDirty: true
-    },
+      applyDefaultWhenDirty: true,
+      link: {
+        text: "New Untitled File",
+        command: {
+          id: "workbench.action.files.newUntitledFile",
+          params: ['a']
+        }
+      }
+  },
     name: "configFile",
     message: "Config file (vscode)",
     default: "/home/",
