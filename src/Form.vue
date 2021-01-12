@@ -8,7 +8,7 @@
       >
         <span class="question-message">{{question._message}}</span>
         <span class="question-link" v-if="question.guiOptions && question.guiOptions.link">
-          <a v-if="question.guiOptions.link.command" :command="question.guiOptions.link.command.id" :params="question.guiOptions.link.command.params" @click="executeCommand(event)">{{question.guiOptions.link.text}}</a>
+          <a v-if="question.guiOptions.link.command" :command="question.guiOptions.link.command.id" :params="question.guiOptions.link.command.params" @click="executeCommand">{{question.guiOptions.link.text}}</a>
           <a v-else-if="question.guiOptions.link.url" target="_blank" :href="question.guiOptions.link.url">{{question.guiOptions.link.text}}</a>
         </span>
         <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
@@ -58,8 +58,8 @@ export default {
     console: () => console
   },
   methods: {
-    executeCommand() {
-      this.$emit("parentExecuteCommand");
+    executeCommand(event) {
+      this.$emit("parentExecuteCommand", event);
     },
     shouldShowValidationMessage(question) {
       return question.shouldShow && !question.isValid && 
