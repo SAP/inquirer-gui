@@ -77,10 +77,6 @@ const questions1 = [
       type: "input",
       name: "name",
       guiOptions: {
-        link: {
-          text: "wikipedia",
-          url: "https://en.wikipedia.org/wiki/Name"
-        },
         hint: "A personal name or full name is the set of names by which an individual is known and that can be recited as a word-group, with the understanding that, taken together, they all relate to that one individual."
       },
       message: "Your name (frontend)",
@@ -158,7 +154,13 @@ const questions1 = [
         {type: 'separator', line: '\u001b[2mCustom Separator\u001b[22m'},
         "Israel"
       ],
-      default: "Germany"
+      default: "Germany",
+      guiOptions: {
+        link: {
+          text: "wikipedia",
+          url: "https://en.wikipedia.org/wiki/Country"
+        }
+      }
   },
   {
       type: "checkbox",

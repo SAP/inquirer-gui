@@ -7,10 +7,6 @@
         v-if="question.shouldShow"
       >
         <span class="question-message">{{question._message}}</span>
-        <span class="question-link" v-if="question.guiOptions && question.guiOptions.link">
-          <a v-if="question.guiOptions.link.command" :command="question.guiOptions.link.command.id" :params="question.guiOptions.link.command.params" @click="executeCommand">{{question.guiOptions.link.text}}</a>
-          <a v-else-if="question.guiOptions.link.url" target="_blank" :href="question.guiOptions.link.url">{{question.guiOptions.link.text}}</a>
-        </span>
         <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
           <v-tooltip top max-width="350px">
             <template v-slot:activator="{on}">
@@ -20,6 +16,10 @@
           </v-tooltip>
         </span>
         <span class="mandatory-asterisk" v-if="question.isMandatory">*</span>
+        <span class="question-link" v-if="question.guiOptions && question.guiOptions.link">
+          <a v-if="question.guiOptions.link.command" :command="question.guiOptions.link.command.id" :params="question.guiOptions.link.command.params" @click="executeCommand">{{question.guiOptions.link.text}}</a>
+          <a v-else-if="question.guiOptions.link.url" target="_blank" :href="question.guiOptions.link.url">{{question.guiOptions.link.text}}</a>
+        </span>
       </p>
       <component
         v-if="question.shouldShow"
