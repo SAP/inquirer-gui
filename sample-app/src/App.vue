@@ -27,6 +27,7 @@ import { RpcBrowser } from "@sap-devx/webview-rpc/out.browser/rpc-browser";
 import { RpcBrowserWebSockets } from "@sap-devx/webview-rpc/out.browser/rpc-browser-ws";
 import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
+import LabelPlugin from "@sap-devx/inquirer-gui-label-plugin";
 import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
 import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
@@ -124,6 +125,10 @@ export default {
 
     options = {};
     Vue.use(LoginPlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
+    options = {};
+    Vue.use(LabelPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
     options = {};
