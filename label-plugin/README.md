@@ -1,6 +1,6 @@
 # Label Plugin for Inquirer-gui
 
-This plugin presents label (read-only).
+This plugin presents a label (read-only).
 
 ![Inquirer-gui Label](./label.png)
 
@@ -11,7 +11,7 @@ npm install --save @sap-devx/inquirer-gui-label-plugin
 
 ## Usage
 * The `guiOptions` type property of the Inquirer.js question must be of type `label`.
-* you must provide a `default` value or implement `default` function.
+* You must provide a `default` value or implement `default` function.
 * Note that if your question is an Inquirer.js question or part of a Yeoman generator and the question is shown in a command-line interface (CLI), the `input` type will be shown instead.
 
 ### Sample Question
