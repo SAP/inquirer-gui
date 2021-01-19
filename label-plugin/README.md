@@ -23,7 +23,7 @@ npm install --save @sap-devx/inquirer-gui-label-plugin
     },
     name: "label_example", 
     message: "Label-Plugin",
-    default: '<p style="color:green">Defalt value for <a href="https://github.com/SAP/inquirer-gui/tree/master/label-plugin">Label-Plugin</a> with html tags.</p>'
+    default: '<p style="color:green">Default value for <a href="https://github.com/SAP/inquirer-gui/tree/master/label-plugin">Label-Plugin</a> with html tags.</p>'
 }
 ```
 
