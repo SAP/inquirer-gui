@@ -90,7 +90,7 @@ describe('Question of type checkbox', () => {
     wrapper.setProps({ questions: questionCheckbox });
     await Vue.nextTick();
 
-    const citizenship = wrapper.find('div[role="listitem"]');
+    const citizenship = wrapper.findComponent('div[role="listitem"]');
     citizenship.trigger('click');
 
     await Vue.nextTick();
@@ -107,7 +107,7 @@ describe('Question of type checkbox', () => {
     wrapper.setProps({ questions: questionCheckboxChoicesAsFunction });
     await Vue.nextTick();
 
-    const citizenship = wrapper.find('div[role="listitem"]');
+    const citizenship = wrapper.findComponent('div[role="listitem"]');
     citizenship.trigger('click');
 
     await Vue.nextTick();
@@ -123,7 +123,7 @@ describe('Question of type checkbox', () => {
     wrapper.setProps({ questions: questionCheckboxDynamicChoicesAsFunction });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     const country = "A country";
     name.element.value = country;
     name.trigger('input');
