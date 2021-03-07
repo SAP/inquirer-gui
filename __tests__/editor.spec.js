@@ -28,7 +28,7 @@ describe('Question of type editor and filter func', () => {
     wrapper.setProps({ questions: questionEditor });
     await Vue.nextTick();
 
-    const notes = wrapper.find('textarea');
+    const notes = wrapper.findComponent('textarea');
     notes.element.value = value1;
     notes.trigger('input');
 
