@@ -29,7 +29,7 @@ describe('Question of type file browser', () => {
     await Vue.nextTick();
     wrapper.setProps({ questions: questionFileBrowser });
     await Vue.nextTick();
-    const icon = wrapper.find('button');
+    const icon = wrapper.findComponent('button');
     icon.trigger('click');
     await Vue.nextTick();
     expect(wrapper.props().questions[0].answer).toBe('/home/user');
