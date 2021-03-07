@@ -20,7 +20,7 @@
     "build-for-sample": "vue-cli-service build --target lib --name form src/index.js --dest sample-app/form",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit",
+    "test": "vue-cli-service test:unit -w 1",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
