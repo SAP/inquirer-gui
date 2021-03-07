@@ -55,7 +55,7 @@ describe('Question of type expand', () => {
     wrapper.setProps({ questions: questionExpand });
     await Vue.nextTick();
 
-    const expand = wrapper.find('div[role="listitem"]');
+    const expand = wrapper.findComponent('div[role="listitem"]');
     expand.trigger('click');
 
     await Vue.nextTick();
@@ -97,7 +97,7 @@ describe('Question of type expand', () => {
     wrapper.setProps({ questions: questionExpandWithSeparator });
     await Vue.nextTick();
 
-    const divider = wrapper.find('hr[role="separator"');
+    const divider = wrapper.findComponent('hr[role="separator"');
     expect(divider).not.toBeUndefined();
   });
 
