@@ -149,16 +149,16 @@ describe('Question of type list', () => {
 
     await Vue.nextTick();
 
-    const menu = wrapper.find({name: 'v-menu'});
+    const menu = wrapper.findComponent({name: 'v-menu'});
     menu.trigger('click');
     await Vue.nextTick();
 
-    const list = wrapper.find({name: 'v-select-list'});
+    const list = wrapper.findComponent({name: 'v-select-list'});
     expect(list.findAll({name:'v-list-item'})).toHaveLength(6);
     expect(list.findAll({name:'v-divider'})).toHaveLength(1);
     expect(list.findAll({name:'v-subheader'})).toHaveLength(1);
 
-    const subheader = list.find({name:'v-subheader'});
+    const subheader = list.findComponent({name:'v-subheader'});
     expect(subheader.vm.$el.innerHTML).toBe("Custom Separator");
   });
 
