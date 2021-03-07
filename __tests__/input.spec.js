@@ -217,7 +217,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionInput });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     name.element.value = value1;
     name.trigger('input');
 
@@ -239,7 +239,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionInput });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     name.element.value = value1;
     name.trigger('input');
 
@@ -262,7 +262,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionPassword });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     name.element.value = value1;
     name.trigger('input');
 
@@ -283,7 +283,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionNumber });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     name.element.value = value1;
     name.trigger('input');
 
@@ -301,7 +301,7 @@ describe('Questions of type input, password and number', () => {
     wrapper.setProps({ questions: questionNumber });
     await Vue.nextTick();
 
-    const name = wrapper.find('input');
+    const name = wrapper.findComponent('input');
     expect(name.element.value).toBe("0");
   });
 
@@ -461,7 +461,7 @@ describe('Questions of type input, password and number', () => {
     expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionInputHint[2].message);
     expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
 
-    labels.at(0).find({name: 'v-icon'}).trigger('mouseenter');
+    labels.at(0).findComponent({name: 'v-icon'}).trigger('mouseenter');
     await Vue.nextTick();
     requestAnimationFrame(() => { // https://github.com/vuejs/vue-test-utils/issues/1421
       expect(wrapper.text()).toContain(questionInputHint[0].guiOptions.hint);
