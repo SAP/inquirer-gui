@@ -4,5 +4,5 @@ Upstream-Contact: Tomer Epstein <tomer.epstein@sap.com>
 Source: https://github.com/SAP/inquirer-gui
 
 Files: *
-Copyright: 2019-2020 SAP SE or an SAP affiliate company and inquirer-gui contributors
+Copyright: 2021 SAP SE or an SAP affiliate company and inquirer-gui contributors
 License: Apache-2.0 

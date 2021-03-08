@@ -31,6 +31,15 @@ const questions1 = [
     name: "noType",
   },
   {
+    type: "input",
+    guiOptions: {
+      type: "label"
+    },
+    name: "label",
+    message: "Label-Plugin",
+    default: '<p style="color:green">Default value for <a href="https://github.com/SAP/inquirer-gui/tree/master/label-plugin">Label-Plugin</a> with html tags.</p>'
+  },
+  {
     type: "password",
     guiOptions: {
       type: "login",
