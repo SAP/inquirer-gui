@@ -19,8 +19,18 @@ class InquirerGuiWebSocketServer {
 
         wss.on('connection', (ws) => {
             console.log('new ws connection');
-
-            this.rpc = new RpcExtensionWebSockets(ws);
+            const consoleLog =  (msg, ...args) => { console.log(msg, args); };
+            const noopLog = () => {};
+            const warningLogger = {
+              fatal: consoleLog,
+              error: consoleLog,
+              warn: consoleLog,
+              info: noopLog,
+              debug: noopLog,
+              trace: noopLog,
+              getChildLogger: () => { return warningLogger; }
+            };
+            this.rpc = new RpcExtensionWebSockets(ws, warningLogger);
             this.inquirerGui = new InquirerGuiBackend(this.rpc);
         });
     }
