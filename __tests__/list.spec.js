@@ -109,16 +109,16 @@ const questionListValidate = [{
   type: "list",
   name: "list2",
   message: "message for list2",
-  when: (answers) => {
+  when: answers => {
     return !!answers.list1;
   },
   choices: ["item21", "item22", "item23"],
-  validate: (input) => (input ? true : "select list2 item")
+  validate: input => (input ? true : "select list2 item")
 }, {
   type: "list",
   name: "list3",
   message: "message for list3",
-  when: (answers) => {
+  when: answers => {
     return !!answers.list2;
   },
   choices: async () => {
@@ -127,7 +127,7 @@ const questionListValidate = [{
         resolve(["item31", "item32", "item33"]);
       }, 300)});
   },
-  validate: (input) => (input ? true : "select list3 item")
+  validate: input => (input ? true : "select list3 item")
 }];
 
 describe('Question of type list', () => {
@@ -298,6 +298,7 @@ describe('Question of type list', () => {
 
     const wrapper = mount(Form, { vuetify, attachToDocument: true });
     wrapper.setProps({ questions: questionListValidate });
+    await Vue.nextTick();
     await Vue.nextTick();
     await Vue.nextTick();
 
