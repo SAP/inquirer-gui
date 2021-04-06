@@ -44,6 +44,8 @@ import Plugins from "./Plugins";
 const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
+const MANDATORY_TYPES = ["list", "rawlist", "expand"];
+
 export default {
   name: "Form",
   props: {
@@ -88,7 +90,7 @@ export default {
             } else {
               this.setValid(question);
             }
-        } else if (["list", "rawlist", "expand"].includes(question.type) && answer === undefined) {
+        } else if (MANDATORY_TYPES.includes(question.type) && answer === undefined) {
           this.setInvalid(question);
         } else {
           this.setValid(question);
@@ -108,7 +110,7 @@ export default {
       question.validationMessage = "";
     },
     setIsMandatory(question) {
-	question.isMandatory = ["list", "rawlist", "expand"].includes(question.type) ||
+	question.isMandatory = MANDATORY_TYPES.includes(question.type) ||
 		((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
     },
     getComponentByQuestionType(question) {
@@ -409,10 +411,6 @@ export default {
             if (shouldValidate) {
               await this.doValidate(question, question.answer);
             }
-
-            // if (question.answer === undefined) {
-            //   this.setInvalid(question);
-            // }
           }
         }
       }
