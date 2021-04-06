@@ -99,6 +99,37 @@ const questionListEmptyChoices = [
   }
 ];
 
+const questionListValidate = [{
+  type: "list",
+  name: "list1",
+  message: "message for list1",
+  choices: ["item11", "item12", "item13"],
+  default: "item12"
+}, {
+  type: "list",
+  name: "list2",
+  message: "message for list2",
+  when: (answers) => {
+    return !!answers.list1;
+  },
+  choices: ["item21", "item22", "item23"],
+  validate: (input) => (input ? true : "select list2 item")
+}, {
+  type: "list",
+  name: "list3",
+  message: "message for list3",
+  when: (answers) => {
+    return !!answers.list2;
+  },
+  choices: async () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(["item31", "item32", "item33"]);
+      }, 300)});
+  },
+  validate: (input) => (input ? true : "select list3 item")
+}];
+
 describe('Question of type list', () => {
   test('List', async () => {
     const vuetify = new Vuetify({});
@@ -258,5 +289,44 @@ describe('Question of type list', () => {
     expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[2].message);
     expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
 
+  });
+
+  test('list with validate', async () => {
+    const vuetify = new Vuetify({});
+    new Vue({ vuetify });
+    document.body.setAttribute('data-app', 'true');
+
+    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    wrapper.setProps({ questions: questionListValidate });
+    await Vue.nextTick();
+    await Vue.nextTick();
+
+    // should get 2 * and validation error message from list2
+    let errorValidationText = wrapper.findAll("div.error-validation-text");
+    expect(errorValidationText.length).toEqual(1);
+    let mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
+    expect(mandatoryAsterisk.length).toEqual(2);
+    expect(errorValidationText.at(0).element.innerHTML).toBe(questionListValidate[1].validate());
+
+    // answer on list2 question
+    await wrapper.vm.onAnswerChanged("list2", "item22");
+    await Vue.nextTick();
+
+    // should get 3 * and validation error message from list3
+    errorValidationText = wrapper.findAll("div.error-validation-text");
+    expect(errorValidationText.length).toEqual(1);
+    mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
+    expect(mandatoryAsterisk.length).toEqual(3);
+    expect(errorValidationText.at(0).element.innerHTML).toBe(questionListValidate[2].validate());
+
+    // answer on list2 question
+    await wrapper.vm.onAnswerChanged("list3", "item23");
+    await Vue.nextTick();
+
+    // should get 3 * and no validation error messages
+    errorValidationText = wrapper.findAll("div.error-validation-text");
+    expect(errorValidationText.length).toEqual(0);
+    mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
+    expect(mandatoryAsterisk.length).toEqual(3);
   });
 });
