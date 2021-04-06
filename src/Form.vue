@@ -44,6 +44,8 @@ import Plugins from "./Plugins";
 const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
+const MANDATORY_TYPES = ["list", "rawlist", "expand"];
+
 export default {
   name: "Form",
   props: {
@@ -75,33 +77,31 @@ export default {
     },
     async doValidate(question, answer) {
       // evaluate validate()
-      if (typeof question.validate === "function") {
-        try {
-          const answers = this.getAnswers();
-          let response = await question.validate(answer, answers);
-          const isValid = response !== true ? false : true;
-          if (isValid) {
-            if (question.answer === undefined) {
-              this.setInvalid(question, NOT_ANSWERED);
+      try {
+        if (typeof question.validate === "function") {
+            const answers = this.getAnswers();
+            const response = await question.validate(answer, answers); 
+            if (response === true) {
+              this.setValid(question);
+            } else if (response === false) {
+              this.setInvalid(question);
+            } else if (response) {
+              this.setInvalid(question, response);
             } else {
               this.setValid(question);
             }
-          } else {
-            this.setInvalid(question,
-              typeof response === "string" ? response : "");
-          }
-        } catch(e) {
-          this.console.error(`Could not evaluate validate() for ${question.name}`);
-        }
-      } else {
-        if (question.answer === undefined) {
-          this.setInvalid(question, NOT_ANSWERED);
+        } else if (MANDATORY_TYPES.includes(question.type) && answer === undefined) {
+          this.setInvalid(question);
         } else {
           this.setValid(question);
         }
+      } catch(e) {
+        const errorMessage = `Could not evaluate validate() for ${question.name}. ${e.message}`;
+        this.console.error(errorMessage);
+        this.setInvalid(question, errorMessage);
       }
-    },
-    setInvalid(question, message) {
+    }, 
+    setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
       question.validationMessage = message;
     },
@@ -110,7 +110,7 @@ export default {
       question.validationMessage = "";
     },
     setIsMandatory(question) {
-	question.isMandatory = ["list", "rawlist", "expand"].includes(question.type) ||
+	question.isMandatory = MANDATORY_TYPES.includes(question.type) ||
 		((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
     },
     getComponentByQuestionType(question) {
@@ -203,14 +203,14 @@ export default {
         case "expand":
         case "checkbox":
           if (!Array.isArray(question._choices)) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
             return;
           }
           // handle complex choice cases below
           break;
         default:
           if (question._default === undefined) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
           }
           return question._default;
       }
@@ -221,7 +221,7 @@ export default {
         case "list":
         case "rawlist":
           if (question._choices.length === 0 || question._default === undefined) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
             return;
           }
           if (typeof question._default === "number") {
@@ -243,14 +243,14 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
             return;
           } else {
             return question._choices[index].value;
           }
         case "expand":
           if (question._choices.length === 0) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
             return;
           }
           if (typeof question._default === "number") {
@@ -263,7 +263,7 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question, NOT_ANSWERED);
+            this.setInvalid(question); 
             return;
           } else {
             return question._choices[index].value;
@@ -410,10 +410,6 @@ export default {
 
             if (shouldValidate) {
               await this.doValidate(question, question.answer);
-            }
-
-            if (question.answer === undefined) {
-              this.setInvalid(question, NOT_ANSWERED);
             }
           }
         }
