@@ -42,7 +42,7 @@
     "jest": "^24.9.0",
     "jest-junit": "^12.0.0",
     "jest-serializer-vue": "^2.0.2",
-    "sass": "1.32.8",
+    "sass": "1.32.12",
     "sass-loader": "10.0.2",
     "vue-cli-plugin-vuetify": "2.2.2",
     "vue-jest": "3.0.7",
@@ -52,7 +52,7 @@
     "coveralls": "2.11.16",
     "cz-conventional-changelog": "3.3.0",
     "@commitlint/cli": "12.1.1",
-    "@commitlint/config-conventional": "12.0.1",
+    "@commitlint/config-conventional": "12.1.1",
     "husky": "4.3.8"
   },
   "husky": {
