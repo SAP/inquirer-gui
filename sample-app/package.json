@@ -1,20 +1,22 @@
 {
   "name": "sample-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit",
     "prep-local": "cd .. && npm run build-for-sample",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "serve": "vue-cli-service serve",
+    "test": "vue-cli-service test:unit"
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "@sap-devx/inquirer-gui": "0.1.27",
+    "@sap-devx/inquirer-gui": "0.2.0",
     "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
     "@sap-devx/inquirer-gui-file-browser-plugin": "0.0.5",
     "@sap-devx/inquirer-gui-label-plugin": "0.0.1",
@@ -38,7 +40,5 @@
     "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.4.3",
     "webpack": "^4.41.2"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
