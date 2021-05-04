@@ -1,27 +1,61 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "0.1.27",
-  "publisher": "SAP",
-  "author": {
-    "name": "Eyal Barlev",
-    "email": "eyal.barlev@sap.com"
-  },
+  "version": "0.2.0",
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/inquirer-gui"
   },
   "license": "Apache-2.0",
+  "author": {
+    "name": "Eyal Barlev",
+    "email": "eyal.barlev@sap.com"
+  },
+  "publisher": "SAP",
   "main": "dist/form.umd.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --target lib --name form src/index.js",
-    "build-for-sample": "vue-cli-service build --target lib --name form src/index.js --dest sample-app/form",
     "build-dev": "vue-cli-service build --mode development",
+    "build-for-sample": "vue-cli-service build --target lib --name form src/index.js --dest sample-app/form",
     "lint": "vue-cli-service lint",
-    "test": "vue-cli-service test:unit -w 1",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "serve": "vue-cli-service serve",
+    "test": "vue-cli-service test:unit -w 1"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "eslintConfig": {
+    "env": {
+      "jest": true,
+      "node": true
+    },
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "root": true
   },
   "dependencies": {
     "strip-ansi": "^6.0.0",
@@ -30,6 +64,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "7.14.0",
+    "@commitlint/cli": "12.1.1",
+    "@commitlint/config-conventional": "12.1.1",
     "@vue/cli-plugin-babel": "4.5.12",
     "@vue/cli-plugin-eslint": "4.5.12",
     "@vue/cli-plugin-unit-jest": "4.5.12",
@@ -37,8 +73,11 @@
     "@vue/test-utils": "1.1.4",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^26.6.3",
+    "coveralls": "2.11.16",
+    "cz-conventional-changelog": "3.3.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "husky": "6.0.0",
     "jest": "^24.9.0",
     "jest-junit": "^12.0.0",
     "jest-serializer-vue": "^2.0.2",
@@ -48,50 +87,11 @@
     "vue-jest": "3.0.7",
     "vue-template-compiler": "2.6.12",
     "vuetify-loader": "1.7.2",
-    "webpack": "4.46.0",
-    "coveralls": "2.11.16",
-    "cz-conventional-changelog": "3.3.0",
-    "@commitlint/cli": "12.1.1",
-    "@commitlint/config-conventional": "12.1.1",
-    "husky": "6.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true,
-      "jest": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
+    "webpack": "4.46.0"
   },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ]
+  }
 }

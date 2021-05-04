@@ -489,11 +489,11 @@ export default {
         this.$set(question, "isValid", true);
         this.$set(question, "validationMessage", "");
 	
-	// mandatory
-	this.setIsMandatory(question);
+        // mandatory
+        this.setIsMandatory(question);
 
         // dirty
-        this.$set(question, "isDirty", false);
+        this.$set(question, "isDirty", question.__origAnswer !== undefined);
 
         // answer
         let answer = this.getInitialAnswer(question);
