@@ -29,11 +29,15 @@
         @answerChanged="onAnswerChanged"
         @customEvent="onCustomEvent"
       ></component>
-      <div
-        v-if="shouldShowValidationMessage(question)"
-        class="error-validation-text"
-        :key="'validation-' + index"
-      >{{question.validationMessage}}</div>
+      <div v-if="shouldShowValidationMessage(question)" :key="'validation-' + index" :id="'validation-msg-' + index">
+        <span class="error-validation-text">{{question.validationMessage}}</span>
+        <span class="question-link" v-if="question.validationLink">
+            <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="cmdLinkText"></span></a>
+            <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="urlLinkText"></span></a>
+          </span>
+      </div>
     </template>
 	<v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
   </v-form>
@@ -60,8 +64,9 @@ export default {
     console: () => console
   },
   methods: {
-    executeCommand(event) {
-      this.$emit("parentExecuteCommand", event);
+    // Execute a command embedded in an event or directly as { id: <commandIdString>, params: <paramObject> }
+    executeCommand(cmdOrEvent) {
+      this.$emit("parentExecuteCommand", cmdOrEvent);
     },
     shouldShowValidationMessage(question) {
       return question.shouldShow && !question.isValid && 
@@ -85,6 +90,8 @@ export default {
               this.setValid(question);
             } else if (response === false) {
               this.setInvalid(question);
+            } else if (response.hasOwnProperty('link') && response.hasOwnProperty('message')) { // Validation messages with links
+              this.setInvalidWithLink(question, response);
             } else if (response) {
               this.setInvalid(question, response);
             } else {
@@ -100,7 +107,12 @@ export default {
         this.console.error(errorMessage);
         this.setInvalid(question, errorMessage);
       }
-    }, 
+    },
+    setInvalidWithLink(question, linkMsg = { message: '', link: {}}) {
+      question.isValid = false;
+      question.validationMessage = linkMsg.message;
+      question.validationLink = linkMsg.link;
+    },
     setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
       question.validationMessage = message;
@@ -615,6 +627,12 @@ export default {
 /* Question hint div, Question link div */
 .question-hint, .question-link {
   padding-left: 4px;
+}
+
+/* Question valdation message with link icon img */
+.validation-link-icon {
+  vertical-align: middle;
+  padding-right: 5px; 
 }
 
 </style>
