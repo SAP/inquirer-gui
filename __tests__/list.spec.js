@@ -164,7 +164,7 @@ describe('Question of type list', () => {
     expect(answered[0].country).toBeUndefined();
 
     // test validation text
-    const errors = wrapper.findAll('div.error-validation-text');
+    const errors = wrapper.findAll('span.error-validation-text');
     expect(errors.at(0).element.innerHTML).toBe('Mandatory field');
 
   });
@@ -303,7 +303,7 @@ describe('Question of type list', () => {
     await Vue.nextTick();
 
     // should get 2 * and validation error message from list2
-    let errorValidationText = wrapper.findAll("div.error-validation-text");
+    let errorValidationText = wrapper.findAll("span.error-validation-text");
     expect(errorValidationText.length).toEqual(1);
     let mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(2);
@@ -314,7 +314,7 @@ describe('Question of type list', () => {
     await Vue.nextTick();
 
     // should get 3 * and validation error message from list3
-    errorValidationText = wrapper.findAll("div.error-validation-text");
+    errorValidationText = wrapper.findAll("span.error-validation-text");
     expect(errorValidationText.length).toEqual(1);
     mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(3);
@@ -325,7 +325,7 @@ describe('Question of type list', () => {
     await Vue.nextTick();
 
     // should get 3 * and no validation error messages
-    errorValidationText = wrapper.findAll("div.error-validation-text");
+    errorValidationText = wrapper.findAll("span.error-validation-text");
     expect(errorValidationText.length).toEqual(0);
     mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(3);
