@@ -90,7 +90,7 @@ export default {
               this.setValid(question);
             } else if (response === false) {
               this.setInvalid(question);
-            } else if (response.hasOwnProperty('link') && response.hasOwnProperty('message')) { // Validation messages with links
+            } else if (response?.hasOwnProperty('link') && response?.hasOwnProperty('message')) { // Validation messages with links
               this.setInvalidWithLink(question, response);
             } else if (response) {
               this.setInvalid(question, response);
