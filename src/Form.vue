@@ -115,6 +115,7 @@ export default {
     },
     setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
+      question.validationLink = undefined; // Ensure existing validation link is removed
       question.validationMessage = message;
     },
     setValid(question) {
