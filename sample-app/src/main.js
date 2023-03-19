@@ -60,6 +60,17 @@ const questions1 = [
   {
     type: "input",
     guiOptions: {
+      type: "radio",
+      hint: "Please enter your password"
+    },
+    name: "agree",
+    message: "",
+    choices: ["new", "existing"],
+    default: "existing"
+  },
+  {
+    type: "input",
+    guiOptions: {
       type: "file-browser",
       applyDefaultWhenDirty: true,
       link: {
