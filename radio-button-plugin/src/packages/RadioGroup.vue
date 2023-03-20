@@ -4,6 +4,7 @@
       style="margin-bottom:0pt;padding-bottom:0pt"
       :value="question.answer"
       @change="onClick"
+      row
       dense
     >
       <v-radio class="radioClass" v-for="item in question.choices" :key="item" :label="item" :value="item">{{item}}</v-radio>
