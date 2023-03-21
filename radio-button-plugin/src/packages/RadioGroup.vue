@@ -20,15 +20,15 @@ export default {
   },
   methods: {
     getRadioId(name){
-        return "radio_"+ name;
+        return `radio_${name}`;
     },
     onClick(answer) {
-      if (answer !== undefined) {
+      if (answer) {
         this.$emit("answerChanged", this.question.name, answer);
       }
     },
     isVisible() {
-      return this.hasItem() && (this.question.visible!==false);
+      return this.hasItem() && this.question.visible;
     },
     hasItem() {
       return this.question.choices.length>0;
