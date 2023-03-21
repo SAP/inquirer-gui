@@ -23,12 +23,12 @@ export default {
         return `radio_${name}`;
     },
     onClick(answer) {
-      if (answer) {
+      if (answer !== undefined) {
         this.$emit("answerChanged", this.question.name, answer);
       }
     },
     isVisible() {
-      return this.hasItem() && this.question.visible;
+      return this.hasItem() && (this.question.visible!==false);
     },
     hasItem() {
       return this.question.choices.length>0;
