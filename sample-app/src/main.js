@@ -61,12 +61,12 @@ const questions1 = [
     type: "input",
     guiOptions: {
       type: "radio",
-      hint: "Please enter your password"
+      hint: "Please select a radio"
     },
     name: "agree",
-    message: "",
-    choices: ["new", "existing"],
-    default: "existing"
+    message: "Select mood",
+    choices: ["happy", "sad"],
+    default: "happy"
   },
   {
     type: "input",
