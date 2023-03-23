@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isVisible()">
+  <div class="radio" v-if="isVisible()">
     <v-radio-group
       style="margin-bottom:0pt;padding-bottom:0pt"
       :value="question.answer"
