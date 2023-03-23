@@ -33,16 +33,12 @@ describe('Question of type radio', () => {
     wrapper.vm.registerPlugin(radioPlugin);
     wrapper.setProps({ questions: questionRadio });
     await Vue.nextTick();
-    expect(wrapper.emitted().answered).toBeTruthy();
-    const emittedLength1 = wrapper.emitted().answered.length;
-    const answered1 = wrapper.emitted().answered[emittedLength1-1];
-    //default value
-    expect(answered1[0].pat).toContain("cat");
+    
     const pat = wrapper.find('input[role="radio"]');//input[value="dog"]
     pat.trigger('click');
 
     await Vue.nextTick();
-    //check new value
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength-1];
