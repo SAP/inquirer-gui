@@ -23,7 +23,7 @@ export default {
         return `radio_${name}`;
     },
     onClick(answer) {
-      if (answer !== undefined) {
+      if (answer) {
         this.$emit("answerChanged", this.question.name, answer);
       }
     },
