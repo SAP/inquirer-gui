@@ -60,6 +60,17 @@ const questions1 = [
   {
     type: "input",
     guiOptions: {
+      type: "radio",
+      hint: "Please select a radio"
+    },
+    name: "agree",
+    message: "Select mood",
+    choices: ["happy", "sad"],
+    default: "happy"
+  },
+  {
+    type: "input",
+    guiOptions: {
       type: "file-browser",
       applyDefaultWhenDirty: true,
       link: {

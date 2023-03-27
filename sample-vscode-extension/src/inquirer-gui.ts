@@ -73,6 +73,17 @@ const questions1 = [
         }
     },
     {
+        type: "input",
+        guiOptions: {
+          type: "radio",
+          hint: "Please select"
+        },
+        name: "pat",
+        message: "Your pat",
+        choices: ["dog", "cat"],
+        default: "cat"
+      },
+    {
         type: "list",
         name: "country",
         message: "The country where you live",
