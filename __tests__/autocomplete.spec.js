@@ -37,10 +37,7 @@ const autocompleteQuestions = [
       lastInput = input;
       return result;
     },
-    additionalInfo: () => (lastInput !== "5" ? `${numResults} results returned` : ""),
-    guiOptions: {
-      mandatory: true,
-    },
+    additionalInfo: () => (lastInput !== "5" ? `${numResults} results returned` : "")
   },
 ];
 
