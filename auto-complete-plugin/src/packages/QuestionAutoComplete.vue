@@ -58,7 +58,6 @@ export default {
       return stripAnsi(value);
     },
     searchResult(result) {
-      console.log(`Search result: ${result}`);
       if (typeof result === "string") {
         this.searchResults = [];
       } else {
@@ -83,17 +82,11 @@ export default {
   },
   watch: {
     searchInput: utils.debounce(function(val) {
-      console.log(`searchInput: ${val}`);
       // Don't re-run search when answer is selected
       if (val !== null && val !== undefined && this.question.answer !== val) {
         this.$emit("customEvent", this.question.name, "source", this.searchResult, this.answers, val);
       }
-    }, 280),
-    answers: {
-      handler(val) {
-        console.log(`Answers: ${JSON.stringify(val)}`);
-      }
-    },
+    }, 280)
   },
   props: {
     question: Object,

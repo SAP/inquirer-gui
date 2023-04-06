@@ -2,7 +2,7 @@ import { mount } from "@vue/test-utils";
 import Vue from "vue";
 import Form from "../src/Form.vue";
 import Vuetify from "vuetify";
-import QuestionAutocomplete from "../auto-complete-plugin/src/packages/QuestionAutocomplete";
+import QuestionAutocomplete from "../auto-complete-plugin/src/packages/QuestionAutoComplete";
 import utils from "./utils";
 
 let numResults = 0;
@@ -22,7 +22,6 @@ const autocompleteQuestions = [
     name: "autocomplete",
     message: "Type to search",
     source: async (previousAnswers, input) => {
-      console.log("Source executed");
       let result;
       if (input === "1") {
         result = result1;
