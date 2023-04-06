@@ -58,11 +58,7 @@ export default {
       return stripAnsi(value);
     },
     searchResult(result) {
-      if (typeof result === "string") {
-        this.searchResults = [];
-      } else {
-        this.searchResults = utils.normalizeChoices(result);
-      }
+      this.searchResults = utils.normalizeChoices(result);
       this.$emit("setBusyIndicator", false);
       if (typeof this.question.additionalInfo === "function") {
         this.$emit("customEvent", this.question.name, "additionalInfo", this.additionalInfo);
