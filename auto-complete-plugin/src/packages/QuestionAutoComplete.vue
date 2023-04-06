@@ -113,7 +113,6 @@ export default {
   color: var(--vscode-foreground, #616161);
   padding: 8px 16px;
 }
-/** todo : only if last child is moreInfo */
 .v-list {
   padding-bottom: 0px;
 }
