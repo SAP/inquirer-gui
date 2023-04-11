@@ -33,6 +33,7 @@ import RadioGroup from "@sap-devx/inquirer-gui-radio-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
 import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
 import QuestionSampleTiles from "./QuestionSampleTiles";
+import AutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
 
 /**
  * If you want to make changes to the plugins from source in this repo
@@ -141,6 +142,10 @@ export default {
 
     options = {};
     Vue.use(TilesPlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
+    options = {};
+    Vue.use(AutoCompletePlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
     plugin = {
