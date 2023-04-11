@@ -13,6 +13,7 @@
     outlined
     dense
     :menu-props="{ maxHeight: 150 }"
+    :no-data-text="emptyText"
   >
     <template v-slot:item="{ item, attrs, on }">
       <v-list-item :disabled="item.type === 'separator'" v-bind="attrs" v-on="on">
@@ -74,15 +75,16 @@ export default {
       clickToDisplay: "Start typing to search",
       searchResults: [],
       moreInfo: null,
+      emptyText: this.question.emptyText || undefined,
     };
   },
   watch: {
-    searchInput: utils.debounce(function(val) {
+    searchInput: utils.debounce(function (val) {
       // Don't re-run search when answer is selected
       if (val !== null && val !== undefined && this.question.answer !== val) {
         this.$emit("customEvent", this.question.name, "source", this.searchResult, this.answers, val);
       }
-    }, 280)
+    }, 280),
   },
   props: {
     question: Object,

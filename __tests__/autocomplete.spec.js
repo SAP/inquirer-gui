@@ -41,6 +41,22 @@ const autocompleteQuestions = [
   },
 ];
 
+const emptyTextQuestion = [
+  {
+    type: "autocomplete",
+    name: "noResultsDefault",
+    message: "Type to search1",
+    source: () => []
+  },
+  {
+    type: "autocomplete",
+    name: "noResultsEmptyText",
+    message: "Type to search2",
+    source: () => [],
+    emptyText: "No results found..."
+  },
+]
+
 describe("Tests autocomplete question", () => {
   let wrapper;
 
@@ -162,5 +178,27 @@ describe("Tests autocomplete question", () => {
 
     let moreInfo = wrapper.find(".moreInfoBottom");
     expect(moreInfo.exists()).toBe(false);
+  });
+
+  test("Empty (no data) text is used if provided", async () => {
+    wrapper.setProps({ questions: emptyTextQuestion });
+    await Vue.nextTick();
+
+    const autocompleteCompDefault = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(0);
+    const searchInput1 = autocompleteCompDefault.find("input");
+    searchInput1.trigger("click");
+    await Vue.nextTick();
+
+    const items1 = autocompleteCompDefault.findAllComponents({ name: "v-list-item" });
+    expect(items1.at(0).element.textContent).toEqual('No data available');
+
+    const autocompleteCompEmptyText = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(1);
+    const searchInput2 = autocompleteCompEmptyText.find("input");
+    searchInput2.trigger("click");
+    await Vue.nextTick();
+
+    const items2 = autocompleteCompEmptyText.findAllComponents({ name: "v-list-item" });
+    expect(items2.at(0).element.textContent).toEqual(emptyTextQuestion[1].emptyText);
+
   });
 });
