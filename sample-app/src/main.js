@@ -253,12 +253,6 @@ const questions1 = [
     message: 'US State:',
     source: (answers, input) => {
       // Simulated remote api call
-     /*  filteredStates = states.filter(e => {
-        return (e || '').toLowerCase().indexOf((value || '').toLowerCase()) > -1
-      })
-      if (answers.country !== "USA") {
-        filteredStates.unshift("N/A");
-      } */
       filteredStates = states.filter(state => {
         return state.startsWith(input);
       });
