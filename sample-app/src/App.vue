@@ -35,11 +35,12 @@ import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
 import QuestionSampleTiles from "./QuestionSampleTiles";
 import AutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
 
-/** During development:
- *    in terminal type: npm run prep-local
- *    uncomment lines below and comment lines above*/
-// import "../form/form.css";
-// import Form from "../form/form.umd";
+/**
+ * If you want to make changes to the plugins from source in this repo
+ * do not consume them from npm:
+import DatePlugin from "../../sample-plugin/src/index";
+import FileBrowserPlugin from "../../file-browser-plugin/src/index";
+ */
 
 export default {
   name: "app",
