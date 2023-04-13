@@ -26,8 +26,10 @@
         :is="getComponentByQuestionType(question)"
         :key="index"
         :question="question"
+        :answers="getAnswers()"
         @answerChanged="onAnswerChanged"
         @customEvent="onCustomEvent"
+        @setBusyIndicator="setBusyIndicator"
       ></component>
       <div v-if="shouldShowValidationMessage(question)" :key="'validation-' + index" :id="'validation-msg-' + index">
         <span class="error-validation-text">{{question.validationMessage}}</span>
@@ -48,7 +50,7 @@ import Plugins from "./Plugins";
 const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
-const MANDATORY_TYPES = ["list", "rawlist", "expand"];
+const MANDATORY_TYPES = ["list", "rawlist", "expand", "autocomplete"];
 
 export default {
   name: "Form",
@@ -64,6 +66,9 @@ export default {
     console: () => console
   },
   methods: {
+    setBusyIndicator(isBusy) {
+      this.$emit("setBusyIndicator", isBusy);
+    },
     // Execute a command embedded in an event or directly as { id: <commandIdString>, params: <paramObject> }
     executeCommand(cmdOrEvent) {
       this.$emit("parentExecuteCommand", cmdOrEvent);
@@ -85,7 +90,7 @@ export default {
       try {
         if (typeof question.validate === "function") {
             const answers = this.getAnswers();
-            const response = await question.validate(answer, answers); 
+            const response = await question.validate(answer, answers);
             if (response === true) {
               this.setValid(question);
             } else if (response === false) {
@@ -216,14 +221,14 @@ export default {
         case "expand":
         case "checkbox":
           if (!Array.isArray(question._choices)) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           }
           // handle complex choice cases below
           break;
         default:
           if (question._default === undefined) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
           }
           return question._default;
       }
@@ -256,14 +261,14 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           } else {
             return question._choices[index].value;
           }
         case "expand":
           if (question._choices.length === 0) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           }
           if (typeof question._default === "number") {
@@ -276,7 +281,7 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           } else {
             return question._choices[index].value;
@@ -327,7 +332,7 @@ export default {
     },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
-        // we regard undefined as unaswered, so we do not
+        // we regard undefined as unanswered, so we do not
         // call question methods or emit the answered event
         return;
       }
@@ -350,7 +355,7 @@ export default {
       const answers = this.getAnswers();
       // evaluate methods for questions following answered question (e.g. when)
       let shouldStart = false;
-      const whenPromises = []; 
+      const whenPromises = [];
       for (let question of this.questions) {
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
@@ -490,7 +495,7 @@ export default {
             if (question.__origAnswer === undefined) {
               _default = question.default;
             } else {
-              _default = question.__origAnswer; 
+              _default = question.__origAnswer;
             }
           }
           this.$set(question, "_default", _default);

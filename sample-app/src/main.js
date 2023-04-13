@@ -2,13 +2,78 @@ import Vue from "vue";
 import App from "./App.vue";
 import "@sap-devx/inquirer-gui/dist/form.css";
 import Form from "@sap-devx/inquirer-gui";
-/** During development:
+/** 
+ *  During development:
  *    in terminal type: npm run prep-local
- *    uncomment lines below and comment lines above*/
-// import "../form/form.css";
-// import Form from "../form/form.umd";
+ *    uncomment lines below and comment lines above
+ * import "../form/form.css";
+ * import Form from "../form/form.umd";
+ **/
+
 const SAP_IMAGE = require("./sapImage").default;
 const WORKFLOW_IMAGE = require("./workflowImage").default;
+const states =  [
+  'Alabama',
+  'Alaska',
+  'American Samoa',
+  'Arizona',
+  'Arkansas',
+  'California',
+  'Colorado',
+  'Connecticut',
+  'Delaware',
+  'District of Columbia',
+  'Federated States of Micronesia',
+  'Florida',
+  'Georgia',
+  'Guam',
+  'Hawaii',
+  'Idaho',
+  'Illinois',
+  'Indiana',
+  'Iowa',
+  'Kansas',
+  'Kentucky',
+  'Louisiana',
+  'Maine',
+  'Marshall Islands',
+  'Maryland',
+  'Massachusetts',
+  'Michigan',
+  'Minnesota',
+  'Mississippi',
+  'Missouri',
+  'Montana',
+  'Nebraska',
+  'Nevada',
+  'New Hampshire',
+  'New Jersey',
+  'New Mexico',
+  'New York',
+  'North Carolina',
+  'North Dakota',
+  'Northern Mariana Islands',
+  'Ohio',
+  'Oklahoma',
+  'Oregon',
+  'Palau',
+  'Pennsylvania',
+  'Puerto Rico',
+  'Rhode Island',
+  'South Carolina',
+  'South Dakota',
+  'Tennessee',
+  'Texas',
+  'Utah',
+  'Vermont',
+  'Virgin Island',
+  'Virginia',
+  'Washington',
+  'West Virginia',
+  'Wisconsin',
+  'Wyoming',
+];
+let filteredStates = [];
 
 const questions0 = [
   {
@@ -183,6 +248,25 @@ const questions1 = [
       }
   },
   {
+    name: 'state',
+    type: 'autocomplete',
+    message: 'US State:',
+    source: (answers, input) => {
+      // Simulated remote api call
+      filteredStates = states.filter(state => {
+        return state.startsWith(input);
+      });
+      console.log(`States: ${JSON.stringify(answers)}`);
+      if (answers && answers.country !== "USA") {
+        filteredStates.unshift("Not Applicable");
+      }
+      console.log(`States: ${JSON.stringify(filteredStates)}`);
+      return filteredStates;
+    },
+    additionalInfo: () => `${filteredStates.length} results returned`,
+    emptyText: 'No results available right now....'
+  },
+  {
       type: "checkbox",
       name: "citizenship",
       message: "Your citizenship",
@@ -195,7 +279,7 @@ const questions1 = [
       message: "Do you agree to the conditions?",
       choices: ["Yes", "No", "Maybe"],
       default: "No"
-  }
+  },
 ];
 
 const questions2 = [
