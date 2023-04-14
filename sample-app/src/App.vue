@@ -29,9 +29,11 @@ import main from "./main.js";
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 import LabelPlugin from "@sap-devx/inquirer-gui-label-plugin";
 import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
+import RadioGroup from "@sap-devx/inquirer-gui-radio-plugin";
 import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
 import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
 import QuestionSampleTiles from "./QuestionSampleTiles";
+import AutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
 
 /**
  * If you want to make changes to the plugins from source in this repo
@@ -123,6 +125,13 @@ export default {
     Vue.use(FileBrowserPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
+  
+    let plugin = {
+        questionType: "radio",
+        component: RadioGroup
+    };
+    this.$refs.form.registerPlugin(plugin);
+
     options = {};
     Vue.use(LoginPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
@@ -135,7 +144,11 @@ export default {
     Vue.use(TilesPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
 
-    const plugin = {
+    options = {};
+    Vue.use(AutoCompletePlugin, options);
+    this.$refs.form.registerPlugin(options.plugin);
+
+    plugin = {
       questionType: "sample-tiles",
       component: QuestionSampleTiles
     };
