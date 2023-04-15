@@ -34,7 +34,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"dependencies": {
-		"@sap-devx/webview-rpc": "^0.3.1"
+		"@sap-devx/webview-rpc": "^0.4.1"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.1",
@@ -43,7 +43,8 @@
 		"@types/vscode": "^1.41.0",
 		"glob": "^7.1.5",
 		"tslint": "^5.20.0",
-		"typescript": "^3.6.4",
-		"vscode-test": "^1.2.2"
+		"typescript": "^3.8.0",
+		"vscode-test": "^1.2.2",
+		"@vscode-logging/types": "^0.1.4"
 	}
 }

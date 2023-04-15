@@ -1,0 +1,24 @@
+{
+  "name": "@sap-devx/inquirer-gui-auto-complete-plugin",
+  "version": "0.0.1",
+  "description": "Auto-complete Vue plugin for https://github.com/mokkabonna/inquirer-autocomplete-prompt",
+  "main": "dist/autoCompletePlugin.umd.js",
+  "scripts": {
+    "build": "vue-cli-service build --target lib --name autoCompletePlugin src/index.js",
+    "build-dev": "vue-cli-service build --mode development --target lib --name autoCompletePlugin src/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/auto-complete-plugin"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^2.6.10",
+    "strip-ansi": "^6.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "^3.11.0"
+  }
+}
