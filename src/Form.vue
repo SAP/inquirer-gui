@@ -26,14 +26,20 @@
         :is="getComponentByQuestionType(question)"
         :key="index"
         :question="question"
+        :answers="getAnswers()"
         @answerChanged="onAnswerChanged"
         @customEvent="onCustomEvent"
+        @setBusyIndicator="setBusyIndicator"
       ></component>
-      <div
-        v-if="shouldShowValidationMessage(question)"
-        class="error-validation-text"
-        :key="'validation-' + index"
-      >{{question.validationMessage}}</div>
+      <div v-if="shouldShowValidationMessage(question)" :key="'validation-' + index" :id="'validation-msg-' + index">
+        <span class="error-validation-text">{{question.validationMessage}}</span>
+        <span class="question-link" v-if="question.validationLink">
+            <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="cmdLinkText"></span></a>
+            <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="urlLinkText"></span></a>
+          </span>
+      </div>
     </template>
 	<v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
   </v-form>
@@ -44,7 +50,7 @@ import Plugins from "./Plugins";
 const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
-const MANDATORY_TYPES = ["list", "rawlist", "expand"];
+const MANDATORY_TYPES = ["list", "rawlist", "expand", "autocomplete"];
 
 export default {
   name: "Form",
@@ -60,8 +66,12 @@ export default {
     console: () => console
   },
   methods: {
-    executeCommand(event) {
-      this.$emit("parentExecuteCommand", event);
+    setBusyIndicator(isBusy) {
+      this.$emit("setBusyIndicator", isBusy);
+    },
+    // Execute a command embedded in an event or directly as { id: <commandIdString>, params: <paramObject> }
+    executeCommand(cmdOrEvent) {
+      this.$emit("parentExecuteCommand", cmdOrEvent);
     },
     shouldShowValidationMessage(question) {
       return question.shouldShow && !question.isValid && 
@@ -80,11 +90,13 @@ export default {
       try {
         if (typeof question.validate === "function") {
             const answers = this.getAnswers();
-            const response = await question.validate(answer, answers); 
+            const response = await question.validate(answer, answers);
             if (response === true) {
               this.setValid(question);
             } else if (response === false) {
               this.setInvalid(question);
+            } else if (response?.hasOwnProperty('link') && response.hasOwnProperty('message')) { // Validation messages with links
+              this.setInvalidWithLink(question, response);
             } else if (response) {
               this.setInvalid(question, response);
             } else {
@@ -100,9 +112,15 @@ export default {
         this.console.error(errorMessage);
         this.setInvalid(question, errorMessage);
       }
-    }, 
+    },
+    setInvalidWithLink(question, linkMsg = { message: '', link: {}}) {
+      question.isValid = false;
+      question.validationMessage = linkMsg.message;
+      question.validationLink = linkMsg.link;
+    },
     setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
+      question.validationLink = undefined; // Ensure existing validation link is removed
       question.validationMessage = message;
     },
     setValid(question) {
@@ -203,14 +221,14 @@ export default {
         case "expand":
         case "checkbox":
           if (!Array.isArray(question._choices)) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           }
           // handle complex choice cases below
           break;
         default:
           if (question._default === undefined) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
           }
           return question._default;
       }
@@ -243,14 +261,14 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           } else {
             return question._choices[index].value;
           }
         case "expand":
           if (question._choices.length === 0) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           }
           if (typeof question._default === "number") {
@@ -263,7 +281,7 @@ export default {
             });
           }
           if (index < 0 || index > question._choices.length - 1) {
-            this.setInvalid(question); 
+            this.setInvalid(question);
             return;
           } else {
             return question._choices[index].value;
@@ -314,7 +332,7 @@ export default {
     },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
-        // we regard undefined as unaswered, so we do not
+        // we regard undefined as unanswered, so we do not
         // call question methods or emit the answered event
         return;
       }
@@ -337,7 +355,7 @@ export default {
       const answers = this.getAnswers();
       // evaluate methods for questions following answered question (e.g. when)
       let shouldStart = false;
-      const whenPromises = []; 
+      const whenPromises = [];
       for (let question of this.questions) {
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
@@ -477,7 +495,7 @@ export default {
             if (question.__origAnswer === undefined) {
               _default = question.default;
             } else {
-              _default = question.__origAnswer; 
+              _default = question.__origAnswer;
             }
           }
           this.$set(question, "_default", _default);
@@ -615,6 +633,12 @@ export default {
 /* Question hint div, Question link div */
 .question-hint, .question-link {
   padding-left: 4px;
+}
+
+/* Question valdation message with link icon img */
+.validation-link-icon {
+  vertical-align: middle;
+  padding-right: 5px; 
 }
 
 </style>
