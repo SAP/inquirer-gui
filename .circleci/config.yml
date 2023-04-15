@@ -19,11 +19,6 @@ jobs: # a collection of steps
       - image: cimg/node:16.19 # Current BAS node version
     <<: *default-test
 
-  test-node18:
-    docker:
-      - image: cimg/node:18.16 # Future BAS node version
-    <<: *default-test
-
   compliance:
     docker:
       - image: cimg/python:3.10.0
@@ -97,7 +92,6 @@ workflows:
   test-publish:
     jobs:
       - test-node16
-      - test-node18
       - compliance
       - build-and-test:
           filters:
