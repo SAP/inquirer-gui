@@ -17,6 +17,6 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
-    "@vue/cli-service": "^3.11.0"
+    "@vue/cli-service": "^5.0.8"
   }
 }

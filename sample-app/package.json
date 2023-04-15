@@ -30,12 +30,12 @@
     "@sap-devx/webview-rpc": "^0.3.1",
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "2.6.12",
-    "vuetify": "2.3.10"
+    "vuetify": "2.6.10"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
-    "@vue/cli-plugin-unit-jest": "^4.1.1",
+    "@vue/cli-plugin-unit-jest": "^5.0.8",
     "@vue/cli-service": "^3.11.0",
     "@vue/test-utils": "^1.0.0-beta.29",
     "babel-eslint": "^10.0.1",
