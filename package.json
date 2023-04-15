@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
@@ -68,7 +68,7 @@
     "@commitlint/config-conventional": "12.1.1",
     "@vue/cli-plugin-babel": "4.5.12",
     "@vue/cli-plugin-eslint": "4.5.13",
-    "@vue/cli-plugin-unit-jest": "4.5.12",
+    "@vue/cli-plugin-unit-jest": "4.5.13",
     "@vue/cli-service": "4.5.12",
     "@vue/test-utils": "1.2.0",
     "babel-eslint": "^10.0.1",

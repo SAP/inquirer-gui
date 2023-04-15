@@ -22,6 +22,17 @@ const questions1 = [
   },
   {
     type: "input",
+    guiOptions: {
+      type: "radio",
+      hint: "Please select radio"
+    },
+    name: "flour",
+    message: "your flour",
+    choices: ["daffodil", "rose"],
+    default: "daffodil"
+  },
+  {
+    type: "input",
     name: "notes",
     message: function(answers) {
       return `Information about ${answers.name}`;
