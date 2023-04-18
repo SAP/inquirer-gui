@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "strip-ansi": "^6.0.0",
-    "vue": "2.6.12",
+    "vue": "2.7.14",
     "vuetify": "2.3.10"
   },
   "devDependencies": {
@@ -85,7 +85,7 @@
     "sass-loader": "10.0.2",
     "vue-cli-plugin-vuetify": "2.4.1",
     "vue-jest": "3.0.7",
-    "vue-template-compiler": "2.6.12",
+    "vue-template-compiler": "2.7.14",
     "vuetify-loader": "1.7.3",
     "webpack": "4.46.0"
   },
