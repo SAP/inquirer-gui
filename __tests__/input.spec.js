@@ -264,6 +264,52 @@ const questionsWithValidateLinks = [
   }
 ];
 
+const questionsWithAdditionalMessages = [
+  {
+    type: "input",
+    name: "inputToUpdateAddMsg",
+    default: "some value",
+  },
+  {
+    type: "input",
+    name: "inputWithMoreMessages",
+    message: "More messages input",
+    validate: function(input) {
+      if (input.length >= 2) {
+        return true;
+      } else {
+        return "Name must be at least 2 characters long";
+      }
+    },
+    additionalMessages: (input, answers) => {
+      if (input === 'warn') {
+        return {
+          message: "Some warning message",
+          severity: 1
+        }
+      }
+      if (input === 'info') {  
+        return { 
+          message: "Some info message",
+          severity: 2
+        }
+      }
+      if (input === 'error') {
+        return {
+          message: "Some error message",
+          severity: 0
+        }
+      }
+      if (input === 'warn1' && answers.inputToUpdateAddMsg === 'another value') {
+        return {
+          message: "Some dependant warning message",
+          severity: 1
+        }
+      }
+    }
+  }
+];
+
 describe("Questions of type input, password and number", () => {
   test("Input", async () => {
     const value1 = "my input";
@@ -655,8 +701,7 @@ describe("Questions of type input, password and number", () => {
 
     // Question at index 0 is validation with url link
     const valWithLinkInput = allInputs.at(0);
-    valWithLinkInput.element.value = "anyvalue0";
-    valWithLinkInput.trigger("input");
+    valWithLinkInput.setValue("anyvalue0");
     await utils.sleep(300);
 
     // Check validation messages
@@ -685,8 +730,7 @@ describe("Questions of type input, password and number", () => {
 
     // Question at index 1 is validation with command link
     let valWithCmdInput = allInputs.at(1);
-    valWithCmdInput.element.value = "triggerValLink";
-    valWithCmdInput.trigger("input");
+    valWithCmdInput.setValue("triggerValLink");
     await utils.sleep(300);
 
     let validationMsgWithCmd = wrapper.find("#validation-msg-" + 1);
@@ -713,5 +757,69 @@ describe("Questions of type input, password and number", () => {
     ).toEqual("text validation message 1234");
     expect(validationMsgWithCmd.find("span.question-link").isVisible()).toBe(false);
     expect(validationMsgWithCmd.find("#cmdLinkText").exists()).toBe(false); */
+  });
+
+  test("Input with additional messages", async () => {
+    const wrapper = mount(Form, {});
+    wrapper.setProps({ questions: questionsWithAdditionalMessages });
+    await Vue.nextTick();
+    await utils.sleep(300);
+
+    expect(wrapper.find("#add-msg-" + 0).exists()).toBe(false);
+    expect(wrapper.find("#add-msg-" + 1).exists()).toBe(false);
+    expect(wrapper.find('#validation-msg-1').exists()).toBe(true);
+
+    const allInputs = wrapper.findAll("input");
+    const inputWithAddMsgs = allInputs.at(1);
+    inputWithAddMsgs.setValue("warn");
+    await utils.sleep(300);
+
+    // Check that we have warning message and the validation message is not shown anymore
+    expect(wrapper.find('#validation-msg-1').exists()).toBe(false);
+    let addMessage = wrapper.find(".add-messages");
+
+    expect(
+      addMessage.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()
+    ).toBe(true);
+
+    expect(addMessage.find('span.messages-text').text()).toEqual("Some warning message");
+
+    inputWithAddMsgs.setValue("info");
+    await utils.sleep(300);
+
+    expect(
+      addMessage.find("i.v-icon.messages-icon.severity-info.mdi-information-outline").exists()
+    ).toBe(true);
+
+    expect(addMessage.find('span.messages-text').text()).toEqual("Some info message");
+
+    inputWithAddMsgs.setValue("error");
+    await utils.sleep(300);
+
+    expect(
+      addMessage.find("i.v-icon.messages-icon.severity-error.mdi-close-circle-outline").exists()
+    ).toBe(true);
+
+    expect(addMessage.find('span.messages-text').text()).toEqual("Some error message");
+    
+    // Test that other answers (previous answers) can be used to trigger updates
+    inputWithAddMsgs.setValue("warn1");
+    await utils.sleep(300);
+
+    expect(wrapper.find(".add-messages").exists()).toBe(false);
+
+    const question1Input = allInputs.at(0);
+    question1Input.setValue("another value");
+    await utils.sleep(300);
+
+    const addMessageDependant = wrapper.find("#add-msg-1");
+    expect(addMessageDependant.exists()).toBe(true);
+
+    expect(
+      addMessageDependant.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()
+    ).toBe(true);
+
+    expect(addMessageDependant.find('span.messages-text').text()).toEqual("Some dependant warning message");
+
   });
 });
