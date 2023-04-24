@@ -32,7 +32,7 @@
         @setBusyIndicator="setBusyIndicator"
       ></component>
       <div v-if="shouldShowValidationMessage(question)" class="validation-messages" :key="'validation-' + index" :id="'validation-msg-' + index">
-        <span class="messages-text severity-error">{{question.validationMessage}}</span>
+        <span class="error-validation-text">{{question.validationMessage}}</span>
         <span class="question-link" v-if="question.validationLink">
             <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
               <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="cmdLinkText"></span>
@@ -42,7 +42,7 @@
             </a>
         </span>
       </div>
-      <div v-else-if="shouldShowMoreMessages(question)" class="more-messages" :key="'more-messages' + index" :id="'more-messages-' + index">
+      <div v-else-if="shouldShowAdditionalMessages(question)" class="add-messages" :key="'additional-msg-' + index" :id="'add-msg-' + index">
         <v-icon v-on="on" class="messages-icon" :class="severityMessageClass(question._additionalMessages.severity)">mdi-{{ severityIcon(question._additionalMessages.severity) }}</v-icon><span class="messages-text" :class="severityMessageClass(question._additionalMessages.severity)">{{question._additionalMessages.message}}</span>
       </div>
     </template>
@@ -83,11 +83,9 @@ export default {
   },
   methods: {
     severityMessageClass(severity) {
-      this.console.info(`severityMessgeClass: ${severity}`);
       return this.severityClass[severity];
     },
     severityIcon(severity) {
-      this.console.info(`Severity icon : ${severity}`);
       return this.severityIconName[severity];
     },
     setBusyIndicator(isBusy) {
@@ -97,8 +95,7 @@ export default {
     executeCommand(cmdOrEvent) {
       this.$emit("parentExecuteCommand", cmdOrEvent);
     },
-    shouldShowMoreMessages(question) {
-      this.console.info(`shouldShowMoreMessages ${JSON.stringify(question._additionalMessages)}`);
+    shouldShowAdditionalMessages(question) {
       return question._additionalMessages && question._additionalMessages.message;
     },
     shouldShowValidationMessage(question) {
@@ -359,21 +356,17 @@ export default {
       }
     },
 
-    async updateMoreMessages(question, answers, questionIndex) {
-      // Should we re-evaluate more messages TODO: create function
-      this.console.info(`On answerChanged: name: ${question.name} answers: ${answers}`);
+    async updateAdditionalMessages(question, answers, questionIndex) {
+      
       if (typeof question.additionalMessages === "function") {
-        this.console.info(`XXXX More messages: name: ${question.name} answer: ${question.answer}`);
         try {
-            question._additionalMessages = await question.additionalMessages(question.answer, answers);
-            // Vue 2 requires a new object for reactivity to trigger updates
-            this.questions.splice(questionIndex, 1, Object.assign({}, question));
-            this.console.info(`More messages: ${JSON.stringify(question._additionalMessages)}`);
+          question._additionalMessages = await question.additionalMessages(question.answer, answers);
+          // Vue 2 requires a new object for reactivity to trigger updates
+          this.questions.splice(questionIndex, 1, Object.assign({}, question));
         } catch(e) {
           this.console.error(`Could not evaluate additionalMessages() for ${question.name}`);
         }
       }
-      return
     },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
@@ -401,8 +394,7 @@ export default {
 
       // More messages (info/warn) should only be shown when the input is valid
       if (answeredQuestion.isValid) {
-        this.console.log(`onAnswered: ${JSON.stringify(answeredQuestion)}`);
-        this.updateMoreMessages(answeredQuestion, answers, index);
+        this.updateAdditionalMessages(answeredQuestion, answers, index);
       }
 
       // evaluate methods for other questions following answered question (e.g. when)
@@ -413,9 +405,7 @@ export default {
         
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
-          this.console.info(`On answerChanged: name: ${answeredQuestion.name} answers: ${answeredQuestion.answer} shouldStart: ${shouldStart}`);
         } else if (shouldStart) {
-          this.console.info('shouldStart...');
           let shouldValidate = false;
           // evaluate when()
           if (typeof question.when === "function") {
@@ -436,7 +426,6 @@ export default {
             question.shouldShow = true;
             shouldValidate = true;
           }
-          this.console.info(`Should show: ${question.name} ss: ${JSON.stringify(question.shouldShow)}`)
           if (question.shouldShow) {
             // evaluate message()
             if (typeof question.message === "function") {
@@ -485,9 +474,9 @@ export default {
             if (shouldValidate) {
               await this.doValidate(question, question.answer);
             }
-            this.console.info(`On other answerChanged before additionalMessages : name: ${question.name}`);
+            // evaluate additionalMessages
             if (question.isValid) {
-              this.updateMoreMessages(question, answers, questionIndex);
+              this.updateAdditionalMessages(question, answers, questionIndex);
             }
           }
         }
@@ -599,7 +588,7 @@ export default {
             this.console.error(`Could not evaluate when() for ${question.name}`);
           }
         }
-        this.console.info(`2nd pass question watch: ${question.name} ${question.shouldShow}`);
+
         if (question.shouldShow) {
           // evaluate message()
           if (typeof question.message === "function") {
@@ -642,12 +631,10 @@ export default {
           }
 
           // evaluate validate()
-          this.console.info(`Questions watch about to validate: ${question.name} ans: ${question.answer}`)
           await this.doValidate(question, question.answer);
-          this.console.info(`Watch, question is valid: ${question.isValid}`);
-
+          // evaluate additionalMessages()
           if (typeof question.additionalMessages === "function" && question.isValid) {
-            this.updateMoreMessages(question, answers, questionIndex);
+            this.updateAdditionalMessages(question, answers, questionIndex);
           }
         }
         questionIndex++;
@@ -701,13 +688,19 @@ $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
   padding-left: 4px;
 }
 
+/* Error validation text div */
+.error-validation-text {
+  @extend .messages-text;
+  @extend .severity-error;
+}
+
 /* Question valdation message with link icon img */
 .validation-link-icon {
   vertical-align: middle;
   padding-right: 5px; 
 }
 
-.more-messages, .validation-messages {
+.add-messages, .validation-messages {
   padding-top: 4px;
   display: flex;
   align-items: flex-start;
@@ -715,13 +708,13 @@ $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
   .messages-icon {
     padding-right: 4px;
     &.severity-error {
-      color: #{$color-error} !important;
+      color: #{$color-error} !important; // Icon color is inlined by Vuetify requiring important to override
     }
     &.severity-warn {
-      color: #{$color-warn} !important;
+      color: #{$color-warn} !important; // Icon color is inlined by Vuetify requiring important to override
     }
     &.severity-info {
-      color: #{$color-info} !important;
+      color: #{$color-info} !important; // Icon color is inlined by Vuetify requiring important to override
     }
 }
 
