@@ -705,16 +705,17 @@ $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
   display: flex;
   align-items: flex-start;
   /* Icons that appear adjacent to message texts */
-  .messages-icon {
+  .messages-icon.v-icon {
+    font-size: 20px;
     padding-right: 4px;
     &.severity-error {
-      color: #{$color-error} !important; // Icon color is inlined by Vuetify requiring important to override
+      color: #{$color-error};
     }
     &.severity-warn {
-      color: #{$color-warn} !important; // Icon color is inlined by Vuetify requiring important to override
+      color: #{$color-warn};
     }
     &.severity-info {
-      color: #{$color-info} !important; // Icon color is inlined by Vuetify requiring important to override
+      color: #{$color-info};
     }
 }
 
@@ -727,7 +728,7 @@ $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     line-break: anywhere;
-    padding-top: 1px;
+    padding-top: 0.083em; // 1px at font-size 12px
 
     &.severity-error {
       color: #{$color-error};

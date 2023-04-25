@@ -212,7 +212,27 @@ const questions1 = [
       type: "number",
       name: "number",
       message: "A number",
-      default: "0"
+      default: "2",
+      additionalMessages: (input) => {
+        if (input === "0") {
+          return {
+            message: "0 is an error message",
+            severity: input
+          }
+        }
+        if (input === "1") {
+          return {
+            message: "1 is a warning message",
+            severity: input
+          }
+        }
+        if (input === "2") {
+          return {
+            message: "2 is an informational message",
+            severity: input
+          }
+        }
+      }
   },
   {
       type: "input",
