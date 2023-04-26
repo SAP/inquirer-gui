@@ -96,7 +96,7 @@ export default {
       this.$emit("parentExecuteCommand", cmdOrEvent);
     },
     shouldShowAdditionalMessages(question) {
-      return question._additionalMessages && question._additionalMessages.message;
+      return question.shouldShow && question._additionalMessages && question._additionalMessages.message;
     },
     shouldShowValidationMessage(question) {
       return question.shouldShow && !question.isValid && 
