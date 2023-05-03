@@ -51,12 +51,16 @@
 </template>
 
 <script>
-import { Severity } from "@sap-devx/yeoman-ui-types";
 import Plugins from "./Plugins";
 const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
 const MANDATORY_TYPES = ["list", "rawlist", "expand", "autocomplete"];
+const Severity = {
+  error: 0,
+  warning: 1,
+  information: 2
+}
 
 export default {
   name: "Form",
