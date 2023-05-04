@@ -58,7 +58,7 @@
     "root": true
   },
   "dependencies": {
-    "strip-ansi": "^6.0.0",
+    "strip-ansi": "^7.0.1",
     "vue": "2.6.12",
     "vuetify": "2.3.10"
   },
