@@ -11,7 +11,7 @@
     "lint": "vue-cli-service lint",
     "prep-local": "cd .. && npm run build-for-sample",
     "prepublishOnly": "npm run build",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --disable-plugin @vue/cli-plugin-eslint",
     "test": "vue-cli-service test:unit",
     "copy-inquirer-gui": "copyfiles -V -f ../dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../package.json ./node_modules/@sap-devx/inquirer-gui",
     "copy-autocomplete-plugin": "copyfiles -V -f ../auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",

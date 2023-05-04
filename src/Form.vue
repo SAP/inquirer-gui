@@ -31,14 +31,19 @@
         @customEvent="onCustomEvent"
         @setBusyIndicator="setBusyIndicator"
       ></component>
-      <div v-if="shouldShowValidationMessage(question)" :key="'validation-' + index" :id="'validation-msg-' + index">
+      <div v-if="shouldShowValidationMessage(question)" class="validation-messages" :key="'validation-' + index" :id="'validation-msg-' + index">
         <span class="error-validation-text">{{question.validationMessage}}</span>
         <span class="question-link" v-if="question.validationLink">
             <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
-              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="cmdLinkText"></span></a>
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="cmdLinkText"></span>
+            </a>
             <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
-              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="urlLinkText"></span></a>
-          </span>
+              <img class="validation-link-icon" v-if="question.validationLink.icon" :src="question.validationLink.icon"/><span v-text="question.validationLink.text" id="urlLinkText"></span>
+            </a>
+        </span>
+      </div>
+      <div v-else-if="shouldShowAdditionalMessages(question)" class="add-messages" :key="'additional-msg-' + index" :id="'add-msg-' + index">
+        <v-icon v-on="on" class="messages-icon" :class="severityMessageClass(question._additionalMessages.severity)">mdi-{{ severityIcon(question._additionalMessages.severity) }}</v-icon><span class="messages-text" :class="severityMessageClass(question._additionalMessages.severity)">{{question._additionalMessages.message}}</span>
       </div>
     </template>
 	<v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
@@ -51,6 +56,11 @@ const assert = require('assert');
 
 const NOT_ANSWERED = "Mandatory field";
 const MANDATORY_TYPES = ["list", "rawlist", "expand", "autocomplete"];
+const Severity = {
+  error: 0,
+  warning: 1,
+  information: 2
+}
 
 export default {
   name: "Form",
@@ -59,19 +69,38 @@ export default {
   },
   data() {
     return {
-      plugins: null
+      plugins: null,
+      severityClass: {
+        [Severity.warning] : 'severity-warn',
+        [Severity.information] : 'severity-info',
+        [Severity.error] : 'severity-error'
+      },
+      severityIconName: {
+        [Severity.warning] : 'alert-outline',
+        [Severity.information] : 'information-outline',
+        [Severity.error] : 'close-circle-outline'
+      }
     };
   },
   computed: {
     console: () => console
   },
   methods: {
+    severityMessageClass(severity) {
+      return this.severityClass[severity];
+    },
+    severityIcon(severity) {
+      return this.severityIconName[severity];
+    },
     setBusyIndicator(isBusy) {
       this.$emit("setBusyIndicator", isBusy);
     },
     // Execute a command embedded in an event or directly as { id: <commandIdString>, params: <paramObject> }
     executeCommand(cmdOrEvent) {
       this.$emit("parentExecuteCommand", cmdOrEvent);
+    },
+    shouldShowAdditionalMessages(question) {
+      return question.shouldShow && question._additionalMessages && question._additionalMessages.message;
     },
     shouldShowValidationMessage(question) {
       return question.shouldShow && !question.isValid && 
@@ -128,8 +157,8 @@ export default {
       question.validationMessage = "";
     },
     setIsMandatory(question) {
-	question.isMandatory = MANDATORY_TYPES.includes(question.type) ||
-		((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
+      question.isMandatory = MANDATORY_TYPES.includes(question.type) ||
+        ((question.guiOptions && question.guiOptions.mandatory === true) && (typeof question.validate === "function"));
     },
     getComponentByQuestionType(question) {
       const guiType= question.guiOptions && question.guiOptions.type ? question.guiOptions.type : question.guiType;
@@ -330,6 +359,19 @@ export default {
         }
       }
     },
+
+    async updateAdditionalMessages(question, answers, questionIndex) {
+      
+      if (typeof question.additionalMessages === "function") {
+        try {
+          question._additionalMessages = await question.additionalMessages(question.answer, answers);
+          // Vue 2 requires a new object for reactivity to trigger updates
+          this.questions.splice(questionIndex, 1, Object.assign({}, question));
+        } catch(e) {
+          this.console.error(`Could not evaluate additionalMessages() for ${question.name}`);
+        }
+      }
+    },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
         // we regard undefined as unanswered, so we do not
@@ -351,12 +393,20 @@ export default {
       // set the answer
       answeredQuestion.answer = answer;
       await this.doValidate(answeredQuestion, answer);
-
+      
       const answers = this.getAnswers();
-      // evaluate methods for questions following answered question (e.g. when)
+
+      // More messages (info/warn) should only be shown when the input is valid
+      if (answeredQuestion.isValid) {
+        this.updateAdditionalMessages(answeredQuestion, answers, index);
+      }
+
+      // evaluate methods for other questions following answered question (e.g. when)
       let shouldStart = false;
       const whenPromises = [];
+      let questionIndex = 0;
       for (let question of this.questions) {
+        
         if (question.name === answeredQuestion.name) {
           shouldStart = true;
         } else if (shouldStart) {
@@ -380,7 +430,6 @@ export default {
             question.shouldShow = true;
             shouldValidate = true;
           }
-
           if (question.shouldShow) {
             // evaluate message()
             if (typeof question.message === "function") {
@@ -429,8 +478,13 @@ export default {
             if (shouldValidate) {
               await this.doValidate(question, question.answer);
             }
+            // evaluate additionalMessages
+            if (question.isValid) {
+              this.updateAdditionalMessages(question, answers, questionIndex);
+            }
           }
         }
+        questionIndex++;
       }
 
       // apply filters
@@ -525,6 +579,7 @@ export default {
       const answers = this.getAnswers();
       // 2nd pass: evaluate properties that are functions
       const whenPromises = [];
+      let questionIndex = 0;
       for (let question of this.questions) {
         // evaluate when()
         if (typeof question.when === "function") {
@@ -565,15 +620,15 @@ export default {
           // evaluate default()
           if (typeof question.default === "function") {
             try {
-		if (question.__origAnswer === undefined) {
-			question._default = await question.default(answers);
-		} else {
-			question._default = question.__origAnswer; 
-		}
-		question.answer = this.getInitialAnswer(question);
+              if (question.__origAnswer === undefined) {
+                question._default = await question.default(answers);
+              } else {
+                question._default = question.__origAnswer; 
+              }
+              question.answer = this.getInitialAnswer(question);
 
-		// optimization: avoid repeatedly calling this.getAnswers()
-		answers[question.name] = question.answer;
+              // optimization: avoid repeatedly calling this.getAnswers()
+              answers[question.name] = question.answer;
             } catch(e) {
               this.console.error(`Could not evaluate default() for ${question.name}`);
             }
@@ -581,7 +636,12 @@ export default {
 
           // evaluate validate()
           await this.doValidate(question, question.answer);
+          // evaluate additionalMessages()
+          if (typeof question.additionalMessages === "function" && question.isValid) {
+            this.updateAdditionalMessages(question, answers, questionIndex);
+          }
         }
+        questionIndex++;
       }
 
       Promise.all(whenPromises).then(() => {
@@ -600,7 +660,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+$color-error: var(--vscode-notificationsErrorIcon-foreground, #F14C4C);
+$color-warn: var(--vscode-notificationsWarningIcon-foreground, #CCA700);
+$color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
+
 .inquirer-gui p.question-label {
   margin-top: 0.6rem;
   margin-bottom: 0.05rem;
@@ -623,16 +687,15 @@ export default {
   padding-left: 4px;
 }
 
-/* Error validation text div */
-.error-validation-text {
-  font-size: 12px;
-  padding-left: 12px;
-  color: #ff5252;
-}
-
 /* Question hint div, Question link div */
 .question-hint, .question-link {
   padding-left: 4px;
+}
+
+/* Error validation text div */
+.error-validation-text {
+  @extend .messages-text;
+  @extend .severity-error;
 }
 
 /* Question valdation message with link icon img */
@@ -641,4 +704,45 @@ export default {
   padding-right: 5px; 
 }
 
+.add-messages, .validation-messages {
+  padding-top: 4px;
+  display: flex;
+  align-items: flex-start;
+  /* Icons that appear adjacent to message texts */
+  .messages-icon.v-icon {
+    font-size: 20px;
+    padding-right: 4px;
+    &.severity-error {
+      color: #{$color-error};
+    }
+    &.severity-warn {
+      color: #{$color-warn};
+    }
+    &.severity-info {
+      color: #{$color-info};
+    }
+}
+
+  /* Messages that appear under prompts - validation (error), info and warning */
+  .messages-text {
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    line-break: anywhere;
+    padding-top: 0.083em; // 1px at font-size 12px
+
+    &.severity-error {
+      color: #{$color-error};
+    }
+    &.severity-warn {
+      color: #{$color-warn};
+    }
+    &.severity-info {
+      color: var(--vscode-foreground);
+    }
+  }
+}
 </style>

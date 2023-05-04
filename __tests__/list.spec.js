@@ -137,7 +137,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionList });
 
     await Vue.nextTick();
@@ -151,7 +151,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListNoDefault });
 
     await Vue.nextTick();
@@ -175,21 +175,21 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListWithSeparator });
 
     await Vue.nextTick();
 
-    const menu = wrapper.find({name: 'v-menu'});
+    const menu = wrapper.findComponent({name: 'v-menu'});
     menu.trigger('click');
     await Vue.nextTick();
 
-    const list = wrapper.find({name: 'v-select-list'});
-    expect(list.findAll({name:'v-list-item'})).toHaveLength(6);
-    expect(list.findAll({name:'v-divider'})).toHaveLength(1);
-    expect(list.findAll({name:'v-subheader'})).toHaveLength(1);
+    const list = wrapper.findComponent({name: 'v-select-list'});
+    expect(list.findAllComponents({name:'v-list-item'})).toHaveLength(6);
+    expect(list.findAllComponents({name:'v-divider'})).toHaveLength(1);
+    expect(list.findAllComponents({name:'v-subheader'})).toHaveLength(1);
 
-    const subheader = list.find({name:'v-subheader'});
+    const subheader = list.findComponent({name:'v-subheader'});
     expect(subheader.vm.$el.innerHTML).toBe("Custom Separator");
   });
 
@@ -199,7 +199,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListInvalidChoices });
 
     await Vue.nextTick();
@@ -218,7 +218,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListDefaultAsIndex });
 
     await Vue.nextTick();
@@ -237,7 +237,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListDefaultAsInvalidIndex });
 
     await Vue.nextTick();
@@ -256,7 +256,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
 
     document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListEmptyChoices });
 
     await Vue.nextTick();
@@ -274,7 +274,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
     document.body.setAttribute('data-app', 'true');
 
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListWithHint });
     await Vue.nextTick();
 
@@ -296,7 +296,7 @@ describe('Question of type list', () => {
     new Vue({ vuetify });
     document.body.setAttribute('data-app', 'true');
 
-    const wrapper = mount(Form, { vuetify, attachToDocument: true });
+    const wrapper = mount(Form, { vuetify, attachTo: document.body });
     wrapper.setProps({ questions: questionListValidate });
     await Vue.nextTick();
     await Vue.nextTick();
