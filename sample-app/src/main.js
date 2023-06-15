@@ -134,6 +134,13 @@ const questions1 = [
     default: "happy"
   },
   {
+    type: "single-checkbox",
+    hint: "Please check this option if you want a gift",
+    name: "WantGift",
+    title: "Want a gift",
+    default: true
+  },
+  {
     type: "input",
     guiOptions: {
       type: "file-browser",
