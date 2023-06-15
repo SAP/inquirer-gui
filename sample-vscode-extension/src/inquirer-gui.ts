@@ -82,7 +82,14 @@ const questions1 = [
         message: "Your pat",
         choices: ["dog", "cat"],
         default: "cat"
-      },
+    },
+    {
+        type: "single-checkbox",
+        hint: "Please check this option if you want a gift",
+        name: "WantGift",
+        title: "Want a gift",
+        default: true
+    },
     {
         type: "list",
         name: "country",

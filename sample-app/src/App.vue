@@ -34,7 +34,7 @@ import LoginPlugin from "@sap-devx/inquirer-gui-login-plugin";
 import TilesPlugin from "@sap-devx/inquirer-gui-tiles-plugin";
 import QuestionSampleTiles from "./QuestionSampleTiles";
 import AutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
-
+import SingleCheckbox from "@sap-devx/inquirer-gui-single-checkbox-plugin";
 /**
  * If you want to make changes to the plugins from source in this repo
  * do not consume them from npm:
@@ -129,6 +129,12 @@ export default {
     let plugin = {
         questionType: "radio",
         component: RadioGroup
+    };
+    this.$refs.form.registerPlugin(plugin);
+
+    plugin = {
+        questionType: "single-checkbox",
+        component: SingleCheckbox
     };
     this.$refs.form.registerPlugin(plugin);
 
