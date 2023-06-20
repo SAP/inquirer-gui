@@ -13,3 +13,4 @@ npm run build
 Then copy the `sample-app\dist` to this folder `sample-vscode-extension`.
 
 Then launch the `Launch Extension` debug configuation.
+
