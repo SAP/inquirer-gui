@@ -32,6 +32,13 @@ const questions1 = [
     default: "daffodil"
   },
   {
+    type: "single-checkbox",
+    hint: "Please check this option if you want a gift",
+    name: "WantGift",
+    title: "Want a gift",
+    default: true
+  },
+  {
     type: "input",
     name: "notes",
     message: function(answers) {
