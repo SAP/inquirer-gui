@@ -731,7 +731,7 @@ $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    line-break: anywhere;
+    line-break: normal;
     padding-top: 0.083em; // 1px at font-size 12px
 
     &.severity-error {
