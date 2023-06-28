@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
@@ -63,7 +63,7 @@
     "vuetify": "2.3.10"
   },
   "devDependencies": {
-    "@babel/preset-env": "7.14.9",
+    "@babel/preset-env": "^7.22.5",
     "@commitlint/cli": "17.6.1",
     "@commitlint/config-conventional": "17.6.1",
     "@vue/cli-plugin-babel": "5.0.8",
