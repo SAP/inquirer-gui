@@ -1,10 +1,10 @@
 {
   "name": "@sap-devx/inquirer-gui-single-checkbox-plugin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Sample single checkbox plugin for inquirer-gui",
   "main": "dist/singleCheckboxPlugin.umd.js",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name singleCheckBoxPlugin src/index.js",
+    "build": "vue-cli-service build --target lib --name singleCheckboxPlugin src/index.js",
     "prepublishOnly": "npm run build"
   },
   "repository": {
