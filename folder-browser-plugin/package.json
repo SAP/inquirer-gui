@@ -1,8 +1,19 @@
 {
   "name": "@sap-devx/inquirer-gui-folder-browser-plugin",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Folder browser plugin for inquirer-gui",
   "main": "dist/folderBrowserPlugin.umd.js",
+  "module": "./dist/folderBrowserPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/folderBrowserPlugin.es.js",
+      "require": "./dist/folderBrowserPlugin.umd.js"
+    },
+    "./dist/folderBrowserPlugin.css": {
+      "import": "./dist/folderBrowserPlugin.css",
+      "require": "./dist/folderBrowserPlugin.css"
+    }
+  },
   "keywords": [
     "inquirer",
     "inquirer-gui",
@@ -10,7 +21,7 @@
     "browse"
   ],
   "scripts": {
-    "build": "vue-cli-service build --target lib --name folderBrowserPlugin src/index.js",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -20,9 +31,10 @@
   "author": "Eyal Barlev",
   "license": "Apache-2.0",
   "dependencies": {
-    "vue": "^2.6.10"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

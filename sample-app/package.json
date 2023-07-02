@@ -5,10 +5,23 @@
   "license": "ISC",
   "author": "",
   "main": "index.js",
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {}
+  },
   "scripts": {
     "build": "vue-cli-service build",
     "build-dev": "vue-cli-service build --mode development --disable-plugin @vue/cli-plugin-eslint",
-    "lint": "vue-cli-service lint",
     "prep-local": "cd .. && npm run build-for-sample",
     "prepublishOnly": "npm run build",
     "serve": "vue-cli-service serve --disable-plugin @vue/cli-plugin-eslint",
@@ -20,33 +33,20 @@
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",
-    "@sap-devx/inquirer-gui": "^0.6.0",
-    "@sap-devx/inquirer-gui-date-plugin": "0.0.2",
-    "@sap-devx/inquirer-gui-file-browser-plugin": "0.0.5",
-    "@sap-devx/inquirer-gui-label-plugin": "0.0.1",
-    "@sap-devx/inquirer-gui-login-plugin": "0.0.4",
-    "@sap-devx/inquirer-gui-tiles-plugin": "^0.0.8",
-    "@sap-devx/inquirer-gui-radio-plugin": "0.0.1",
-    "@sap-devx/inquirer-gui-single-checkbox-plugin": "0.0.2",
-    "@sap-devx/inquirer-gui-auto-complete-plugin": "0.0.1",
     "@sap-devx/webview-rpc": "^0.3.1",
     "material-design-icons-iconfont": "^5.0.1",
-    "vue": "2.6.12",
-    "vuetify": "2.6.10"
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.6"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^5.0.8",
-    "@vue/cli-plugin-eslint": "^5.0.8",
-    "@vue/cli-plugin-unit-jest": "^5.0.8",
-    "@vue/cli-service": "^5.0.8",
-    "@vue/test-utils": "^1.0.0-beta.29",
-    "babel-eslint": "^10.0.1",
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
     "copyfiles": "^2.4.1",
-    "eslint": "^5.16.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "vue-cli-plugin-vuetify": "2.2.2",
-    "vue-template-compiler": "2.6.12",
-    "vuetify-loader": "1.7.2",
-    "webpack": "^4.41.2"
+    "eslint": "^7.32.0",
+    "eslint-plugin-vue": "^8.0.3",
+    "sass-loader": "^13.3.2"
   }
 }

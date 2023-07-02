@@ -1,0 +1,31 @@
+{
+  "name": "sample-app",
+  "version": "1.1.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vite build",
+    "build-dev": "vite build --mode development --disable-plugin @vue/cli-plugin-eslint",
+    "prep-local": "cd .. && npm run build-for-sample",
+    "prepublishOnly": "npm run build",
+    "serve": "vite",
+    "copy-inquirer-gui": "copyfiles -V -f ../dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../package.json ./node_modules/@sap-devx/inquirer-gui",
+    "copy-autocomplete-plugin": "copyfiles -V -f ../auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",
+    "prebuild": "npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
+    "clean": "rm -rf ./dist ./form"
+  },
+  "dependencies": {
+    "@mdi/font": "^4.9.95",
+    "@sap-devx/webview-rpc": "^0.3.1",
+    "material-design-icons-iconfont": "^5.0.1",
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "copyfiles": "^2.4.1",
+    "vite": "^4.3.9"
+  }
+}

@@ -1,7 +1,49 @@
-import Vue from "vue";
+import {createApp, h} from "vue";
 import App from "./App.vue";
-import "@sap-devx/inquirer-gui/dist/form.css";
-import Form from "@sap-devx/inquirer-gui";
+
+// import "@sap-devx/inquirer-gui/dist/form.css";
+// import Form from "@sap-devx/inquirer-gui";
+import Form from '../../src'
+
+// import "@sap-devx/inquirer-gui-auto-complete-plugin/dist/autoCompletePlugin.css";
+// import AutoCompletePlugin from '@sap-devx/inquirer-gui-auto-complete-plugin';
+import AutoCompletePlugin from '../../auto-complete-plugin/src';
+
+// import "@sap-devx/inquirer-gui-file-browser-plugin/dist/fileBrowserPlugin.css";
+// import FileBrowserPlugin from '@sap-devx/inquirer-gui-file-browser-plugin';
+import FileBrowserPlugin from '../../file-browser-plugin/src';
+
+// import "@sap-devx/inquirer-gui-folder-browser-plugin/dist/folderBrowserPlugin.css";
+// import FolderBrowserPlugin from '@sap-devx/inquirer-gui-folder-browser-plugin';
+import FolderBrowserPlugin from '../../folder-browser-plugin/src';
+
+// import "@sap-devx/inquirer-gui-label-plugin/dist/labelPlugin.css";
+// import LabelPlugin from '@sap-devx/inquirer-gui-label-plugin';
+import LabelPlugin from '../../label-plugin/src';
+
+// import "@sap-devx/inquirer-gui-login-plugin/dist/loginPlugin.css";
+// import LoginPlugin from '@sap-devx/inquirer-gui-login-plugin';
+import LoginPlugin from '../../login-plugin/src';
+
+// import "@sap-devx/inquirer-gui-radio-plugin/dist/radioPlugin.css";
+// import RadioPlugin from '@sap-devx/inquirer-gui-radio-plugin';
+import RadioPlugin from '../../radio-button-plugin/src';
+
+// import "@sap-devx/inquirer-gui-single-checkbox-plugin/dist/singleCheckboxPlugin.css"
+// import SingleCheckboxPlugin from '@sap-devx/inquirer-gui-single-checkbox-plugin';
+import SingleCheckboxPlugin from '../../single-checkbox-plugin/src';
+
+
+// import "@sap-devx/inquirer-gui-tiles-plugin/dist/tilesPlugin.css";
+// import TilesPlugin from '@sap-devx/inquirer-gui-tiles-plugin';
+import TilesPlugin from '../../tiles-plugin/src';
+
+// import DateInputPlugin from '../../sample-plugin/src';
+
+
+import SAP_IMAGE from './sapImage';
+import WORKFLOW_IMAGE from './workflowImage';
+
 /** 
  *  During development:
  *    in terminal type: npm run prep-local
@@ -10,8 +52,7 @@ import Form from "@sap-devx/inquirer-gui";
  * import Form from "../form/form.umd";
  **/
 
-const SAP_IMAGE = require("./sapImage").default;
-const WORKFLOW_IMAGE = require("./workflowImage").default;
+
 const states =  [
   'Alabama',
   'Alaska',
@@ -81,7 +122,7 @@ const questions0 = [
     message: "",
     type: "list",
     guiOptions: {
-      type: "sample-tiles",
+      type: "tiles",
     },
     choices: [
       { value: "listReport", name: "List Report", description: "A List report is similar to a table report with rows and columns of data. Each row is one record and each column is a Field. This type of report is often used when you want to see more number of records at a time. It is a simple yet powerful report type that can display any columns you want and in the required order.", homepage: "http://www.sap.com", image: SAP_IMAGE },
@@ -128,7 +169,7 @@ const questions1 = [
       type: "radio",
       hint: "Please select a radio"
     },
-    name: "agree",
+    name: "mood",
     message: "Select mood",
     choices: ["happy", "sad"],
     default: "happy"
@@ -160,11 +201,12 @@ const questions1 = [
         return `${currentPath}subdir/`;
     }
   },
-  {
-      type: "date",
-      name: "birthday",
-      message: "Birthday"
-  },
+  // Excluding Date for the time being as DateInput is a lab component in Vuetify v3
+  // {
+  //     type: "date",
+  //     name: "birthday",
+  //     message: "Birthday"
+  // },
   {
       type: "input",
       name: "name",
@@ -397,14 +439,21 @@ const questions2 = [
 
 const questionsArray = [questions0, questions1, questions2];
 
+const plugins = [];
+
 import vuetify from "./plugins/vuetify";
 
-Vue.config.productionTip = false;
-const options = {};
-Vue.use(Form, options);
-
-let vueOptions = {
-  render: h => h(App),
+const app = createApp({
+  render: (vm) => 
+    h(App, {
+    ref: 'appRef',
+    onNextSection: () => {
+      if (vm.questionsIndex < questionsArray.length-1) {
+        vm.questionsIndex++;
+        vm.prompt(questionsArray[vm.questionsIndex]);
+      }
+    }
+  }),
   data() {
     return {
       questionsIndex: 0
@@ -412,27 +461,62 @@ let vueOptions = {
   },
   methods: {
     prompt(questions) {
-      this.$children[0].questions = questions;
+      this.$refs.appRef.questions = questions;
+    },
+    registerFormPlugins(formPlugins){
+      console.log(formPlugins);
+      if(Array.isArray(formPlugins)){
+        formPlugins.forEach((formPlugin) => {
+          this.$refs.appRef.$refs.form.registerPlugin(formPlugin);
+        });
+      }
     }
   },
   mounted() {
     console.log('sample app is mounted');
+    this.registerFormPlugins(plugins);
     this.prompt(questionsArray[0]);
   },
-};
+});
 
-if (options.vuetify) {
-  vueOptions.vuetify = options.vuetify;
-} else {
-  vueOptions.vuetify = vuetify;
-}
+let options = {};
+app.use(AutoCompletePlugin, options);
+plugins.push(options.plugin);
 
-export default new Vue(
-  vueOptions
-).$on('next', function () {
-  if (this.questionsIndex < questionsArray.length-1) {
-    this.questionsIndex++;
-    this.prompt(questionsArray[this.questionsIndex]);
-  }
-}
-).$mount('#app');
+options = {};
+app.use(FileBrowserPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(FolderBrowserPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(LabelPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(LoginPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(RadioPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(SingleCheckboxPlugin, options);
+plugins.push(options.plugin);
+
+options = {};
+app.use(TilesPlugin, options);
+plugins.push(options.plugin);
+
+// options = {};
+// app.use(DateInputPlugin, options);
+// plugins.push(options.plugin);
+
+options = {};
+app.use(Form, options);
+app.use(options.vuetify ?? vuetify);
+
+export default app.mount('#app');

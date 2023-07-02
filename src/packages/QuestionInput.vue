@@ -1,12 +1,12 @@
 <template>
   <v-text-field
-    @input="onInput"
-    :value="question.answer"
+    @update:modelValue="onInput"
+    :modelValue="question.answer"
     class="pa-0 ma-0"
     :type="getInputType(question.type)"
     hide-details="auto"
-    outlined
-    dense
+    density="compact"
+    variant="outlined"
   ></v-text-field>
 </template>
 

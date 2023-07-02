@@ -1,9 +1,10 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
 
-import SingleCheckbox from "../single-checkbox-plugin/src/packages/SingleCheckbox";
-
+import SingleCheckBoxPlugin from "../single-checkbox-plugin/src";
 
 const questionSingleCheckbox = [
   {
@@ -15,27 +16,36 @@ const questionSingleCheckbox = [
     default: false
   }
 ];
-
-
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type single checkbox', () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
   test('single checkbox', async () => {
-    Vue.component('SingleCheckbox', SingleCheckbox);
-    await Vue.nextTick();
-    const singleCheckboxPlugin = {
-      questionType: "single-checkbox",
-      component: SingleCheckbox
-    };
+    const options = {};
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [SingleCheckBoxPlugin, options]],
+      },
+      attachTo: document.body
+    });
+    await nextTick();
   
-    const wrapper = mount(Form, {});
-    wrapper.vm.registerPlugin(singleCheckboxPlugin);
+    wrapper.vm.registerPlugin(options.plugin);
     wrapper.setProps({ questions: questionSingleCheckbox });
-    await Vue.nextTick();
-    
+    await nextTick();
+
     const pat = wrapper.find('input[id="test_input"]');
     pat.trigger('click');
 
-    await Vue.nextTick();
+    await nextTick();
+
     expect(wrapper.emitted().answered).toBeTruthy();
     expect(wrapper.props("questions")[0].answer).toBeTruthy();
   });

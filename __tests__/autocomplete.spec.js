@@ -1,9 +1,18 @@
-import { mount } from "@vue/test-utils";
-import Vue from "vue";
-import Form from "../src/Form.vue";
-import Vuetify from "vuetify";
-import QuestionAutocomplete from "../auto-complete-plugin/src/packages/QuestionAutoComplete";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/components';
+import FormVue from "../src/Form.vue";
+
+import QuestionAutoCompletePlugin from '../auto-complete-plugin/src';
 import utils from "./utils";
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserver;
 
 let numResults = 0;
 const result1 = ["a", "b", "c"];
@@ -56,30 +65,33 @@ const emptyTextQuestion = [
     emptyText: "No results found..."
   },
 ]
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Tests autocomplete question", () => {
   let wrapper;
+  let vuetify;
 
   beforeEach(async () => {
-    const vuetify = new Vuetify({});
-
-    // Prevent warnings
     document.body.setAttribute("data-app", "true");
-
-    Vue.component("QuestionAutocomplete", QuestionAutocomplete);
-    await Vue.nextTick();
-
-    wrapper = mount(Form, { vuetify, attachTo: document.body });
-    wrapper.vm.registerPlugin({
-      questionType: "autocomplete",
-      component: QuestionAutocomplete,
+    vuetify = new createVuetify({
+      components
     });
+
+    const options = {};
+    wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [QuestionAutoCompletePlugin, options]],
+      },
+      attachTo: document.body
+    });
+    await nextTick();
+
+    wrapper.vm.registerPlugin(options.plugin);
   });
 
   test("Autocomplete return expected results and answer", async () => {
     wrapper.setProps({ questions: autocompleteQuestions });
 
-    await Vue.nextTick();
+    await nextTick();
 
     expect(
       wrapper
@@ -93,32 +105,33 @@ describe("Tests autocomplete question", () => {
     searchInput.element.value = "1";
     searchInput.trigger("input");
     // wait to account for debounce + delayed result to mimic backend call
+    await nextTick();
     await utils.sleep(2000);
 
     // Click to expand results
-    searchInput.trigger("click");
-    await Vue.nextTick();
+    searchInput.trigger("mousedown");
+    await nextTick();
+    let items = document.body.querySelectorAll('.v-list-item');
 
-    let items = autocompleteComp.findAllComponents({ name: "v-list-item" });
     expect(items).toHaveLength(3);
-    expect(items.wrappers[0].element.textContent).toEqual(result1[0]);
-    expect(items.wrappers[1].element.textContent).toEqual(result1[1]);
-    expect(items.wrappers[2].element.textContent).toEqual(result1[2]);
+    expect(items[0].textContent).toEqual(result1[0]);
+    expect(items[1].textContent).toEqual(result1[1]);
+    expect(items[2].textContent).toEqual(result1[2]);
 
     // Check that the additinal info is displayed
-    let moreInfo = wrapper.find(".moreInfo");
-    expect(moreInfo.element.textContent).toEqual("3 results returned");
+    let moreInfo = document.body.querySelector(".moreInfo");
+    expect(moreInfo.textContent).toEqual("3 results returned");
 
     // Select an answer
-    items.wrappers[2].trigger("click");
-    await Vue.nextTick();
+    items[2].dispatchEvent(new Event('click'));
+    await nextTick();
     expect(wrapper.vm.getAnswers()).toEqual({ anotherAnswer: "3", autocomplete: "c" });
   });
 
   test("Autocomplete return expected results with previous answers", async () => {
     wrapper.setProps({ questions: autocompleteQuestions });
 
-    await Vue.nextTick();
+    await nextTick();
 
     // Provide an answer for question 1 to check for previous answers
     const inputComp = wrapper.findComponent({ name: "QuestionInput" });
@@ -133,36 +146,37 @@ describe("Tests autocomplete question", () => {
     searchInput.element.value = "2";
     searchInput.trigger("input");
     // wait to account for debounce + delayed result to mimic backend call
+    await nextTick();
     await utils.sleep(2000);
 
-    searchInput.trigger("click");
-    await Vue.nextTick();
+    searchInput.trigger("mousedown");
+    await nextTick();
 
-    const items = autocompleteComp.findAllComponents({ name: "v-list-item" });
+    const items = document.body.querySelectorAll('.v-list-item');
     expect(items).toHaveLength(4);
-    expect(items.wrappers[0].element.textContent).toEqual(result2[0]);
-    expect(items.wrappers[1].element.textContent).toEqual(result2[1]);
-    expect(items.wrappers[2].element.textContent).toEqual(result2[2]);
-    expect(items.wrappers[3].element.textContent).toEqual(result2[3]);
-    const moreInfo = wrapper.find(".moreInfo");
-    expect(moreInfo.element.textContent).toEqual("4 results returned");
+    expect(items[0].textContent).toEqual(result2[0]);
+    expect(items[1].textContent).toEqual(result2[1]);
+    expect(items[2].textContent).toEqual(result2[2]);
+    expect(items[3].textContent).toEqual(result2[3]);
+    const moreInfo = document.body.querySelector(".moreInfo");
+    expect(moreInfo.textContent).toEqual("4 results returned");
 
     // Select an answer
-    items.wrappers[3].trigger("click");
-    await Vue.nextTick();
+    items[3].dispatchEvent(new Event('click'));
+    await nextTick();
     expect(wrapper.vm.getAnswers()).toEqual({ anotherAnswer: "4", autocomplete: "h" });
   });
 
   test("Check guiOption mandatory is applied", async () => {
     wrapper.setProps({ questions: autocompleteQuestions });
-    await Vue.nextTick();
+    await nextTick();
     let mandatoryAsterisk = wrapper.findAll("span.mandatory-asterisk");
     expect(mandatoryAsterisk.length).toEqual(1);
   });
 
   test("Check additional info is not shown when no additional info string", async () => {
     wrapper.setProps({ questions: autocompleteQuestions });
-    await Vue.nextTick();
+    await nextTick();
 
     const autocompleteComp = wrapper.findComponent({ name: "QuestionAutocomplete" });
     const searchInput = autocompleteComp.find("input");
@@ -174,7 +188,7 @@ describe("Tests autocomplete question", () => {
     await utils.sleep(2000);
 
     searchInput.trigger("click");
-    await Vue.nextTick();
+    await nextTick();
 
     let moreInfo = wrapper.find(".moreInfoBottom");
     expect(moreInfo.exists()).toBe(false);
@@ -182,23 +196,23 @@ describe("Tests autocomplete question", () => {
 
   test("Empty (no data) text is used if provided", async () => {
     wrapper.setProps({ questions: emptyTextQuestion });
-    await Vue.nextTick();
+    await nextTick();
 
     const autocompleteCompDefault = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(0);
     const searchInput1 = autocompleteCompDefault.find("input");
-    searchInput1.trigger("click");
-    await Vue.nextTick();
+    searchInput1.trigger("mousedown");
+    await nextTick();
 
-    const items1 = autocompleteCompDefault.findAllComponents({ name: "v-list-item" });
-    expect(items1.at(0).element.textContent).toEqual('No data available');
+    const items1 = document.body.querySelectorAll('.v-list-item');
+    expect(items1[0].textContent).toEqual('No data available');
 
     const autocompleteCompEmptyText = wrapper.findAllComponents({ name: "QuestionAutocomplete" }).at(1);
     const searchInput2 = autocompleteCompEmptyText.find("input");
-    searchInput2.trigger("click");
-    await Vue.nextTick();
+    searchInput2.trigger("mousedown");
+    await nextTick();
 
-    const items2 = autocompleteCompEmptyText.findAllComponents({ name: "v-list-item" });
-    expect(items2.at(0).element.textContent).toEqual(emptyTextQuestion[1].emptyText);
+    const items2 = document.body.querySelectorAll('.v-list-item');
+    expect(items2[1].textContent).toEqual(emptyTextQuestion[1].emptyText);
 
   });
 });

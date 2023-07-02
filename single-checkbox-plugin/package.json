@@ -1,10 +1,21 @@
 {
   "name": "@sap-devx/inquirer-gui-single-checkbox-plugin",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Sample single checkbox plugin for inquirer-gui",
   "main": "dist/singleCheckboxPlugin.umd.js",
+  "module": "./dist/singleCheckboxPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/singleCheckboxPlugin.es.js",
+      "require": "./dist/singleCheckboxPlugin.umd.js"
+    },
+    "./dist/singleCheckboxPlugin.css": {
+      "import": "./dist/singleCheckboxPlugin.css",
+      "require": "./dist/singleCheckboxPlugin.css"
+    }
+  },
   "scripts": {
-    "build": "vue-cli-service build --target lib --name singleCheckboxPlugin src/index.js",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -14,9 +25,10 @@
   "author": "Lucy Liu",
   "license": "Apache-2.0",
   "dependencies": {
-    "vue": "^2.6.10"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

@@ -1,4 +1,4 @@
-import QuestionDateTime from "./packages/QuestionDateTime";
+import QuestionDateTime from "./packages/QuestionDateTime.vue";
 
 export default {
   install(Vue, options) {

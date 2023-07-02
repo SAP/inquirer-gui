@@ -1,23 +1,21 @@
 <template>
   <v-menu
     :close-on-content-click="false"
-    :nudge-right="40"
     transition="scale-transition"
-    offset-y
     min-width="290px"
   >
-    <template v-slot:activator="{ on }">
+    <template v-slot:activator="{ props }">
       <v-text-field
-        v-model="date"
+        :modelValue="date"
         prepend-icon="event"
         readonly
-        v-on="on"
+        v-bind="props"
         hide-details="auto"
-        outlined
-        dense
+        variant="outlined"
+        density="compact"
       ></v-text-field>
     </template>
-    <v-date-picker v-model="date" @input="onInput"></v-date-picker>
+    <v-date-picker :modelValue="date" @update:modelValue="onInput"></v-date-picker>
   </v-menu>
 </template>
 
@@ -28,7 +26,7 @@ export default {
     question: Object
   },
   data: () => ({
-    date: new Date().toISOString().substr(0, 10)
+    date: new Date().toISOString().substring(0, 10)
   }),
   methods: {
     onInput(answer) {

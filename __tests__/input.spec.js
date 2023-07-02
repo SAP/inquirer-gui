@@ -1,7 +1,17 @@
-import { mount } from "@vue/test-utils";
-import Vue from "vue";
-import Form from "../src/Form.vue";
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+import InputVue from '../src/packages/QuestionInput.vue';
 import utils from "./utils";
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserver;
 
 const questionInput = [
   {
@@ -309,14 +319,31 @@ const questionsWithAdditionalMessages = [
     }
   }
 ];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Questions of type input, password and number", () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
   test("Input", async () => {
     const value1 = "my input";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInput });
-    await Vue.nextTick();
+    await nextTick();
 
     const name = wrapper.find("input");
     name.element.value = value1;
@@ -324,6 +351,7 @@ describe("Questions of type input, password and number", () => {
 
     // wait to account for debounce
     await utils.sleep(300);
+
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
@@ -336,9 +364,17 @@ describe("Questions of type input, password and number", () => {
   test("Input with invalid input", async () => {
     const value1 = "m";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInput });
-    await Vue.nextTick();
+    await nextTick();
 
     const name = wrapper.find("input");
     name.element.value = value1;
@@ -358,10 +394,17 @@ describe("Questions of type input, password and number", () => {
 
   test("Password", async () => {
     const value1 = "my password";
-
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionPassword });
-    await Vue.nextTick();
+    await nextTick();
 
     const name = wrapper.find("input");
     name.element.value = value1;
@@ -379,10 +422,17 @@ describe("Questions of type input, password and number", () => {
 
   test("Number", async () => {
     const value1 = 5;
-
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionNumber });
-    await Vue.nextTick();
+    await nextTick();
 
     const name = wrapper.find("input");
     name.element.value = value1;
@@ -398,18 +448,34 @@ describe("Questions of type input, password and number", () => {
   });
 
   test("Number without default", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionNumber });
-    await Vue.nextTick();
+    await nextTick();
 
     const name = wrapper.find("input");
     expect(name.element.value).toBe("0");
   });
 
   test("Input with conditions", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsConditional });
-    await Vue.nextTick();
+    await nextTick();
 
     await utils.sleep(300);
     expect(wrapper.emitted().whensEvaluated).toBeTruthy();
@@ -428,9 +494,17 @@ describe("Questions of type input, password and number", () => {
   test("Input with message as a function", async () => {
     const newValue = "another value";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsMessageAsFunction });
-    await Vue.nextTick();
+    await nextTick();
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
@@ -445,9 +519,17 @@ describe("Questions of type input, password and number", () => {
   test("Input with default as a function", async () => {
     const newValue = "another value";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsDefaultAsFunction });
-    await Vue.nextTick();
+    await nextTick();
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
@@ -482,9 +564,17 @@ describe("Questions of type input, password and number", () => {
   test("Input with guiOptions.applyDefaultWhenDirty", async () => {
     const newValue = "new value";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsWithApplyDefaultWhenDirty });
-    await Vue.nextTick();
+    await nextTick();
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
@@ -517,9 +607,17 @@ describe("Questions of type input, password and number", () => {
   });
 
   test("Input with no message", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInputNoMessage });
-    await Vue.nextTick();
+    await nextTick();
 
     const inputs = wrapper.findAll("p.question-label > span.question-message");
     // message should default to question's name
@@ -527,28 +625,52 @@ describe("Questions of type input, password and number", () => {
   });
 
   test("Input with exception in default()", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInputDefaultException });
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.props("questions")[0]._default).toBeUndefined();
   });
 
   test("when() evaluates to false", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsWhen });
-    await Vue.nextTick();
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
+    await nextTick();
+    await nextTick();
 
     expect(wrapper.vm.questions[1].shouldShow).toBe(false);
     expect(wrapper.vm.getIssues()).toBe(undefined);
   });
 
-  test("Input with hint", async done => {
-    const wrapper = mount(Form, {});
+  test("Input with hint", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInputHint });
-    await Vue.nextTick();
+    await nextTick();
     await utils.sleep(300);
 
     const labels = wrapper.findAll("p.question-label");
@@ -556,58 +678,58 @@ describe("Questions of type input, password and number", () => {
     expect(
       labels
         .at(0)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputHint[0].message);
     expect(
       labels
         .at(0)
-        .findAll("span.question-hint")
-        .at(0).element.innerHTML
+        .findAll("span.question-hint")[0].element.innerHTML
     ).toContain("v-tooltip");
 
     expect(
       labels
         .at(1)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputHint[1].message);
     expect(
       labels
         .at(1)
-        .findAll("span.question-hint")
-        .at(0).element.innerHTML
+        .findAll("span.question-hint")[0].element.innerHTML
     ).toContain("v-tooltip");
 
     expect(
       labels
         .at(2)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputHint[2].message);
     expect(
       labels
         .at(2)
-        .findAll("span.question-hint")
-        .exists()
-    ).toBe(false);
+        .findAll("span.question-hint").length
+    ).toBe(0);
 
     labels
       .at(0)
-      .find({ name: "v-icon" })
-      .trigger("mouseenter");
-    await Vue.nextTick();
-    requestAnimationFrame(() => {
-      // https://github.com/vuejs/vue-test-utils/issues/1421
-      expect(wrapper.text()).toContain(questionInputHint[0].guiOptions.hint);
-      done();
-    });
+      .findComponent({name: 'v-icon'})
+      .trigger('mouseenter')
+
+      await nextTick();
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      expect(document.body.textContent).toContain(questionInputHint[0].guiOptions.hint);
   });
 
   test("Input with link", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionInputLink });
-    await Vue.nextTick();
+    await nextTick();
     await utils.sleep(300);
 
     const labels = wrapper.findAll("p.question-label");
@@ -615,83 +737,79 @@ describe("Questions of type input, password and number", () => {
     expect(
       labels
         .at(0)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputLink[0].message);
     expect(
       labels
         .at(0)
-        .findAll("span.question-link")
-        .at(0).element.innerHTML
+        .findAll("span.question-link")[0].element.innerHTML
     ).toContain("a");
     expect(
       labels
         .at(0)
-        .findAll("span.question-link")
-        .at(0).element.innerHTML
+        .findAll("span.question-link")[0].element.innerHTML
     ).toContain("href");
     expect(
       labels
         .at(0)
-        .findAll("a")
-        .at(0).element.innerHTML
+        .findAll("a")[0].element.innerHTML
     ).toBe(questionInputLink[0].guiOptions.link.text);
     expect(
       labels
         .at(0)
-        .findAll("a")
-        .at(0).element.href
+        .findAll("a")[0].element.href
     ).toContain(questionInputLink[0].guiOptions.link.url);
 
     expect(
       labels
         .at(1)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputLink[1].message);
     expect(
       labels
         .at(1)
-        .findAll("span.question-link")
-        .at(0).element.innerHTML
+        .findAll("span.question-link")[0].element.innerHTML
     ).toContain("a");
     expect(
       labels
         .at(1)
-        .findAll("span.question-link")
-        .at(0).element.innerHTML
+        .findAll("span.question-link")[0].element.innerHTML
     ).toContain("command");
     expect(
       labels
         .at(1)
-        .findAll("a")
-        .at(0).element.innerHTML
+        .findAll("a")[0].element.innerHTML
     ).toBe(questionInputLink[1].guiOptions.link.text);
     expect(
       labels
         .at(1)
-        .findAll("a")
-        .at(0).element.attributes.command.value
+        .findAll("a")[0].element.attributes.command.value
     ).toBe(questionInputLink[1].guiOptions.link.command.id);
 
     expect(
       labels
         .at(2)
-        .findAll("span.question-message")
-        .at(0).element.innerHTML
+        .findAll("span.question-message")[0].element.innerHTML
     ).toBe(questionInputLink[2].message);
     expect(
       labels
         .at(2)
-        .findAll("span.question-link")
-        .exists()
-    ).toBe(false);
+        .findAll("span.question-link").length
+    ).toBe(0);
   });
 
   test("Input with validationLink", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsWithValidateLinks });
-    await Vue.nextTick();
+    await nextTick();
     await utils.sleep(300);
 
     const allInputs = wrapper.findAll("input");
@@ -760,9 +878,17 @@ describe("Questions of type input, password and number", () => {
   });
 
   test("Input with additional messages", async () => {
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionInput': InputVue
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionsWithAdditionalMessages });
-    await Vue.nextTick();
+    await nextTick();
     await utils.sleep(300);
 
     expect(wrapper.find("#add-msg-" + 0).exists()).toBe(false);

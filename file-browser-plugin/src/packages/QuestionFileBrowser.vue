@@ -1,17 +1,17 @@
 <template>
       <v-text-field
         ref="path"
-        :value="question.answer"
-        @input="onAnswerChanged"
+        @update:modelValue="onAnswerChanged"
+        :modelValue="question.answer"
         hide-details="auto"
-        outlined
-        dense
+        density="compact"
+        variant="outlined"
       >
-        <template slot="append">
-          <v-tooltip top>
-            <template v-slot:activator="{on}">
+        <template v-slot:append-inner>
+          <v-tooltip location="top">
+            <template v-slot:activator="{ props }">
               <v-icon
-                v-on="on"
+                v-bind="props"
                 @click="onSelectFile"
               >mdi-folder-outline</v-icon>
             </template>

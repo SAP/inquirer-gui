@@ -106,13 +106,13 @@ Where `questionType` is the string provided in the question's `type` property, a
 There is example of a custom form element in the `/sample-plugin` folder. It is defined as a `Vue plugin` and was published as `@sap-devx/inquirer-gui-date-plugin` on `npm`.
 
 ### Consuming a custom form element
-Consume a custom form element as a `Vue plugin` using the `Vue.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
+Consume a custom form element as a `Vue plugin` using the `app.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
 ```js
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 
 const options = {};
 // use the Vue plugin
-Vue.use(DatePlugin, options);
+app.use(DatePlugin, options);
 // register the inquirer-gui plugin with your form instance
 form.registerPlugin(options.plugin);
 ```

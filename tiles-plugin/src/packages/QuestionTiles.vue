@@ -11,7 +11,7 @@
             md="4"
             sm="6"
           >
-            <v-item v-slot:default="{ active, toggle }">
+            <v-item v-slot:default>
               <v-card
                 class="d-flex flex-column mx-auto tile-size"
                 :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''"
@@ -19,9 +19,9 @@
                 :data-itemvalue="item.value"
                 tile
                 hover
-                flat
-                dark
-                elevation=2
+                variant="flat"
+                theme="dark"
+                :elevation="2"
               >
                 <v-card-title>{{item.name}}</v-card-title>
                 <template>
@@ -88,11 +88,11 @@ export default {
 .v-card {
   border: none;
 }
-.v-card__title {
+.v-card-title {
   word-wrap: break-word;
   word-break: normal;
 }
-.description.v-card__text {
+.description.v-card-text {
   text-overflow: ellipsis;
   overflow: hidden;
 }

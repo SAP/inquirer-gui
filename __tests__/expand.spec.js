@@ -1,6 +1,9 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+import QuestionExpand from '../src/packages/QuestionExpand.vue';
 
 const questionExpand = [
   {
@@ -48,17 +51,34 @@ const questionExpandWithSeparator = [
     choices: ["Yes", "No", { type: "separator" }, "Maybe"]
   }
 ];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type expand', () => {
-  test('Expand', async () => {
-    const wrapper = mount(Form, { });
-    wrapper.setProps({ questions: questionExpand });
-    await Vue.nextTick();
 
-    const expand = wrapper.find('div[role="listitem"]');
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+  test('Expand', async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionExpand': QuestionExpand
+        }
+      },
+      attachTo: document.body
+    });
+    wrapper.setProps({ questions: questionExpand });
+    await nextTick();
+
+    const expand = wrapper.findComponent({name: 'v-list-item'});
     expand.trigger('click');
 
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;
@@ -68,23 +88,39 @@ describe('Question of type expand', () => {
   });
 
   test('Expand with default value (not index)', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionExpand': QuestionExpand
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionExpandDefaultValue });
-    await Vue.nextTick();
+    await nextTick();
 
     // test answers
     expect(wrapper.props("questions")[0].answer).toEqual("No");
   });
 
   test('Expand without default', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionExpand': QuestionExpand
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionExpandNoDefault });
-    await Vue.nextTick();
+    await nextTick();
 
-    const expand = wrapper.findAll('div[role="listitem"');
+    const expand = wrapper.findAllComponents({name: 'v-list-item'});
     expand.at(1).trigger('click');
 
-    await Vue.nextTick();
+    await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength-1];
@@ -93,19 +129,35 @@ describe('Question of type expand', () => {
   });
 
   test('Expand with separator', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionExpand': QuestionExpand
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionExpandWithSeparator });
-    await Vue.nextTick();
+    await nextTick();
 
-    const divider = wrapper.find('hr[role="separator"');
+    const divider = wrapper.find('hr[role="separator"]');
     expect(divider).not.toBeUndefined();
   });
 
   test('Expand with empty choices', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionExpand': QuestionExpand
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionExpandEmptyChoices });
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
+    await nextTick();
   
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
