@@ -1,8 +1,19 @@
 {
   "name": "@sap-devx/inquirer-gui-file-browser-plugin",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "File browser plugin for inquirer-gui",
   "main": "dist/fileBrowserPlugin.umd.js",
+  "module": "./dist/fileBrowserPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/fileBrowserPlugin.es.js",
+      "require": "./dist/fileBrowserPlugin.umd.js"
+    },
+    "./dist/fileBrowserPlugin.css": {
+      "import": "./dist/fileBrowserPlugin.css",
+      "require": "./dist/fileBrowserPlugin.css"
+    }
+  },
   "keywords": [
     "inquirer",
     "inquirer-gui",
@@ -10,7 +21,7 @@
     "browse"
   ],
   "scripts": {
-    "build": "vue-cli-service build --target lib --name fileBrowserPlugin src/index.js",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -20,9 +31,10 @@
   "author": "Eyal Barlev",
   "license": "Apache-2.0",
   "dependencies": {
-    "vue": "^2.6.10"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-service": "^3.11.0"
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

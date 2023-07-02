@@ -1,7 +1,10 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
-import QuestionFileBrowser from './QuestionFileBrowser.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+
+import QuestionFileBrowserPlugin from '../file-browser-plugin/src';
 
 const questionFileBrowser = [
   {
@@ -14,24 +17,35 @@ const questionFileBrowser = [
     }
   }
 ];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type file browser', () => {
-  test('File Browser', async () => {
-    Vue.component('QuestionFileBrowser', QuestionFileBrowser);
-    await Vue.nextTick();
-    const fileBrowserPlugin = {
-      questionType: "file-browser",
-      component: QuestionFileBrowser
-    };
+  let vuetify
 
-    const wrapper = mount(Form, {});
-    wrapper.vm.registerPlugin(fileBrowserPlugin);
-    await Vue.nextTick();
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
+  test('File Browser', async () => {
+    const options = {};
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [QuestionFileBrowserPlugin, options]],
+      },
+      attachTo: document.body
+    });
+    await nextTick();
+    
+    wrapper.vm.registerPlugin(options.plugin);
     wrapper.setProps({ questions: questionFileBrowser });
-    await Vue.nextTick();
-    const icon = wrapper.find('button');
+
+    await nextTick();
+    const icon = wrapper.findComponent({name: 'v-icon'});
     icon.trigger('click');
-    await Vue.nextTick();
+
+    await nextTick();
     expect(wrapper.props().questions[0].answer).toBe('/home/user');
   });
 

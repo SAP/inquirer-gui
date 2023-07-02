@@ -11,7 +11,7 @@
             md="4"
             sm="6"
           >
-            <v-item v-slot:default="{ active, toggle }">
+            <v-item v-slot:default>
               <v-card
                 class="d-flex flex-column mx-auto tile-size"
                 :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''"
@@ -19,16 +19,14 @@
                 :data-itemvalue="item.value"
                 tile
                 hover
-                flat
-                dark
-                elevation=2
+                variant="flat"
+                theme="dark"
+                :elevation="2"
               >
                 <v-card-title>{{item.name}}</v-card-title>
-                <template>
                   <v-card-text class="description" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
                     {{item.description}}
                   </v-card-text>
-                </template>
                 <v-spacer></v-spacer>
                 <v-card-text class="homepage">
                   <a :href="item.homepage">More Information</a>
@@ -88,15 +86,15 @@ export default {
 .v-card {
   border: none;
 }
-.v-card__title {
+.v-card-title {
   word-wrap: break-word;
   word-break: normal;
 }
-.description.v-card__text {
+.description.v-card-text {
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.description.v-card__text.compact {
+.description.v-card-text.compact {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   display: -webkit-box;

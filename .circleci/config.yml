@@ -10,7 +10,7 @@ default-test: &default-test
 
 defaults: &defaults
   docker:
-    - image: cimg/node:14.19
+    - image: cimg/node:16.19
   working_directory: ~/repo
 
 jobs: # a collection of steps

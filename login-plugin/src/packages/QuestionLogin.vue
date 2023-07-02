@@ -1,18 +1,18 @@
 <template>
   <v-text-field
     ref="login"
-    v-on:keyup.enter="onLogin"
-    :value="question.answer"
-    @input="onInput"
+    @keyup.enter="onLogin"
+    @update:modelValue="onInput"
+    :modelValue="question.answer"
     hide-details="auto"
     type="password"
-    outlined
-    dense
+    density="compact"
+    variant="outlined"
   >
-    <template slot="append">
-      <v-tooltip top>
-        <template v-slot:activator="{on}">
-          <v-icon v-on="on" @click="onLogin">mdi-account-arrow-right-outline</v-icon>
+    <template v-slot:append-inner>
+      <v-tooltip location="top">
+        <template v-slot:activator="{ props }">
+          <v-icon v-bind="props" @click="onLogin">mdi-account-arrow-right-outline</v-icon>
         </template>
         <span>Login</span>
       </v-tooltip>

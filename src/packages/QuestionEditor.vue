@@ -1,12 +1,12 @@
 <template>
   <v-textarea
-    @input="onInput"
-    :value="question.answer"
+    @update:modelValue="onInput"
+    :modelValue="question.answer"
     aria-describedby="validation-message"
     hide-details="auto"
     rows=7
-    dense
-    outlined
+    density="compact"
+    variant="outlined"
   ></v-textarea>
 </template>
 

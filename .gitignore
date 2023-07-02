@@ -2,3 +2,7 @@
 dist
 coverage
 reports
+
+*.tgz
+**/dist*
+.DS_Store

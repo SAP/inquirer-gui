@@ -1,4 +1,4 @@
-import SingleCheckBox from "./packages/SingleCheckbox";
+import SingleCheckBox from "./packages/SingleCheckbox.vue";
 
 export default {
   install(Vue, options) {
