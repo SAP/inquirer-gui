@@ -1,33 +1,38 @@
 <template>
   <div class="tiles">
     <v-item-group mandatory>
-      <v-container class="pa-0">
+      <v-container class="pa-0" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
         <v-row class="tiles-row">
           <v-col
             v-for="(item, itemIndex) in question._choices"
             :key="itemIndex"
-            cols="12"
+            :cols="question.guiOptions && question.guiOptions.compact ? 'auto' : '12'"
+            :lg="question.guiOptions && question.guiOptions.compact ? '3' : '4'"
             md="4"
             sm="6"
           >
             <v-item v-slot:default="{ active, toggle }">
               <v-card
-                width="400"
-                class="d-flex flex-column mx-auto"
+                class="d-flex flex-column mx-auto tile-size"
+                :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''"
                 @click="onAnswerChanged(item.value)"
                 :data-itemvalue="item.value"
-                height="380"
                 tile
                 hover
                 flat
                 dark
-                elevation=2
+                elevation=2c
               >
                 <v-card-title>{{item.name}}</v-card-title>
-                <v-card-text class="description">
-                  {{item.description}}
-                </v-card-text>
-                <v-spacer></v-spacer>
+                <v-tooltip bottom max-width="300px">
+                  <template v-slot:activator="{ on }">
+                    <v-card-text v-on="on" class="description" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
+                      {{item.description}}
+                    </v-card-text>
+                  </template>
+                  <span>{{item.description}}</span>
+                </v-tooltip>
+                <v-spacer v-if="false"></v-spacer>
                 <v-card-text class="homepage">
                   <a :href="item.homepage">More Information</a>
                  </v-card-text>
@@ -79,7 +84,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-card.selected {
   border: 1px solid;
 }
@@ -93,6 +98,14 @@ export default {
 .description.v-card__text {
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.description.v-card__text.compact {
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  padding-bottom: 0px;
+  padding-top: 0px;
+  min-height: calc(1.375rem * 3) 
 }
 .homepage.v-card__text {
   padding-bottom: 0;
@@ -110,5 +123,18 @@ a {
   object-fit: scale-down;
   width: 100%;
   height: 100%;
+}
+.tile-size {
+  width: 400px;
+  height: 380px;
+}
+.tile-size.compact {
+  width: 300px;
+  height: 285px;
+  margin: 0px !important;
+}
+.v-container.compact {
+  margin-right: 0;
+  margin-left: 0;
 }
 </style>
