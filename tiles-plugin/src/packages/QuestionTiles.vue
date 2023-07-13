@@ -24,15 +24,12 @@
                 elevation=2
               >
                 <v-card-title>{{item.name}}</v-card-title>
-                <v-tooltip bottom max-width="300px">
-                  <template v-slot:activator="{ on }">
-                    <v-card-text v-on="on" class="description" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
-                      {{item.description}}
-                    </v-card-text>
-                  </template>
-                  <span>{{item.description}}</span>
-                </v-tooltip>
-                <v-spacer v-if="false"></v-spacer>
+                <template>
+                  <v-card-text class="description" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
+                    {{item.description}}
+                  </v-card-text>
+                </template>
+                <v-spacer></v-spacer>
                 <v-card-text class="homepage">
                   <a :href="item.homepage">More Information</a>
                  </v-card-text>
@@ -133,7 +130,7 @@ a {
   height: 285px;
   margin: 0px !important;
 }
-.v-container.compact {
+.container.compact {
   margin-right: 0;
   margin-left: 0;
 }
