@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: "QuestionTiles",
+  name: "QuestionSampleTiles",
   watch: {
     "question.answer": {
       handler: function (newValue, oldValue) {
