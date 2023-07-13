@@ -21,7 +21,7 @@
                 hover
                 flat
                 dark
-                elevation=2c
+                elevation=2
               >
                 <v-card-title>{{item.name}}</v-card-title>
                 <v-tooltip bottom max-width="300px">
