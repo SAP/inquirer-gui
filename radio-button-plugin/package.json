@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-radio-plugin",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "description": "Sample radio plugin for inquirer-gui",
   "main": "dist/radioPlugin.umd.js",
   "module": "./dist/radioPlugin.es.js",

@@ -10,6 +10,7 @@
     single-line
     menu-icon="mdi-chevron-down"
     @update:search="(value) => searchInput = value"
+    @update:menu="onUpdateMenu"
     variant="outlined"
     density="compact"
     :menu-props="{ maxHeight: 150 }"
@@ -41,6 +42,13 @@ const Inquirer_Default_Separator = "\u001b[2m───────────�
 export default {
   name: "QuestionAutocomplete",
   methods: {
+    onUpdateMenu(open) {
+      if (open) {
+        // WORKAROUND: fixes dialog menu popup position on first click
+        // Issue: https://github.com/vuetifyjs/vuetify/issues/17126 
+        setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
+      }
+    },
     onAnswerChanged(value) {
       if (value) {
         this.$emit("answerChanged", this.question.name, value);
@@ -77,6 +85,8 @@ export default {
       searchResults: [],
       moreInfo: null,
       emptyText: this.question.emptyText || undefined,
+      select: '',
+      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     };
   },
   watch: {

@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-label-plugin",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "description": "Label plugin for inquirer-gui",
   "main": "dist/labelPlugin.umd.js",
   "module": "./dist/labelPlugin.es.js",

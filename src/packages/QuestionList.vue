@@ -10,6 +10,7 @@
     single-line
     menu-icon="mdi-chevron-down"
     @update:search="searchInput"
+    @update:menu="onUpdateMenu"
     variant="outlined"
     density="compact"
   >
@@ -31,6 +32,13 @@ const Inquirer_Default_Separator = '\u001b[2m───────────�
 export default {
   name: "QuestionList",
   methods: {
+    onUpdateMenu(open) {
+      if (open) {
+        // WORKAROUND: fixes dialog menu popup position on first click
+        // Issue: https://github.com/vuetifyjs/vuetify/issues/17126 
+        setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
+      }
+    },
     onAnswerChanged(value) {
       this.$emit("answerChanged", this.question.name, value);
     },

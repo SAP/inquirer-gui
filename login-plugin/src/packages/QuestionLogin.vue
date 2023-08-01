@@ -32,11 +32,6 @@ export default {
   props: {
     question: Object
   },
-  data() {
-    return {
-      pass: this.question.answer
-    };
-  },
   methods: {
     afterLogin() {
       // TODO: handle login response
@@ -53,10 +48,10 @@ export default {
     },
     onLogin() {
       // TODO: move to onInput()
-      this.$emit("answerChanged", this.question.name, this.pass);
+      this.$emit("answerChanged", this.question.name, this.question.answer);
     },
     onInput(value) {
-      this.pass = value;
+      this.question.answer = value;
     }
   }
 };

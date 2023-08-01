@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = defineConfig({
   // transpileDependencies: true,
   lintOnSave: false,
+  publicPath: "./", // This is critical so the urls from built files will be releative.
   configureWebpack:{
     resolve:{
         alias:{

@@ -661,6 +661,11 @@ $color-error: var(--vscode-notificationsErrorIcon-foreground, #F14C4C);
 $color-warn: var(--vscode-notificationsWarningIcon-foreground, #CCA700);
 $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
 
+a {
+  color:var(--vscode-textLink-foreground, #1976d2);
+  cursor: pointer;
+}
+
 .inquirer-gui p.question-label {
   margin-top: 0.6rem;
   margin-bottom: 0.05rem;

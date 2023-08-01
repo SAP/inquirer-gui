@@ -37,6 +37,17 @@ npm install
 npm run serve
 ```
 This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
+### Run in Browser - vite based application (Frontend Questions)
+Use the provided `sample-app-vite`:
+```sh
+npm install
+cd sample-app-vite
+npm install
+npm run serve
+```
+This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
 ### Run in Browser (Backend Questions)
 Use the provided `sample-app` and `websocket-server`:
 ```sh
@@ -51,6 +62,33 @@ npm install
 npm run serve
 ```
 This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
+### Run as VSCode Extension
+Use the provided `sample-vscode-extension`:
+
+create the `dist` folder containing the Vue Web application you want to load as webview in a VSCode extension panel.
+
+```sh
+npm install
+cd sample-app-vite (or sample-app)
+npm run build
+```
+The `npm run build` command will finally create `dist` folder with the bundled vue application.
+
+```sh
+cd sample-vscode-extension
+npm install
+npm run compile 
+copy the dist folder to the root of the extension.
+```
+Open the `sample-vscode-extension` as root folder and in the run configurations choose `Launch Extension`.
+
+If you change the source code of the extension itself you must run `npm run compile`.
+If changing the webview content don't forget to update the `dist` folder.
+
+
+Note that the vscode extension contains example code that loads the index.html, styles and scripts.
+In Vue3 using vite based configuration, the bundled code and structure has been changed so this code has to be adjusted accordingly.
 
 ### Usage
 If writing a Vue application, simply add the following line to your `<template>` tag:

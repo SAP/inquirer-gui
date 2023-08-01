@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-login-plugin",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "description": "Login plugin for inquirer-gui",
   "main": "dist/loginPlugin.umd.js",
   "module": "./dist/loginPlugin.es.js",

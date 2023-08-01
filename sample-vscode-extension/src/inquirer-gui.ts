@@ -22,22 +22,17 @@ const questions1 = [
         }
     },
     {
-        type: "date",
-        name: "birthday",
-        message: "Birthday"
-    },
-    {
         type: "input",
         name: "name",
         message: "Your name (backend)",
         default: "Jack",
-        validate: function (input: any) {
-            if (input.length >= 2) {
-                return true;
-            } else {
-                return "Name must be at least 2 characters long";
-            }
-        }
+        // validate: function (input: any) {
+        //     if (input.length >= 2) {
+        //         return true;
+        //     } else {
+        //         return "Name must be at least 2 characters long";
+        //     }
+        // }
     },
     {
         type: "input",

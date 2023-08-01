@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-date-plugin",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "description": "Sample date plugin for inquirer-gui",
   "main": "dist/datePlugin.umd.js",
   "module": "./dist/datePlugin.es.js",

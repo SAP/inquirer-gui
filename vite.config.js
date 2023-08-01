@@ -5,6 +5,7 @@ const path = require('path');
 
 export default defineConfig({
   plugins: [vue()],
+  base: './',
   build: {
     lib: {
         entry: path.resolve(__dirname, 'src/index.js'),
