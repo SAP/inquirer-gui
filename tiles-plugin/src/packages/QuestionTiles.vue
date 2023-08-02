@@ -101,8 +101,7 @@ export default {
   -webkit-box-orient: vertical;
   display: -webkit-box;
   padding-bottom: 0px;
-  padding-top: 0px;
-  min-height: calc(1.375rem * 3) 
+  padding-top: 0px; 
 }
 .homepage.v-card__text {
   padding-bottom: 0;
