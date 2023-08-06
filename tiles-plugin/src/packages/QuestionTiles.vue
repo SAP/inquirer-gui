@@ -24,11 +24,9 @@
                 :elevation="2"
               >
                 <v-card-title>{{item.name}}</v-card-title>
-                <!-- <template> -->
                   <v-card-text class="description" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
                     {{item.description}}
                   </v-card-text>
-                <!-- </template> -->
                 <v-spacer></v-spacer>
                 <v-card-text class="homepage">
                   <a :href="item.homepage">More Information</a>
@@ -98,16 +96,16 @@ export default {
   overflow: hidden;
   color: var(--vscode-foreground, hsla(0,0%,100%,.7));
 }
-.description.v-card__text.compact {
+.description.v-card-text.compact {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   display: -webkit-box;
   padding-bottom: 0px;
   padding-top: 0px;
-  min-height: calc(1.375rem * 3) 
 }
-.homepage.v-card__text {
+.homepage.v-card-text {
   padding-bottom: 0;
+  flex: inherit;
 }
 a {
   font-size: 11px;

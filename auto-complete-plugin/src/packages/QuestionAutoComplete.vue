@@ -85,8 +85,6 @@ export default {
       searchResults: [],
       moreInfo: null,
       emptyText: this.question.emptyText || undefined,
-      select: '',
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     };
   },
   watch: {

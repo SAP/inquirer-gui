@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { RpcExtension } from '@sap-devx/webview-rpc/out.ext/rpc-extension';
 import { InquirerGui } from './inquirer-gui';
-const cheerio = require('cheerio');
+import * as cheerio from 'cheerio';
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -144,10 +144,10 @@ class InquirerUIPanel {
 			const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'dist', path.sep));
 			const scriptUri = this._panel.webview.asWebviewUri(scriptPathOnDisk);
 
-			const $ = cheerio.load(indexHtml);
+			const $: cheerio.Root = cheerio.load(indexHtml);
 
-			function replaceAttributePaths(elements: any, attributeName: any) {
-				elements.each((index: any, element: any) => {
+			function replaceAttributePaths(elements: cheerio.Cheerio, attributeName: string) {
+				elements.each((index: number, element: cheerio.Element) => {
 					const relativePath = $(element).attr(attributeName);
 					if (relativePath) {
 						const fullPath = path.join(scriptUri.toString(), relativePath);
