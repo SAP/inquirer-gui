@@ -33,7 +33,7 @@ When making changes, make sure to increase the version number based on the natur
 
 ## Installation and Usage
 There are several use-cases for the consuming `inquirer-gui` component:
-* You can use it in another Vue application or in a non-Vue application
+* You can use it in another Vue application or in a non-Vue application.
 * You can use it in a browser or in Visual Studio Code
 * You can provide the questions in the frontend or in the backend (providing questions in the backend implies more flexibility in composing questions)
 
