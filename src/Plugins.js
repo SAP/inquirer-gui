@@ -1,21 +1,22 @@
-import Vue from "vue";
-import QuestionInput from "./packages/QuestionInput";
-import QuestionEditor from "./packages/QuestionEditor";
-import QuestionList from "./packages/QuestionList";
-import QuestionConfirm from "./packages/QuestionConfirm";
-import QuestionCheckbox from "./packages/QuestionCheckbox";
-import QuestionExpand from "./packages/QuestionExpand";
+import QuestionInput from "./packages/QuestionInput.vue";
+import QuestionEditor from "./packages/QuestionEditor.vue";
+import QuestionList from "./packages/QuestionList.vue";
+import QuestionConfirm from "./packages/QuestionConfirm.vue";
+import QuestionCheckbox from "./packages/QuestionCheckbox.vue";
+import QuestionExpand from "./packages/QuestionExpand.vue";
 
 export default {
-  registerBuiltinPlugins: function() {
-    // register builtin form elements
-    Vue.component('QuestionInput', QuestionInput);
-    Vue.component('QuestionEditor', QuestionEditor);
-    Vue.component('QuestionList', QuestionList);
-    Vue.component('QuestionConfirm', QuestionConfirm);
-    Vue.component('QuestionCheckbox', QuestionCheckbox);
-    Vue.component('QuestionExpand', QuestionExpand);
 
+  registerBuiltinPluginComponents: function(app) {
+    // register builtin form elements
+    app.component('QuestionInput', QuestionInput);
+    app.component('QuestionEditor', QuestionEditor);
+    app.component('QuestionList', QuestionList);
+    app.component('QuestionConfirm', QuestionConfirm);
+    app.component('QuestionCheckbox', QuestionCheckbox);
+    app.component('QuestionExpand', QuestionExpand);
+  },
+  registerBuiltinPlugins: function() {
     const plugins = [
       {
         questionType: "input",

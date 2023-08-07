@@ -1,6 +1,9 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+import QuestionConfirm from '../src/packages/QuestionConfirm.vue';
 
 const questionConfirm = [
   {
@@ -10,17 +13,34 @@ const questionConfirm = [
     default: false
   }
 ];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type confirm', () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
   test('Confirm', async () => {
-    const wrapper = mount(Form, { });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionConfirm': QuestionConfirm
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionConfirm });
-    await Vue.nextTick();
+    await nextTick();
 
     const confirm = wrapper.find('label');
     confirm.trigger('click');
 
-    await Vue.nextTick();
+    await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength-1];

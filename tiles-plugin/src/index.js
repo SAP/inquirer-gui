@@ -1,4 +1,4 @@
-import QuestionTiles from "./packages/QuestionTiles";
+import QuestionTiles from "./packages/QuestionTiles.vue";
 
 export default {
   install(Vue, options) {

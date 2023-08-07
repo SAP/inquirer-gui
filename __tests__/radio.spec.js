@@ -1,8 +1,10 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
 
-import RadioGroup from "../radio-button-plugin/src/packages/RadioGroup";
+import RadioGroupPlugin from "../radio-button-plugin/src";
 
 
 const questionRadio = [
@@ -18,26 +20,36 @@ const questionRadio = [
   }
 ];
 
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 
 describe('Question of type radio', () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
   test('Radio', async () => {
-    Vue.component('RadioGroup', RadioGroup);
-    await Vue.nextTick();
-    const radioPlugin = {
-      questionType: "radio",
-      component: RadioGroup
-    };
-  
-    const wrapper = mount(Form, {});
-    wrapper.vm.registerPlugin(radioPlugin);
+    const options = {};
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [RadioGroupPlugin, options]],
+      },
+      attachTo: document.body
+    });
+    await nextTick();
+
+    wrapper.vm.registerPlugin(options.plugin);
     wrapper.setProps({ questions: questionRadio });
-    await Vue.nextTick();
+    await nextTick();
     
-    const pat = wrapper.find('input[role="radio"]');//input[value="dog"]
+    const pat = wrapper.find('input[type="radio"]');//input[value="dog"]
     pat.trigger('click');
 
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedLength = wrapper.emitted().answered.length;

@@ -9,6 +9,22 @@
 # Inquirer GUI
 ![alt text](screenshot.png "Screenshot of sample form")
 
+# Vue3 migration
+
+The `master` branch now supports Vue3 and Vuetify3. 
+
+The `Form` component, builtin plugins and all custom plugins were migrated.
+The new versioning is **3.x.y**.
+
+# Vue2 maintenance mode 
+We still keep `master-maintenance` branch that is based on Vue2.
+
+Please reserve the use of this branch exclusively for *critical* features or bug fixes.
+
+Since we're still in the process of fully transitioning to Vue3, any changes made here will also need to be contributed to the master branch (Vue3 based). 
+
+When making changes, make sure to increase the version number based on the nature of the change. However, **DO NOT** increase the major version to 3, as that version is specifically reserved for the Vue3 release channel.
+
 ## Description
 `inquirer-gui` is a UI component that displays [Inquirer.js](https://github.com/SBoudrias/Inquirer.js)-compliant questions in an interactive HTML form.
 
@@ -37,6 +53,17 @@ npm install
 npm run serve
 ```
 This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
+### Run in Browser - vite based application (Frontend Questions)
+Use the provided `sample-app-vite`:
+```sh
+npm install
+cd sample-app-vite
+npm install
+npm run serve
+```
+This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
 ### Run in Browser (Backend Questions)
 Use the provided `sample-app` and `websocket-server`:
 ```sh
@@ -51,6 +78,27 @@ npm install
 npm run serve
 ```
 This will run the web server on `localhost` on an available port. Open the provided link in the browser.
+
+### Run as VSCode Extension
+Use the provided `sample-vscode-extension`:
+
+```sh
+cd sample-vscode-extension
+npm install
+npm run compile 
+npm run copy-dist
+```
+Open the `sample-vscode-extension` as root folder and in the run configurations choose `Launch Extension`.
+
+If you change the source code of the extension itself you must re-run `npm run compile`.
+
+If changing the webview content don't forget to update the `dist` folder by running `npm run clean-dist && npm run copy-dist`. 
+
+The `copy-dist` script creates the `dist` folder containing the Vue Web application you want to load as webview in a VSCode extension panel and copy it to the extension.
+
+
+Note that the vscode extension contains example code that loads the index.html, styles and scripts.
+In Vue3 using vite based configuration, the bundled code and structure has been changed so this code has to be adjusted accordingly.
 
 ### Usage
 If writing a Vue application, simply add the following line to your `<template>` tag:
@@ -106,16 +154,28 @@ Where `questionType` is the string provided in the question's `type` property, a
 There is example of a custom form element in the `/sample-plugin` folder. It is defined as a `Vue plugin` and was published as `@sap-devx/inquirer-gui-date-plugin` on `npm`.
 
 ### Consuming a custom form element
-Consume a custom form element as a `Vue plugin` using the `Vue.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
+Consume a custom form element as a `Vue plugin` using the `app.use()` method. The plugin is returned in the method's `options` parameter. For example, refer to `/sample-app/src/App.vue`:
 ```js
 import DatePlugin from "@sap-devx/inquirer-gui-date-plugin";
 
 const options = {};
 // use the Vue plugin
-Vue.use(DatePlugin, options);
+app.use(DatePlugin, options);
 // register the inquirer-gui plugin with your form instance
 form.registerPlugin(options.plugin);
 ```
+## Release
+
+### Change in the main form element/built in components (under src folder):
+
+1. Your change should include bumping the version of the package.json of "@sap-devx/inquirer-gui" module based on the nature of the change.
+2. After your change is merged, go to `releases` in github and click on `Draft a new release`.
+3. In `Choose a tag` enter `vx.y.z` - add the `v` prefix to the current version from step (1) and click `Publish release`.  This will automatically trigger the publish script action in circleci and publish this npm module to npmjs.
+
+### Change in custom plugins
+
+1. Your change should include bumping the version of the package.json of "@sap-devx/\<custom-plugin-name\>" module based on the nature of the change.
+2. Currently the publish step is done manually via `npm publish` command by an admin user.
 
 ## How to obtain support
 To get more help, support and information please open a github issue.

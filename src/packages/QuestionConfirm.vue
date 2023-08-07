@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-radio-group
-      :value="question.answer"
-      @change="onClick"
-      row
-      dense
+      @update:modelValue="onClick"
+      :modelValue="question.answer"
+      inline
+      density="compact"
     >
       <v-radio label="Yes" :value="true"></v-radio>
       <v-radio label="No" :value="false"></v-radio>

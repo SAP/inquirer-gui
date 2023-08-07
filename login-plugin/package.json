@@ -1,10 +1,21 @@
 {
   "name": "@sap-devx/inquirer-gui-login-plugin",
-  "version": "0.0.4",
+  "version": "3.0.0",
   "description": "Login plugin for inquirer-gui",
   "main": "dist/loginPlugin.umd.js",
+  "module": "./dist/loginPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/loginPlugin.es.js",
+      "require": "./dist/loginPlugin.umd.js"
+    },
+    "./dist/loginPlugin.css": {
+      "import": "./dist/loginPlugin.css",
+      "require": "./dist/loginPlugin.css"
+    }
+  },
   "scripts": {
-    "build": "vue-cli-service build --target lib --name loginPlugin src/index.js",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -14,9 +25,10 @@
   "author": "Eyal Barlev",
   "license": "Apache-2.0",
   "dependencies": {
-    "vue": "^2.6.10"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

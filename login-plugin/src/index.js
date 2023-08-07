@@ -1,4 +1,4 @@
-import QuestionLogin from "./packages/QuestionLogin";
+import QuestionLogin from "./packages/QuestionLogin.vue";
 
 export default {
   install(Vue, options) {

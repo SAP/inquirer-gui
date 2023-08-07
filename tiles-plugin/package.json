@@ -1,10 +1,21 @@
 {
   "name": "@sap-devx/inquirer-gui-tiles-plugin",
-  "version": "0.1.1",
+  "version": "3.0.0",
   "description": "Tiles plugin for inquirer-gui",
   "main": "dist/tilesPlugin.umd.js",
+  "module": "./dist/tilesPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/tilesPlugin.es.js",
+      "require": "./dist/tilesPlugin.umd.js"
+    },
+    "./dist/tilesPlugin.css": {
+      "import": "./dist/tilesPlugin.css",
+      "require": "./dist/tilesPlugin.css"
+    }
+  },
   "scripts": {
-    "build": "vue-cli-service build --target lib --name tilesPlugin src/index.js",
+    "build": "vite build",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -14,9 +25,10 @@
   "author": "Tomer Epstein",
   "license": "Apache-2.0",
   "dependencies": {
-    "vue": "^2.6.10"
+    "vue": "^3.3.4"
   },
   "devDependencies": {
-    "@vue/cli-service": "^5.0.8"
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

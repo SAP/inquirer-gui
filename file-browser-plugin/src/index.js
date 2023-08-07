@@ -1,4 +1,4 @@
-import QuestionFileBrowser from "./packages/QuestionFileBrowser";
+import QuestionFileBrowser from "./packages/QuestionFileBrowser.vue";
 
 export default {
   install(Vue, options) {

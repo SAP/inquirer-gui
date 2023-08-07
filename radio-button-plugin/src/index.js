@@ -1,4 +1,4 @@
-import RadioGroup from "./packages/RadioGroup";
+import RadioGroup from "./packages/RadioGroup.vue";
 
 export default {
   install(Vue, options) {

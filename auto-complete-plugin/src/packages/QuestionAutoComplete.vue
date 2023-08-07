@@ -1,45 +1,54 @@
 <template>
   <v-autocomplete
-    :value="question.answer"
-    @change="onAnswerChanged"
+    @update:modelValue="onAnswerChanged"
+    :modelValue="question.answer"
     :items="searchResults"
-    item-text="name"
+    item-title="name"
     item-value="value"
     hide-details="auto"
     :label="clickToDisplay"
     single-line
-    :append-icon="'mdi-chevron-down'"
-    :search-input.sync="searchInput"
-    outlined
-    dense
+    menu-icon="mdi-chevron-down"
+    @update:search="(value) => searchInput = value"
+    @update:menu="onUpdateMenu"
+    variant="outlined"
+    density="compact"
     :menu-props="{ maxHeight: 150 }"
     :no-data-text="emptyText"
   >
-    <template v-slot:item="{ item, attrs, on }">
-      <v-list-item :disabled="item.type === 'separator'" v-bind="attrs" v-on="on">
+    <template v-slot:item="{ item, props }">
+      <v-list-item :disabled="item.type === 'separator'" v-bind="props" :title="item?.raw?.name" :value="item?.raw?.value">
         <v-divider v-if="getDividerType(item) === 'divider'"></v-divider>
-        <v-subheader v-else-if="getDividerType(item) === 'header'">{{ stripEscapeChars(item.line) }}</v-subheader>
-        <v-list-item-content v-else>
-          <v-list-item-title :id="attrs['aria-labelledby']" v-text="item.name"></v-list-item-title>
-        </v-list-item-content>
+        <v-list-subheader v-else-if="getDividerType(item) === 'header'">{{ stripEscapeChars(item.line) }}</v-list-subheader>
+        <v-list-item-title v-else :id="props['aria-labelledby']">{{ item.name }}</v-list-item-title>
       </v-list-item>
     </template>
-    <div v-if="moreInfo" slot="append-item" class="moreInfoBottom">
-      <v-divider />
-      <div class="moreInfo">{{ moreInfo }}</div>
-    </div>
+    <template v-slot:append-item>
+      <div v-if="moreInfo" class="moreInfoBottom">
+        <v-divider />
+        <div class="moreInfo">{{ moreInfo }}</div>
+      </div>
+    </template>
   </v-autocomplete>
 </template>
 
 <script>
 import utils from "../utils";
-const stripAnsi = require("strip-ansi");
+import stripAnsi from 'strip-ansi';
+
 // TODO: Get Inquirer.Separator() as props. (Inquirer Issue: https://github.com/SBoudrias/Inquirer.js/issues/543)
 const Inquirer_Default_Separator = "\u001b[2m──────────────\u001b[22m";
 
 export default {
   name: "QuestionAutocomplete",
   methods: {
+    onUpdateMenu(open) {
+      if (open) {
+        // WORKAROUND: fixes dialog menu popup position on first click
+        // Issue: https://github.com/vuetifyjs/vuetify/issues/17126 
+        setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
+      }
+    },
     onAnswerChanged(value) {
       if (value) {
         this.$emit("answerChanged", this.question.name, value);
@@ -94,6 +103,7 @@ export default {
 </script>
 
 <style scoped>
+
 .list-group {
   margin-bottom: 15px;
 }

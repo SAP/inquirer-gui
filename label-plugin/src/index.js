@@ -1,4 +1,4 @@
-import QuestionLabel from "./packages/QuestionLabel";
+import QuestionLabel from "./packages/QuestionLabel.vue";
 
 export default {
   install(Vue, options) {

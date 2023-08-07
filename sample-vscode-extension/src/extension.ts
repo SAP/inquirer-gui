@@ -1,8 +1,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as vscode from 'vscode';
-import {RpcExtension} from '@sap-devx/webview-rpc/out.ext/rpc-extension';
+import { RpcExtension } from '@sap-devx/webview-rpc/out.ext/rpc-extension';
 import { InquirerGui } from './inquirer-gui';
+import * as cheerio from 'cheerio';
 
 export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -136,23 +137,34 @@ class InquirerUIPanel {
 	}
 
 	private _getHtmlForWebview(webview: vscode.Webview) {
-			// TODO: don't use sync
-			let indexHtml: string = fs.readFileSync(path.join(this._extensionPath, 'dist', 'index.html'), "utf8");
-			if (indexHtml) {
-				// Local path to main script run in the webview
-				const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'dist', path.sep));
-				const scriptUri = this._panel.webview.asWebviewUri(scriptPathOnDisk);
-	
-				// TODO: very fragile: assuming double quotes and src is first attribute
-				// specifically, doesn't work when building vue for development (vue-cli-service build --mode development)
-				indexHtml = indexHtml.replace(/<link href=\//g, `<link href=${scriptUri.toString()}`);
-				indexHtml = indexHtml.replace(/<script src=\//g, `<script src=${scriptUri.toString()}`);
-				indexHtml = indexHtml.replace(/<img src=\//g, `<img src=${scriptUri.toString()}`);
+		// TODO: don't use sync
+		let indexHtml: string = fs.readFileSync(path.join(this._extensionPath, 'dist', 'index.html'), "utf8");
+		if (indexHtml) {
+			// Local path to main script run in the webview
+			const scriptPathOnDisk = vscode.Uri.file(path.join(this._extensionPath, 'dist', path.sep));
+			const scriptUri = this._panel.webview.asWebviewUri(scriptPathOnDisk);
+
+			const $: cheerio.Root = cheerio.load(indexHtml);
+
+			function replaceAttributePaths(elements: cheerio.Cheerio, attributeName: string) {
+				elements.each((index: number, element: cheerio.Element) => {
+					const relativePath = $(element).attr(attributeName);
+					if (relativePath) {
+						const fullPath = path.join(scriptUri.toString(), relativePath);
+						$(element).attr(attributeName, fullPath);
+					}
+				});
 			}
-			
-			return indexHtml;
+
+			replaceAttributePaths($("[src]"), "src");
+			replaceAttributePaths($("[href]"), "href");
+			indexHtml = $.html();
 		}
+		return indexHtml;
 	}
+}
+
+
 
 async function showOpenDialog(currentPath: string): Promise<string> {
 	let uri;

@@ -25,7 +25,7 @@ If you want to understand what you're doing, keep reading.
     ```
 3. Install the `Form` Vue.js plugin:
     ```js
-    Vue.use(Form);
+    app.use(Form);
     ```
 4. Render the `Form`:
     ```html
@@ -39,7 +39,7 @@ Import and register the custom control as follows:
     import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 
     let options = {};
-    Vue.use(FileBrowserPlugin, options);
+    app.use(FileBrowserPlugin, options);
     this.$refs.form.registerPlugin(options.plugin);
     ```
 

@@ -1,7 +1,16 @@
-import { mount } from '@vue/test-utils'; 
-import Vuetify from 'vuetify';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+import QuestionList from '../src/packages/QuestionList.vue';
+
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserver;
 
 const questionList = [
   {
@@ -129,33 +138,47 @@ const questionListValidate = [{
   },
   validate: input => (input ? true : "select list3 item")
 }];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type list', () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
   test('List', async () => {
-    const vuetify = new Vuetify({});
 
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionList });
 
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.vm.$props.questions[0].answer).toBe(questionList[0].default);
   });
 
   test('List without default', async () => {
-    const vuetify = new Vuetify({});
-
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListNoDefault });
 
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -170,40 +193,47 @@ describe('Question of type list', () => {
   });
 
   test('List with separator', async () => {
-    const vuetify = new Vuetify({});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
+    wrapper.setProps({
+      questions: questionListWithSeparator
+    })
+    await nextTick();
 
-    new Vue({ vuetify });
+    const menu = wrapper.findComponent({name: 'v-icon'});
+    menu.trigger('mousedown');
 
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
-    wrapper.setProps({ questions: questionListWithSeparator });
+    await nextTick();
+    
+    const list = document.body.querySelector('.v-list');
+    expect(list.querySelectorAll('.v-list-item')).toHaveLength(6);
+    expect(list.querySelectorAll('.v-divider')).toHaveLength(1);
+    expect(list.querySelectorAll('.v-list-subheader')).toHaveLength(1);
 
-    await Vue.nextTick();
-
-    const menu = wrapper.findComponent({name: 'v-menu'});
-    menu.trigger('click');
-    await Vue.nextTick();
-
-    const list = wrapper.findComponent({name: 'v-select-list'});
-    expect(list.findAllComponents({name:'v-list-item'})).toHaveLength(6);
-    expect(list.findAllComponents({name:'v-divider'})).toHaveLength(1);
-    expect(list.findAllComponents({name:'v-subheader'})).toHaveLength(1);
-
-    const subheader = list.findComponent({name:'v-subheader'});
-    expect(subheader.vm.$el.innerHTML).toBe("Custom Separator");
+    const subheader = list.querySelectorAll('.v-list-subheader')[0];
+    expect(subheader.textContent).toBe("Custom Separator");
   });
 
   test('List with invalid choices', async () => {
-    const vuetify = new Vuetify({});
-
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListInvalidChoices });
 
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -213,16 +243,18 @@ describe('Question of type list', () => {
   });
 
   test('List with default as index', async () => {
-    const vuetify = new Vuetify({});
-
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListDefaultAsIndex });
 
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -232,16 +264,18 @@ describe('Question of type list', () => {
   });
 
   test('List with default as invalid index', async () => {
-    const vuetify = new Vuetify({});
-
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListDefaultAsInvalidIndex });
 
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -251,16 +285,18 @@ describe('Question of type list', () => {
   });
 
   test('List with empty choices', async () => {
-    const vuetify = new Vuetify({});
-
-    new Vue({ vuetify });
-
-    document.body.setAttribute('data-app', 'true');
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListEmptyChoices });
 
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
     const answeredLength = wrapper.emitted().answered.length;
@@ -270,13 +306,17 @@ describe('Question of type list', () => {
   });
 
   test('List with hint', async () => {
-    const vuetify = new Vuetify({});
-    new Vue({ vuetify });
-    document.body.setAttribute('data-app', 'true');
-
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListWithHint });
-    await Vue.nextTick();
+    await nextTick();
 
     const labels = wrapper.findAll('p.question-label');
 
@@ -287,20 +327,25 @@ describe('Question of type list', () => {
     expect(labels.at(1).findAll('span.question-hint').at(0).element.innerHTML).toContain('v-tooltip');
 
     expect(labels.at(2).findAll('span.question-message').at(0).element.innerHTML).toBe(questionListWithHint[2].message);
-    expect(labels.at(2).findAll('span.question-hint').exists()).toBe(false);
+    expect(labels.at(2).findAll('span.question-hint').length).toBe(0);
 
   });
 
   test('list with validate', async () => {
-    const vuetify = new Vuetify({});
-    new Vue({ vuetify });
-    document.body.setAttribute('data-app', 'true');
-
-    const wrapper = mount(Form, { vuetify, attachTo: document.body });
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionList': QuestionList
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionListValidate });
-    await Vue.nextTick();
-    await Vue.nextTick();
-    await Vue.nextTick();
+    await nextTick();
+    await nextTick();
+    await nextTick();
+    await nextTick();
 
     // should get 2 * and validation error message from list2
     let errorValidationText = wrapper.findAll("span.error-validation-text");
@@ -311,7 +356,7 @@ describe('Question of type list', () => {
 
     // answer on list2 question
     await wrapper.vm.onAnswerChanged("list2", "item22");
-    await Vue.nextTick();
+    await nextTick();
 
     // should get 3 * and validation error message from list3
     errorValidationText = wrapper.findAll("span.error-validation-text");
@@ -322,7 +367,7 @@ describe('Question of type list', () => {
 
     // answer on list2 question
     await wrapper.vm.onAnswerChanged("list3", "item23");
-    await Vue.nextTick();
+    await nextTick();
 
     // should get 3 * and no validation error messages
     errorValidationText = wrapper.findAll("span.error-validation-text");

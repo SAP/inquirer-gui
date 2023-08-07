@@ -1,6 +1,6 @@
 <template>
   <v-form class="inquirer-gui">
-    <template v-for="(question, index) in questions">
+    <template v-for="(question, index) in questions" :key="question.name">
       <p
         :key="'label-' + index"
         class="question-label"
@@ -8,9 +8,9 @@
       >
         <span class="question-message">{{question._message}}</span>
         <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
-          <v-tooltip top max-width="350px">
-            <template v-slot:activator="{on}">
-              <v-icon v-on="on">mdi-help-circle-outline</v-icon>
+          <v-tooltip location="top" max-width="350px">
+            <template v-slot:activator="{ props }">
+              <v-icon v-bind="props">mdi-help-circle-outline</v-icon>
             </template>
             <span>{{question.guiOptions.hint}}</span>
           </v-tooltip>
@@ -43,7 +43,7 @@
         </span>
       </div>
       <div v-else-if="shouldShowAdditionalMessages(question)" class="add-messages" :key="'additional-msg-' + index" :id="'add-msg-' + index">
-        <v-icon v-on="on" class="messages-icon" :class="severityMessageClass(question._additionalMessages.severity)">mdi-{{ severityIcon(question._additionalMessages.severity) }}</v-icon><span class="messages-text" :class="severityMessageClass(question._additionalMessages.severity)">{{question._additionalMessages.message}}</span>
+        <v-icon class="messages-icon" :class="severityMessageClass(question._additionalMessages.severity)">mdi-{{ severityIcon(question._additionalMessages.severity) }}</v-icon><span class="messages-text" :class="severityMessageClass(question._additionalMessages.severity)">{{question._additionalMessages.message}}</span>
       </div>
     </template>
 	<v-text-field id="form-single-input-issue-key-enter-workaround" style="display:none;"/>
@@ -51,8 +51,9 @@
 </template>
 
 <script>
+import { markRaw } from 'vue';
 import Plugins from "./Plugins";
-const assert = require('assert');
+import isEqual from "lodash/isEqual"
 
 const NOT_ANSWERED = "Mandatory field";
 const MANDATORY_TYPES = ["list", "rawlist", "expand", "autocomplete"];
@@ -179,7 +180,7 @@ export default {
       }
     },
     registerPlugin(plugin) {
-      this.plugins.push(plugin);
+      this.plugins.push(markRaw(plugin));
     },
     getAnswers() {
       let result = {};
@@ -280,12 +281,7 @@ export default {
           if (index < 0) {
             index = question._choices.findIndex(choice => {
               if (question._default) {
-                try {
-                  assert.deepEqual(choice.value, question._default);
-                  return true;
-                } catch (error) {
-                  return false;
-                } 
+                return isEqual(choice.value, question._default);
               }
             });
           }
@@ -531,7 +527,7 @@ export default {
           typeof question.message === "string"
             ? question.message
             : question.name;
-        this.$set(question, "_message", message);
+        question["_message"] = message;
 
         // choices
         if (question.choices) {
@@ -539,7 +535,7 @@ export default {
           if (typeof question.choices !== "function") {
             choices = this.normalizeChoices(question.choices);
           }
-          this.$set(question, "_choices", choices);
+          question["_choices"] = choices;
         }
 
         // default
@@ -552,28 +548,28 @@ export default {
               _default = question.__origAnswer;
             }
           }
-          this.$set(question, "_default", _default);
+          question["_default"] = _default;
         } else if (question._default === undefined) {
-          this.$set(question, "_default", question.__origAnswer);
+          question["_default"] = question.__origAnswer;
         }
 
         // validity
-        this.$set(question, "isValid", true);
-        this.$set(question, "validationMessage", "");
+        question["isValid"] = true;
+        question["validationMessage"] = "";
 	
         // mandatory
         this.setIsMandatory(question);
 
         // dirty
-        this.$set(question, "isDirty", question.__origAnswer !== undefined);
+        question["isDirty"] = question.__origAnswer !== undefined;
 
         // answer
         let answer = this.getInitialAnswer(question);
-        this.$set(question, "answer", answer);
+        question["answer"] = answer;
 
         // visibility
         const shouldShow = (question.when === false || (typeof question.when === "function")) ? false : true;
-        this.$set(question, "shouldShow", shouldShow);
+        question["shouldShow"] = shouldShow;
       }
 
       const answers = this.getAnswers();
@@ -655,7 +651,7 @@ export default {
     }
   },
   created() {
-    this.plugins = Plugins.registerBuiltinPlugins();
+    this.plugins = markRaw(Plugins.registerBuiltinPlugins());
   }
 };
 </script>
@@ -664,6 +660,11 @@ export default {
 $color-error: var(--vscode-notificationsErrorIcon-foreground, #F14C4C);
 $color-warn: var(--vscode-notificationsWarningIcon-foreground, #CCA700);
 $color-info: var(--vscode-notificationsInfoIcon-foreground, #3794FF);
+
+a {
+  color:var(--vscode-textLink-foreground, #1976d2);
+  cursor: pointer;
+}
 
 .inquirer-gui p.question-label {
   margin-top: 0.6rem;

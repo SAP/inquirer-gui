@@ -2,12 +2,12 @@
   <div class="radio" v-if="isVisible()">
     <v-radio-group
       style="margin-bottom:0pt;padding-bottom:0pt"
-      :value="question.answer"
-      @change="onClick"
-      row
-      dense
+      @update:modelValue="onClick"
+      :modelValue="question.answer"
+      inline
+      density="compact"
     >
-      <v-radio class="radioClass" v-for="item in question.choices" :key="item" :label="item" :value="item">{{item}}</v-radio>
+      <v-radio class="radioClass" v-for="item in question.choices" :key="item" :label="item" :value="item"></v-radio>
     </v-radio-group>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default {
 };
 </script>
 <style>
-    .radioClass label {
+    .radioClass :deep(label) {
         font-size: 13px;
         font-weight: 400;
     }

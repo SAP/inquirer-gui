@@ -1,7 +1,10 @@
-import { mount } from '@vue/test-utils';
-import Vue from 'vue';
-import Form from '../src/Form.vue';
-import utils from './utils';
+import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { nextTick } from "vue";
+import { createVuetify } from 'vuetify';
+import * as components from 'vuetify/lib/components/index.mjs';
+import FormVue from "../src/Form.vue";
+import QuestionEditor from '../src/packages/QuestionEditor.vue';
+import utils from "./utils";
 
 const filterSuffix = "!!!";
 const questionEditor = [
@@ -19,14 +22,31 @@ const questionEditor = [
     }
   }
 ];
-
+enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe('Question of type editor and filter func', () => {
+  let vuetify
+
+  beforeEach(() => {
+    document.body.setAttribute("data-app", "true");
+    vuetify = new createVuetify({
+      components
+    });
+  })
+
   test('Editor', async () => {
     const value1 = "my lines";
 
-    const wrapper = mount(Form, {});
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          'QuestionEditor': QuestionEditor
+        }
+      },
+      attachTo: document.body
+    });
     wrapper.setProps({ questions: questionEditor });
-    await Vue.nextTick();
+    await nextTick();
 
     const notes = wrapper.find('textarea');
     notes.element.value = value1;
