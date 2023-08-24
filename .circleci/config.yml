@@ -5,8 +5,7 @@ default-test: &default-test
   steps:
     - checkout
     - run: npm install
-    - run: npm run build
-    - run: npm test
+    - run: npm run ci
 
 defaults: &defaults
   docker:
@@ -41,13 +40,10 @@ jobs: # a collection of steps
           command: npm install
       - run:
           name: build
-          command: npm run build
-      - run:
-          name: run tests
-          command: npm test
+          command: npm run ci
       - run:
           name: coverall
-          command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+          command: cat ./packages/inquirer-gui/coverage/lcov.info | ./node_modules/.bin/coveralls
           environment:
             COVERALLS_SERVICE_NAME: circle-ci
             COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
@@ -79,13 +75,16 @@ jobs: # a collection of steps
           at: ~/repo
       - run:
           name: build for publish
-          command: npm run build
+          command: npm run ci
       - run:
           name: authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run:
+          name: ignore lerna error on modified .npmrc
+          command: git update-index --assume-unchanged .npmrc
+      - run:
           name: publish package
-          command: npm publish
+          command: npm run release:publish
 
 workflows:
   version: 2
