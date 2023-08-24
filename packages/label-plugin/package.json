@@ -1,0 +1,37 @@
+{
+  "name": "@sap-devx/inquirer-gui-label-plugin",
+  "version": "3.0.0",
+  "description": "Label plugin for inquirer-gui",
+  "main": "dist/labelPlugin.umd.js",
+  "module": "./dist/labelPlugin.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/labelPlugin.es.js",
+      "require": "./dist/labelPlugin.umd.js"
+    },
+    "./dist/labelPlugin.css": {
+      "import": "./dist/labelPlugin.css",
+      "require": "./dist/labelPlugin.css"
+    }
+  },
+  "scripts": {
+    "ci": "npm-run-all clean build",
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
+    "clean": "rimraf ./dist",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/label-plugin"
+  },
+  "author": "Tomer Epstein",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "vite": "^4.3.9",
+    "@vitejs/plugin-vue": "^4.2.3"
+  }
+}

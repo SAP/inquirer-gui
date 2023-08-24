@@ -1,0 +1,56 @@
+{
+  "name": "sample-inquirer-gui-vscode-extension",
+  "displayName": "Inquirer GUI",
+  "description": "",
+  "publisher": "SAP",
+  "version": "3.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/sample-vscode-extension"
+  },
+  "engines": {
+    "vscode": "^1.41.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:inquirerUiExample.show"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "inquirerUiExample.show",
+        "title": "Inquirer UI Example"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js",
+    "clean-out": "shx rm -rf ./out",
+    "clean-dist": "shx rm -rf ./dist",
+    "clean": "shx rm -rf ./out ./dist",
+    "copy-dist": "cd ../sample-app-vite && npm run build && shx cp -r ./dist ../sample-vscode-extension/dist"
+  },
+  "dependencies": {
+    "@sap-devx/webview-rpc": "^0.4.1",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.31",
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^25.1.2",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.41.0",
+    "@vscode-logging/types": "^0.1.4",
+    "glob": "^7.1.5",
+    "tslint": "^5.20.0",
+    "typescript": "^3.8.0",
+    "vscode-test": "^1.2.2"
+  }
+}
