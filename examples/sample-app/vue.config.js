@@ -7,7 +7,7 @@ module.exports = defineConfig({
   configureWebpack: {
     resolve: {
       alias: {
-        vue: path.resolve("./node_modules/vue"),
+        vue: path.resolve("../../node_modules/vue"),
       },
     },
   },
