@@ -194,18 +194,22 @@ app.use(DatePlugin, options);
 form.registerPlugin(options.plugin);
 ```
 
-## Release
+### Release Life-Cycle.
 
-### Change in the main form element/built in components (under src folder):
+This monorepo uses Lerna's [Fixed/Locked][lerna-mode] which means all the sub-packages share the same version number.
 
-1. Your change should include bumping the version of the package.json of "@sap-devx/inquirer-gui" module based on the nature of the change.
-2. After your change is merged, go to `releases` in github and click on `Draft a new release`.
-3. In `Choose a tag` enter `vx.y.z` - add the `v` prefix to the current version from step (1) and click `Publish release`. This will automatically trigger the publish script action in circleci and publish this npm module to npmjs.
+[lerna-mode]: https://github.com/lerna/lerna#fixedlocked-mode-default
 
-### Change in custom plugins
+### Release Process
 
-1. Your change should include bumping the version of the package.json of "@sap-devx/\<custom-plugin-name\>" module based on the nature of the change.
-2. Currently the publish step is done manually via `npm publish` command by an admin user.
+Performing a release requires push permissions to the repository.
+
+- Ensure you are on the default branch and synced with origin.
+- `npm run release:version`
+- Follow the lerna CLI instructions.
+- Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) build in the build system
+  until successful completion.
+- Inspect the newly artifacts published on npmjs.com.
 
 ## How to obtain support
 
