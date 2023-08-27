@@ -75,6 +75,7 @@ tsconfig.tsbuildinfo
 dist
 **/dist*
 **/out
+**/form
 
 # Other
 .DS_store
