@@ -43,10 +43,10 @@ jobs: # a collection of steps
           command: npm run ci
       - run:
           name: coverage print
-          command: cat ./packages/inquirer-gui/coverage/lcov.info
+          command: cat ./coverage/lcov.info
       - run:
           name: coverall
-          command: cat ./packages/inquirer-gui/coverage/lcov.info | ./node_modules/.bin/coveralls
+          command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
           environment:
             COVERALLS_SERVICE_NAME: circle-ci
             COVERALLS_GIT_BRANCH: ${CIRCLE_BRANCH}
@@ -66,11 +66,11 @@ jobs: # a collection of steps
           root: ~/repo
           paths: .
       - store_test_results:
-          path: ./packages/inquirer-gui/reports/junit
+          path: reports/junit
       - store_artifacts:
-          path: ./packages/inquirer-gui/reports/junit
+          path: reports/junit
       - store_artifacts:
-          path: ./packages/inquirer-gui/coverage
+          path: coverage
   publish:
     <<: *defaults
     steps:

@@ -13,7 +13,7 @@
     "serve": "vite",
     "copy-inquirer-gui": "copyfiles -V -f ../../packages/inquirer-gui/dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../../packages/inquirer-gui/package.json ./node_modules/@sap-devx/inquirer-gui",
     "copy-autocomplete-plugin": "copyfiles -V -f ../../packages/auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../../packages/auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",
-    "prebuild": "npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
+    "prebuild": "npm run clean && npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
     "clean": "shx rm -rf ./dist ./form"
   },
   "dependencies": {
@@ -22,10 +22,5 @@
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^3.3.4",
     "vuetify": "^3.3.10"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "copyfiles": "^2.4.1",
-    "vite": "^4.3.9"
   }
 }

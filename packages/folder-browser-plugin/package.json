@@ -35,9 +35,5 @@
   "license": "Apache-2.0",
   "dependencies": {
     "vue": "^3.3.4"
-  },
-  "devDependencies": {
-    "vite": "^4.3.9",
-    "@vitejs/plugin-vue": "^4.2.3"
   }
 }

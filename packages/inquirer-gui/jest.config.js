@@ -47,10 +47,10 @@ module.exports = {
   snapshotSerializers: ["../../node_modules/jest-serializer-vue"],
   coverageThreshold: {
     global: {
-      branches: 1,
-      functions: 1,
-      lines: 1,
-      statements: 1,
+      branches: 85,
+      functions: 90,
+      lines: 90,
+      statements: 90,
     },
   },
 };
