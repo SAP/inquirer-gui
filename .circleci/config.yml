@@ -66,11 +66,11 @@ jobs: # a collection of steps
           root: ~/repo
           paths: .
       - store_test_results:
-          path: reports/junit
+          path: ./packages/inquirer-gui/reports/junit
       - store_artifacts:
-          path: reports/junit
+          path: ./packages/inquirer-gui/reports/junit
       - store_artifacts:
-          path: coverage
+          path: ./packages/inquirer-gui/coverage
   publish:
     <<: *defaults
     steps:
