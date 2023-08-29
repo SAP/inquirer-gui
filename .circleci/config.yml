@@ -42,9 +42,6 @@ jobs: # a collection of steps
           name: build
           command: npm run ci
       - run:
-          name: coverage print
-          command: cat ./coverage/lcov.info
-      - run:
           name: coverall
           command: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
           environment:

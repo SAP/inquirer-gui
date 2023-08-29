@@ -1,5 +1,33 @@
 # Contributing Guidelines
 
+### Initial Setup
+
+The initial setup is trivial:
+
+- clone this repo
+- `npm i`
+
+### Full Build
+
+To run the full **C**ontinuous **I**ntegration build run `npm run ci` in either the top-level package or a specific subpackage.
+
+### Release Life-Cycle.
+
+This monorepo uses Lerna's [Fixed/Locked][lerna-mode] which means all the sub-packages share the same version number.
+
+[lerna-mode]: https://github.com/lerna/lerna#fixedlocked-mode-default
+
+### Release Process
+
+Performing a release requires push permissions to the repository.
+
+- Ensure you are on the default branch and synced with origin.
+- `npm run release:version`
+- Follow the lerna CLI instructions.
+- Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) build in the build system
+  until successful completion.
+- Inspect the newly artifacts published on npmjs.com.
+
 ## Report an Issue
 
 To report an issue please use the github issue tracker. Please try to make sure you have these in your issue:
