@@ -5,8 +5,8 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../src/Form.vue";
 
-// import QuestionFileBrowserPlugin from '../../file-browser-plugin/src';
-import QuestionFileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
+import QuestionFileBrowserPlugin from "../../file-browser-plugin/src";
+// import QuestionFileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 
 const questionFileBrowser = [
   {

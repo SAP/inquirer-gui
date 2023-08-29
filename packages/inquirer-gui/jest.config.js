@@ -30,7 +30,11 @@ module.exports = {
       },
     ],
   ],
-  coverageReporters: ["lcov", "html", "text-summary"],
+  coverageReporters: [
+    ["lcov", { projectRoot: "../../" }],
+    ["html", { projectRoot: "../../" }],
+    "text-summary",
+  ],
   moduleFileExtensions: ["js", "vue", "json"],
   transformIgnorePatterns: [
     "../../node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)",
