@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-single-checkbox-plugin",
-  "version": "3.0.1",
+  "version": "3.0.0",
   "description": "Sample single checkbox plugin for inquirer-gui",
   "main": "dist/singleCheckboxPlugin.umd.js",
   "module": "./dist/singleCheckboxPlugin.es.js",

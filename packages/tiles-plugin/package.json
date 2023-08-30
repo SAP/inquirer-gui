@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-tiles-plugin",
-  "version": "3.0.1",
+  "version": "3.0.0",
   "description": "Tiles plugin for inquirer-gui",
   "main": "dist/tilesPlugin.umd.js",
   "module": "./dist/tilesPlugin.es.js",
