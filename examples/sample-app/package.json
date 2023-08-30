@@ -1,0 +1,34 @@
+{
+  "name": "sample-app",
+  "version": "3.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "vue-cli-service build",
+    "build-dev": "vue-cli-service build --mode development --disable-plugin @vue/cli-plugin-eslint",
+    "prep-local": "cd ../../packages/inquirer-gui && npm run build && cd ../../examples/sample-app && copyfiles -V -f ../../packages/inquirer-gui/dist/* ./form",
+    "prepublishOnly": "npm run build",
+    "serve": "vue-cli-service serve --disable-plugin @vue/cli-plugin-eslint",
+    "test": "vue-cli-service test:unit",
+    "copy-inquirer-gui": "copyfiles -V -f ../../packages/inquirer-gui/dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../../packages/inquirer-gui/package.json ./node_modules/@sap-devx/inquirer-gui",
+    "copy-autocomplete-plugin": "copyfiles -V -f ../../packages/auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../../packages/auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",
+    "prebuild": "npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
+    "clean": "shx rm -rf ./dist ./form"
+  },
+  "dependencies": {
+    "@mdi/font": "^4.9.95",
+    "@sap-devx/webview-rpc": "^0.3.1",
+    "material-design-icons-iconfont": "^5.0.1",
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-eslint": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "copyfiles": "^2.4.1",
+    "sass-loader": "^13.3.2"
+  }
+}
