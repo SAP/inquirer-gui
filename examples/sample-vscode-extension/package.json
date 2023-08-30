@@ -1,5 +1,6 @@
 {
   "name": "sample-inquirer-gui-vscode-extension",
+  "private": true,
   "displayName": "Inquirer GUI",
   "description": "",
   "publisher": "SAP",
