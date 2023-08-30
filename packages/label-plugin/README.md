@@ -14,7 +14,7 @@ npm install --save @sap-devx/inquirer-gui-label-plugin
 
 - The `guiOptions` type property of the Inquirer.js question must be of type `label`.
 - You must provide a `default` value or implement `default` function.
-- Note that if your question is an Inquirer.js question or part of a Yeoman generator and the question is shown in a command-line interface (CLI), the `input` type will be shown instead.
+- Note that if your question is an Inquirer.js question or part of a Yeoman generator and the question is shown in a command-line interface (CLI), the `input` type will be shown instead
 
 ### Sample Question
 
