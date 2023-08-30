@@ -164,9 +164,7 @@ const questionInputHint = [
       hint: "hint for input 0",
     },
     validate: function (input) {
-      return input.length >= 2
-        ? true
-        : "Name must be at least 2 characters long";
+      return input.length >= 2 ? true : "Name must be at least 2 characters long";
     },
   },
   {
@@ -178,9 +176,7 @@ const questionInputHint = [
     },
     default: "default input",
     validate: function (input) {
-      return input.length >= 2
-        ? true
-        : "Name must be at least 2 characters long";
+      return input.length >= 2 ? true : "Name must be at least 2 characters long";
     },
   },
   {
@@ -188,9 +184,7 @@ const questionInputHint = [
     name: "no_hint_no_deault_validation",
     message: "message for input 2",
     validate: function (input) {
-      return input.length >= 2
-        ? true
-        : "Name must be at least 2 characters long";
+      return input.length >= 2 ? true : "Name must be at least 2 characters long";
     },
   },
 ];
@@ -311,10 +305,7 @@ const questionsWithAdditionalMessages = [
           severity: 0,
         };
       }
-      if (
-        input === "warn1" &&
-        answers.inputToUpdateAddMsg === "another value"
-      ) {
+      if (input === "warn1" && answers.inputToUpdateAddMsg === "another value") {
         return {
           message: "Some dependant warning message",
           severity: 1,
@@ -679,32 +670,20 @@ describe("Questions of type input, password and number", () => {
 
     const labels = wrapper.findAll("p.question-label");
 
-    expect(
-      labels.at(0).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputHint[0].message);
-    expect(
-      labels.at(0).findAll("span.question-hint")[0].element.innerHTML,
-    ).toContain("v-tooltip");
+    expect(labels.at(0).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[0].message);
+    expect(labels.at(0).findAll("span.question-hint")[0].element.innerHTML).toContain("v-tooltip");
 
-    expect(
-      labels.at(1).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputHint[1].message);
-    expect(
-      labels.at(1).findAll("span.question-hint")[0].element.innerHTML,
-    ).toContain("v-tooltip");
+    expect(labels.at(1).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[1].message);
+    expect(labels.at(1).findAll("span.question-hint")[0].element.innerHTML).toContain("v-tooltip");
 
-    expect(
-      labels.at(2).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputHint[2].message);
+    expect(labels.at(2).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputHint[2].message);
     expect(labels.at(2).findAll("span.question-hint").length).toBe(0);
 
     labels.at(0).findComponent({ name: "v-icon" }).trigger("mouseenter");
 
     await nextTick();
     await new Promise((resolve) => requestAnimationFrame(resolve));
-    expect(document.body.textContent).toContain(
-      questionInputHint[0].guiOptions.hint,
-    );
+    expect(document.body.textContent).toContain(questionInputHint[0].guiOptions.hint);
   });
 
   test("Input with link", async () => {
@@ -723,41 +702,21 @@ describe("Questions of type input, password and number", () => {
 
     const labels = wrapper.findAll("p.question-label");
 
-    expect(
-      labels.at(0).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputLink[0].message);
-    expect(
-      labels.at(0).findAll("span.question-link")[0].element.innerHTML,
-    ).toContain("a");
-    expect(
-      labels.at(0).findAll("span.question-link")[0].element.innerHTML,
-    ).toContain("href");
-    expect(labels.at(0).findAll("a")[0].element.innerHTML).toBe(
-      questionInputLink[0].guiOptions.link.text,
-    );
-    expect(labels.at(0).findAll("a")[0].element.href).toContain(
-      questionInputLink[0].guiOptions.link.url,
-    );
+    expect(labels.at(0).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[0].message);
+    expect(labels.at(0).findAll("span.question-link")[0].element.innerHTML).toContain("a");
+    expect(labels.at(0).findAll("span.question-link")[0].element.innerHTML).toContain("href");
+    expect(labels.at(0).findAll("a")[0].element.innerHTML).toBe(questionInputLink[0].guiOptions.link.text);
+    expect(labels.at(0).findAll("a")[0].element.href).toContain(questionInputLink[0].guiOptions.link.url);
 
-    expect(
-      labels.at(1).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputLink[1].message);
-    expect(
-      labels.at(1).findAll("span.question-link")[0].element.innerHTML,
-    ).toContain("a");
-    expect(
-      labels.at(1).findAll("span.question-link")[0].element.innerHTML,
-    ).toContain("command");
-    expect(labels.at(1).findAll("a")[0].element.innerHTML).toBe(
-      questionInputLink[1].guiOptions.link.text,
-    );
+    expect(labels.at(1).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[1].message);
+    expect(labels.at(1).findAll("span.question-link")[0].element.innerHTML).toContain("a");
+    expect(labels.at(1).findAll("span.question-link")[0].element.innerHTML).toContain("command");
+    expect(labels.at(1).findAll("a")[0].element.innerHTML).toBe(questionInputLink[1].guiOptions.link.text);
     expect(labels.at(1).findAll("a")[0].element.attributes.command.value).toBe(
       questionInputLink[1].guiOptions.link.command.id,
     );
 
-    expect(
-      labels.at(2).findAll("span.question-message")[0].element.innerHTML,
-    ).toBe(questionInputLink[2].message);
+    expect(labels.at(2).findAll("span.question-message")[0].element.innerHTML).toBe(questionInputLink[2].message);
     expect(labels.at(2).findAll("span.question-link").length).toBe(0);
   });
 
@@ -788,27 +747,18 @@ describe("Questions of type input, password and number", () => {
     // Check validation messages
     const validationMsgWithLink = wrapper.find("#validation-msg-" + 0);
 
-    expect(
-      validationMsgWithLink.find("span.error-validation-text").element
-        .innerHTML,
-    ).toEqual(validationWithLink.message);
-
-    expect(validationMsgWithLink.find("span.question-link").exists()).toBe(
-      true,
+    expect(validationMsgWithLink.find("span.error-validation-text").element.innerHTML).toEqual(
+      validationWithLink.message,
     );
 
-    expect(
-      validationMsgWithLink
-        .find("img.validation-link-icon")
-        .element.getAttribute("src"),
-    ).toEqual(validationWithLink.link.icon);
+    expect(validationMsgWithLink.find("span.question-link").exists()).toBe(true);
 
-    expect(
-      validationMsgWithLink.find("a").element.getAttribute("href"),
-    ).toEqual(validationWithLink.link.url);
-    expect(validationMsgWithLink.find("#urlLinkText").text()).toEqual(
-      validationWithLink.link.text,
+    expect(validationMsgWithLink.find("img.validation-link-icon").element.getAttribute("src")).toEqual(
+      validationWithLink.link.icon,
     );
+
+    expect(validationMsgWithLink.find("a").element.getAttribute("href")).toEqual(validationWithLink.link.url);
+    expect(validationMsgWithLink.find("#urlLinkText").text()).toEqual(validationWithLink.link.text);
 
     // Question at index 1 is validation with command link
     let valWithCmdInput = allInputs.at(1);
@@ -816,18 +766,14 @@ describe("Questions of type input, password and number", () => {
     await utils.sleep(300);
 
     let validationMsgWithCmd = wrapper.find("#validation-msg-" + 1);
-    expect(
-      validationMsgWithCmd.find("span.error-validation-text").element.innerHTML,
-    ).toEqual(validationWithCommand.message);
+    expect(validationMsgWithCmd.find("span.error-validation-text").element.innerHTML).toEqual(
+      validationWithCommand.message,
+    );
 
     expect(validationMsgWithCmd.find("span.question-link").exists()).toBe(true);
 
-    expect(validationMsgWithCmd.find("img.validation-link-icon").exists()).toBe(
-      false,
-    );
-    expect(validationMsgWithCmd.find("#cmdLinkText").text()).toEqual(
-      validationWithCommand.link.text,
-    );
+    expect(validationMsgWithCmd.find("img.validation-link-icon").exists()).toBe(false);
+    expect(validationMsgWithCmd.find("#cmdLinkText").text()).toEqual(validationWithCommand.link.text);
 
     // Ensure link is removed from dom when re-validated with non-link validation message
     // There is an issue with this test. Running the actual code in-situ works as expected.
@@ -870,41 +816,23 @@ describe("Questions of type input, password and number", () => {
     expect(wrapper.find("#validation-msg-1").exists()).toBe(false);
     let addMessage = wrapper.find(".add-messages");
 
-    expect(
-      addMessage
-        .find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline")
-        .exists(),
-    ).toBe(true);
+    expect(addMessage.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual(
-      "Some warning message",
-    );
+    expect(addMessage.find("span.messages-text").text()).toEqual("Some warning message");
 
     inputWithAddMsgs.setValue("info");
     await utils.sleep(300);
 
-    expect(
-      addMessage
-        .find("i.v-icon.messages-icon.severity-info.mdi-information-outline")
-        .exists(),
-    ).toBe(true);
+    expect(addMessage.find("i.v-icon.messages-icon.severity-info.mdi-information-outline").exists()).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual(
-      "Some info message",
-    );
+    expect(addMessage.find("span.messages-text").text()).toEqual("Some info message");
 
     inputWithAddMsgs.setValue("error");
     await utils.sleep(300);
 
-    expect(
-      addMessage
-        .find("i.v-icon.messages-icon.severity-error.mdi-close-circle-outline")
-        .exists(),
-    ).toBe(true);
+    expect(addMessage.find("i.v-icon.messages-icon.severity-error.mdi-close-circle-outline").exists()).toBe(true);
 
-    expect(addMessage.find("span.messages-text").text()).toEqual(
-      "Some error message",
-    );
+    expect(addMessage.find("span.messages-text").text()).toEqual("Some error message");
 
     // Test that other answers (previous answers) can be used to trigger updates
     inputWithAddMsgs.setValue("warn1");
@@ -919,14 +847,8 @@ describe("Questions of type input, password and number", () => {
     const addMessageDependant = wrapper.find("#add-msg-1");
     expect(addMessageDependant.exists()).toBe(true);
 
-    expect(
-      addMessageDependant
-        .find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline")
-        .exists(),
-    ).toBe(true);
+    expect(addMessageDependant.find("i.v-icon.messages-icon.severity-warn.mdi-alert-outline").exists()).toBe(true);
 
-    expect(addMessageDependant.find("span.messages-text").text()).toEqual(
-      "Some dependant warning message",
-    );
+    expect(addMessageDependant.find("span.messages-text").text()).toEqual("Some dependant warning message");
   });
 });

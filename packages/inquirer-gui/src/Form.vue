@@ -1,16 +1,9 @@
 <template>
   <v-form class="inquirer-gui">
     <template v-for="(question, index) in questions" :key="question.name">
-      <p
-        :key="'label-' + index"
-        class="question-label"
-        v-if="question.shouldShow"
-      >
+      <p :key="'label-' + index" class="question-label" v-if="question.shouldShow">
         <span class="question-message">{{ question._message }}</span>
-        <span
-          class="question-hint"
-          v-if="question.guiOptions && question.guiOptions.hint"
-        >
+        <span class="question-hint" v-if="question.guiOptions && question.guiOptions.hint">
           <v-tooltip location="top" max-width="350px">
             <template v-slot:activator="{ props }">
               <v-icon v-bind="props">mdi-help-circle-outline</v-icon>
@@ -19,10 +12,7 @@
           </v-tooltip>
         </span>
         <span class="mandatory-asterisk" v-if="question.isMandatory">*</span>
-        <span
-          class="question-link"
-          v-if="question.guiOptions && question.guiOptions.link"
-        >
+        <span class="question-link" v-if="question.guiOptions && question.guiOptions.link">
           <a
             v-if="question.guiOptions.link.command"
             :command="question.guiOptions.link.command.id"
@@ -30,12 +20,9 @@
             @click="executeCommand"
             >{{ question.guiOptions.link.text }}</a
           >
-          <a
-            v-else-if="question.guiOptions.link.url"
-            target="_blank"
-            :href="question.guiOptions.link.url"
-            >{{ question.guiOptions.link.text }}</a
-          >
+          <a v-else-if="question.guiOptions.link.url" target="_blank" :href="question.guiOptions.link.url">{{
+            question.guiOptions.link.text
+          }}</a>
         </span>
       </p>
       <component
@@ -54,36 +41,21 @@
         :key="'validation-' + index"
         :id="'validation-msg-' + index"
       >
-        <span class="error-validation-text">{{
-          question.validationMessage
-        }}</span>
+        <span class="error-validation-text">{{ question.validationMessage }}</span>
         <span class="question-link" v-if="question.validationLink">
-          <a
-            v-if="question.validationLink.command"
-            @click="executeCommand(question.validationLink.command)"
-          >
+          <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
             <img
               class="validation-link-icon"
               v-if="question.validationLink.icon"
               :src="question.validationLink.icon"
-            /><span
-              v-text="question.validationLink.text"
-              id="cmdLinkText"
-            ></span>
+            /><span v-text="question.validationLink.text" id="cmdLinkText"></span>
           </a>
-          <a
-            v-else-if="question.validationLink.url"
-            target="_blank"
-            :href="question.validationLink.url"
-          >
+          <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
             <img
               class="validation-link-icon"
               v-if="question.validationLink.icon"
               :src="question.validationLink.icon"
-            /><span
-              v-text="question.validationLink.text"
-              id="urlLinkText"
-            ></span>
+            /><span v-text="question.validationLink.text" id="urlLinkText"></span>
           </a>
         </span>
       </div>
@@ -93,21 +65,14 @@
         :key="'additional-msg-' + index"
         :id="'add-msg-' + index"
       >
-        <v-icon
-          class="messages-icon"
-          :class="severityMessageClass(question._additionalMessages.severity)"
+        <v-icon class="messages-icon" :class="severityMessageClass(question._additionalMessages.severity)"
           >mdi-{{ severityIcon(question._additionalMessages.severity) }}</v-icon
-        ><span
-          class="messages-text"
-          :class="severityMessageClass(question._additionalMessages.severity)"
-          >{{ question._additionalMessages.message }}</span
-        >
+        ><span class="messages-text" :class="severityMessageClass(question._additionalMessages.severity)">{{
+          question._additionalMessages.message
+        }}</span>
       </div>
     </template>
-    <v-text-field
-      id="form-single-input-issue-key-enter-workaround"
-      style="display: none"
-    />
+    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display: none" />
   </v-form>
 </template>
 
@@ -163,22 +128,13 @@ export default {
       this.$emit("parentExecuteCommand", cmdOrEvent);
     },
     shouldShowAdditionalMessages(question) {
-      return (
-        question.shouldShow &&
-        question._additionalMessages &&
-        question._additionalMessages.message
-      );
+      return question.shouldShow && question._additionalMessages && question._additionalMessages.message;
     },
     shouldShowValidationMessage(question) {
       return (
         question.shouldShow &&
         !question.isValid &&
-        (question.__origAnswer !== undefined ||
-          !(
-            question.guiOptions &&
-            question.guiOptions.hint &&
-            !question.isDirty
-          ))
+        (question.__origAnswer !== undefined || !(question.guiOptions && question.guiOptions.hint && !question.isDirty))
       );
     },
     removeShouldntShows(questions, answers) {
@@ -212,10 +168,7 @@ export default {
           } else {
             this.setValid(question);
           }
-        } else if (
-          MANDATORY_TYPES.includes(question.type) &&
-          answer === undefined
-        ) {
+        } else if (MANDATORY_TYPES.includes(question.type) && answer === undefined) {
           this.setInvalid(question);
         } else {
           this.setValid(question);
@@ -243,15 +196,10 @@ export default {
     setIsMandatory(question) {
       question.isMandatory =
         MANDATORY_TYPES.includes(question.type) ||
-        (question.guiOptions &&
-          question.guiOptions.mandatory === true &&
-          typeof question.validate === "function");
+        (question.guiOptions && question.guiOptions.mandatory === true && typeof question.validate === "function");
     },
     getComponentByQuestionType(question) {
-      const guiType =
-        question.guiOptions && question.guiOptions.type
-          ? question.guiOptions.type
-          : question.guiType;
+      const guiType = question.guiOptions && question.guiOptions.type ? question.guiOptions.type : question.guiType;
       let foundPlugin;
       if (guiType) {
         foundPlugin = this.plugins.find((plugin) => {
@@ -300,11 +248,7 @@ export default {
     normalizeChoices(choices) {
       if (Array.isArray(choices)) {
         const mappedChoices = choices.map((value) => {
-          if (
-            value === undefined ||
-            typeof value === "string" ||
-            typeof value === "number"
-          ) {
+          if (value === undefined || typeof value === "string" || typeof value === "number") {
             return { name: value, value: value };
           } else {
             if (
@@ -366,10 +310,7 @@ export default {
       switch (question.type) {
         case "list":
         case "rawlist":
-          if (
-            question._choices.length === 0 ||
-            question._default === undefined
-          ) {
+          if (question._choices.length === 0 || question._default === undefined) {
             this.setInvalid(question);
             return;
           }
@@ -419,11 +360,9 @@ export default {
 
             // add to answers if choice is in default
             if (Array.isArray(question._default)) {
-              let foundIndex = question._default.findIndex(
-                (currentDefaultValue) => {
-                  return choice.value === currentDefaultValue;
-                },
-              );
+              let foundIndex = question._default.findIndex((currentDefaultValue) => {
+                return choice.value === currentDefaultValue;
+              });
               if (foundIndex >= 0) {
                 initialAnswersArray.push(choice.value);
                 wasPushed = true;
@@ -431,11 +370,7 @@ export default {
             }
 
             // add to answers if choice is marked as checked
-            if (
-              choice.checked === true &&
-              !(question.__ForceDefault === true) &&
-              !wasPushed
-            ) {
+            if (choice.checked === true && !(question.__ForceDefault === true) && !wasPushed) {
               initialAnswersArray.push(choice.value);
             }
           }
@@ -456,9 +391,7 @@ export default {
             callback(response);
           }
         } catch (e) {
-          this.console.error(
-            `Could not evaluate ${methodName}() for ${relevantQuestion.name}`,
-          );
+          this.console.error(`Could not evaluate ${methodName}() for ${relevantQuestion.name}`);
         }
       }
     },
@@ -466,16 +399,11 @@ export default {
     async updateAdditionalMessages(question, answers, questionIndex) {
       if (typeof question.additionalMessages === "function") {
         try {
-          question._additionalMessages = await question.additionalMessages(
-            question.answer,
-            answers,
-          );
+          question._additionalMessages = await question.additionalMessages(question.answer, answers);
           // Vue 2 requires a new object for reactivity to trigger updates
           this.questions.splice(questionIndex, 1, Object.assign({}, question));
         } catch (e) {
-          this.console.error(
-            `Could not evaluate additionalMessages() for ${question.name}`,
-          );
+          this.console.error(`Could not evaluate additionalMessages() for ${question.name}`);
         }
       }
     },
@@ -530,9 +458,7 @@ export default {
               }
               question.shouldShow = response;
             } catch (e) {
-              this.console.error(
-                `Could not evaluate when() for ${question.name}`,
-              );
+              this.console.error(`Could not evaluate when() for ${question.name}`);
             }
           } else if (question.when !== false) {
             question.shouldShow = true;
@@ -545,9 +471,7 @@ export default {
                 let response = await question.message(answers);
                 question._message = response;
               } catch (e) {
-                this.console.error(
-                  `Could not evaluate message() for ${question.name}`,
-                );
+                this.console.error(`Could not evaluate message() for ${question.name}`);
               }
             }
 
@@ -563,25 +487,19 @@ export default {
                   shouldValidate = true;
                 }
               } catch (e) {
-                this.console.error(
-                  `Could not evaluate choices() for ${question.name}`,
-                );
+                this.console.error(`Could not evaluate choices() for ${question.name}`);
               }
             }
 
             // evaluate default()
             const applyDefaultWhenDirty =
-              !question.isDirty ||
-              (question.guiOptions &&
-                question.guiOptions.applyDefaultWhenDirty);
+              !question.isDirty || (question.guiOptions && question.guiOptions.applyDefaultWhenDirty);
             if (applyDefaultWhenDirty) {
               if (typeof question.default === "function") {
                 try {
                   question._default = await question.default(answers);
                 } catch (e) {
-                  this.console.error(
-                    `Could not evaluate default() for ${question.name}`,
-                  );
+                  this.console.error(`Could not evaluate default() for ${question.name}`);
                 }
               } else {
                 question._default = question.default;
@@ -615,9 +533,7 @@ export default {
             const filteredAnswer = await question.filter(currentAnswer);
             filteredAnswers[question.name] = filteredAnswer;
           } catch (e) {
-            this.console.error(
-              `Could not evaluate filter() for ${question.name}`,
-            );
+            this.console.error(`Could not evaluate filter() for ${question.name}`);
           }
         }
       }
@@ -646,10 +562,7 @@ export default {
         }
 
         // message
-        const message =
-          typeof question.message === "string"
-            ? question.message
-            : question.name;
+        const message = typeof question.message === "string" ? question.message : question.name;
         question["_message"] = message;
 
         // choices
@@ -691,10 +604,7 @@ export default {
         question["answer"] = answer;
 
         // visibility
-        const shouldShow =
-          question.when === false || typeof question.when === "function"
-            ? false
-            : true;
+        const shouldShow = question.when === false || typeof question.when === "function" ? false : true;
         question["shouldShow"] = shouldShow;
       }
 
@@ -711,9 +621,7 @@ export default {
             let response = await whenPromise;
             question.shouldShow = response;
           } catch (e) {
-            this.console.error(
-              `Could not evaluate when() for ${question.name}`,
-            );
+            this.console.error(`Could not evaluate when() for ${question.name}`);
           }
         }
 
@@ -724,9 +632,7 @@ export default {
               const response = await question.message(answers);
               question._message = response;
             } catch (e) {
-              this.console.error(
-                `Could not evaluate message() for ${question.name}`,
-              );
+              this.console.error(`Could not evaluate message() for ${question.name}`);
             }
           }
 
@@ -739,9 +645,7 @@ export default {
               // optimization: avoid repeatedly calling this.getAnswers()
               answers[question.name] = question.answer;
             } catch (e) {
-              this.console.error(
-                `Could not evaluate choices() for ${question.name}`,
-              );
+              this.console.error(`Could not evaluate choices() for ${question.name}`);
             }
           }
 
@@ -758,19 +662,14 @@ export default {
               // optimization: avoid repeatedly calling this.getAnswers()
               answers[question.name] = question.answer;
             } catch (e) {
-              this.console.error(
-                `Could not evaluate default() for ${question.name}`,
-              );
+              this.console.error(`Could not evaluate default() for ${question.name}`);
             }
           }
 
           // evaluate validate()
           await this.doValidate(question, question.answer);
           // evaluate additionalMessages()
-          if (
-            typeof question.additionalMessages === "function" &&
-            question.isValid
-          ) {
+          if (typeof question.additionalMessages === "function" && question.isValid) {
             this.updateAdditionalMessages(question, answers, questionIndex);
           }
         }

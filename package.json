@@ -10,10 +10,10 @@
     "release:publish": "lerna publish from-git --yes --no-verify-access",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages",
     "ci:subpackages": "lerna run ci",
-    "format:fix": "prettier --write \"**/*.@(js|json|md|vue)\" --ignore-path=.gitignore",
-    "format:validate": "prettier --check \"**/*.@(js|json|md|vue)\" --ignore-path=.gitignore",
-    "lint:fix": "eslint . --ext=js,vue --fix --max-warnings=0 --ignore-path=.gitignore",
-    "lint:validate": "eslint . --ext=js,vue --max-warnings=0 --ignore-path=.gitignore",
+    "format:fix": "prettier --print-width 120 --write \"**/*.@(js|json|md|vue|ts)\" --ignore-path=.gitignore",
+    "format:validate": "prettier --print-width 120 --check \"**/*.@(js|json|md|vue|ts)\" --ignore-path=.gitignore",
+    "lint:fix": "eslint . --ext=js,vue,ts --fix --max-warnings=0 --ignore-path=.gitignore",
+    "lint:validate": "eslint . --ext=js,vue,ts --max-warnings=0 --ignore-path=.gitignore",
     "legal:delete": "lerna exec \"shx rm -rf .reuse LICENSES\" || true",
     "legal:copy": "lerna exec \"shx cp -r ../../.reuse .reuse && shx cp -r ../../LICENSES LICENSES\""
   },
@@ -39,8 +39,11 @@
   "devDependencies": {
     "@commitlint/cli": "17.6.1",
     "@commitlint/config-conventional": "17.6.1",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "babel-eslint": "^10.1.0",
+    "copyfiles": "^2.4.1",
     "coveralls": "2.13.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.44.0",
@@ -54,7 +57,6 @@
     "shx": "0.3.4",
     "typescript": "^5.2.2",
     "vite": "^4.3.9",
-    "copyfiles": "^2.4.1",
     "yorkie": "^2.0.0"
   }
 }

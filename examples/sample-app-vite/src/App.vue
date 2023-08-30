@@ -8,9 +8,7 @@
         <Answers v-if="this.issues === undefined" :answers="answers" />
         <Issues v-if="this.issues !== undefined" :issues="issues" />
         <div>
-          <v-btn :disabled="this.issues !== undefined" @click="onNext"
-            >Next</v-btn
-          >
+          <v-btn :disabled="this.issues !== undefined" @click="onNext">Next</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -73,11 +71,7 @@ export default {
           if (question[prop] === "__Function") {
             var that = this;
             question[prop] = async (...args) => {
-              const response = await that.rpc.invoke("evaluateMethod", [
-                question.name,
-                prop,
-                args,
-              ]);
+              const response = await that.rpc.invoke("evaluateMethod", [question.name, prop, args]);
               return response;
             };
           }
@@ -101,10 +95,7 @@ export default {
     this.setupRpc();
     const mutationCallback = (mutationsList) => {
       for (let mutation of mutationsList) {
-        if (
-          mutation.type === "attributes" &&
-          mutation.attributeName === "class"
-        ) {
+        if (mutation.type === "attributes" && mutation.attributeName === "class") {
           // const isVsCodeLight = mutation.target.classList.contains(
           //   "vscode-light"
           // );
@@ -159,10 +150,7 @@ form.inquirer-gui p.question-label {
   color: var(--vscode-panelTitle-activeForeground, black);
 }
 
-form.inquirer-gui
-  .v-input
-  .v-input__control
-  .v-field.v-theme--light.v-field--focused {
+form.inquirer-gui .v-input .v-input__control .v-field.v-theme--light.v-field--focused {
   border-color: var(--vscode-inputOption-activeBorder, white);
 }
 

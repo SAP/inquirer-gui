@@ -1,9 +1,5 @@
 <template>
-  <v-menu
-    :close-on-content-click="false"
-    transition="scale-transition"
-    min-width="290px"
-  >
+  <v-menu :close-on-content-click="false" transition="scale-transition" min-width="290px">
     <template v-slot:activator="{ props }">
       <v-text-field
         :modelValue="date"
@@ -15,10 +11,7 @@
         density="compact"
       ></v-text-field>
     </template>
-    <v-date-picker
-      :modelValue="date"
-      @update:modelValue="onInput"
-    ></v-date-picker>
+    <v-date-picker :modelValue="date" @update:modelValue="onInput"></v-date-picker>
   </v-menu>
 </template>
 

@@ -1,19 +1,12 @@
 <template>
   <div class="tiles">
     <v-item-group mandatory>
-      <v-container
-        class="pa-0"
-        :class="
-          question.guiOptions && question.guiOptions.compact ? 'compact' : ''
-        "
-      >
+      <v-container class="pa-0" :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''">
         <v-row class="tiles-row">
           <v-col
             v-for="(item, itemIndex) in question._choices"
             :key="itemIndex"
-            :cols="
-              question.guiOptions && question.guiOptions.compact ? 'auto' : '12'
-            "
+            :cols="question.guiOptions && question.guiOptions.compact ? 'auto' : '12'"
             :lg="question.guiOptions && question.guiOptions.compact ? '3' : '4'"
             md="4"
             sm="6"
@@ -22,11 +15,7 @@
             <v-item v-slot:default>
               <v-card
                 class="d-flex flex-column mx-auto tile-size"
-                :class="
-                  question.guiOptions && question.guiOptions.compact
-                    ? 'compact'
-                    : ''
-                "
+                :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''"
                 @click="onAnswerChanged(item.value)"
                 :data-itemvalue="item.value"
                 tile
@@ -38,11 +27,7 @@
                 <v-card-title>{{ item.name }}</v-card-title>
                 <v-card-text
                   class="description"
-                  :class="
-                    question.guiOptions && question.guiOptions.compact
-                      ? 'compact'
-                      : ''
-                  "
+                  :class="question.guiOptions && question.guiOptions.compact ? 'compact' : ''"
                 >
                   {{ item.description }}
                 </v-card-text>
@@ -79,9 +64,7 @@ export default {
     },
     toggleSelected(answer) {
       if (answer) {
-        const element = document.querySelector(
-          `.v-card[data-itemvalue='${answer}']`,
-        );
+        const element = document.querySelector(`.v-card[data-itemvalue='${answer}']`);
         if (element) {
           element.classList.toggle("selected");
         }

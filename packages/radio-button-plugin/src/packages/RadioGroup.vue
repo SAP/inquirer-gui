@@ -7,13 +7,7 @@
       inline
       density="compact"
     >
-      <v-radio
-        class="radioClass"
-        v-for="item in question.choices"
-        :key="item"
-        :label="item"
-        :value="item"
-      ></v-radio>
+      <v-radio class="radioClass" v-for="item in question.choices" :key="item" :label="item" :value="item"></v-radio>
     </v-radio-group>
   </div>
 </template>

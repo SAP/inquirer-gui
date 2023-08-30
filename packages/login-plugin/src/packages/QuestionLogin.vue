@@ -12,9 +12,7 @@
     <template v-slot:append-inner>
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
-          <v-icon v-bind="props" @click="onLogin"
-            >mdi-account-arrow-right-outline</v-icon
-          >
+          <v-icon v-bind="props" @click="onLogin">mdi-account-arrow-right-outline</v-icon>
         </template>
         <span>Login</span>
       </v-tooltip>
@@ -40,13 +38,7 @@ export default {
     },
     onLoginReal() {
       // TODO: icon@click
-      this.$emit(
-        "customEvent",
-        this.question.name,
-        "doLogin",
-        this.afterLogin,
-        this.question.answer,
-      );
+      this.$emit("customEvent", this.question.name, "doLogin", this.afterLogin, this.question.answer);
     },
     onLogin() {
       // TODO: move to onInput()

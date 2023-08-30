@@ -1,6 +1,5 @@
 const WebSocket = require("ws");
-const RpcExtensionWebSockets =
-  require("@sap-devx/webview-rpc/out.ext/rpc-extension-ws").RpcExtensionWebSockets;
+const RpcExtensionWebSockets = require("@sap-devx/webview-rpc/out.ext/rpc-extension-ws").RpcExtensionWebSockets;
 const InquirerGuiBackend = require("./inquirerGuiBackend");
 
 class InquirerGuiWebSocketServer {

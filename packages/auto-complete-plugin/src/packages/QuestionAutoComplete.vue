@@ -27,9 +27,7 @@
         <v-list-subheader v-else-if="getDividerType(item) === 'header'">{{
           stripEscapeChars(item.line)
         }}</v-list-subheader>
-        <v-list-item-title v-else :id="props['aria-labelledby']">{{
-          item.name
-        }}</v-list-item-title>
+        <v-list-item-title v-else :id="props['aria-labelledby']">{{ item.name }}</v-list-item-title>
       </v-list-item>
     </template>
     <template v-slot:append-item>
@@ -67,8 +65,7 @@ export default {
       let type = undefined;
       if (item && item.type === "separator") {
         type =
-          item.line === Inquirer_Default_Separator ||
-          item.line === this.stripEscapeChars(Inquirer_Default_Separator)
+          item.line === Inquirer_Default_Separator || item.line === this.stripEscapeChars(Inquirer_Default_Separator)
             ? "divider"
             : "header";
       }
@@ -81,12 +78,7 @@ export default {
       this.searchResults = utils.normalizeChoices(result);
       this.$emit("setBusyIndicator", false);
       if (typeof this.question.additionalInfo === "function") {
-        this.$emit(
-          "customEvent",
-          this.question.name,
-          "additionalInfo",
-          this.additionalInfo,
-        );
+        this.$emit("customEvent", this.question.name, "additionalInfo", this.additionalInfo);
       }
     },
     additionalInfo(message) {
@@ -106,14 +98,7 @@ export default {
     searchInput: utils.debounce(function (val) {
       // Don't re-run search when answer is selected
       if (val !== null && val !== undefined && this.question.answer !== val) {
-        this.$emit(
-          "customEvent",
-          this.question.name,
-          "source",
-          this.searchResult,
-          this.answers,
-          val,
-        );
+        this.$emit("customEvent", this.question.name, "source", this.searchResult, this.answers, val);
       }
     }, 280),
   },

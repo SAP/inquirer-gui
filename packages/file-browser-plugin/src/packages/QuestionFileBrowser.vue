@@ -10,9 +10,7 @@
     <template v-slot:append-inner>
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
-          <v-icon v-bind="props" @click="onSelectFile"
-            >mdi-folder-outline</v-icon
-          >
+          <v-icon v-bind="props" @click="onSelectFile">mdi-folder-outline</v-icon>
         </template>
         <span>Browse for files</span>
       </v-tooltip>
@@ -36,13 +34,7 @@ export default {
       this.$emit("answerChanged", this.question.name, path);
     },
     onSelectFile() {
-      this.$emit(
-        "customEvent",
-        this.question.name,
-        "getFilePath",
-        this.setFilePath,
-        this.question.answer,
-      );
+      this.$emit("customEvent", this.question.name, "getFilePath", this.setFilePath, this.question.answer);
     },
     onAnswerChanged(answer) {
       if (answer !== undefined) {

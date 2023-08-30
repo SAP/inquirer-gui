@@ -11,8 +11,7 @@ export default defineConfig({
       entry: path.resolve(__dirname, "src/index.js"),
       name: PACKAGE_NAME,
       formats: ["cjs", "umd", "es"],
-      fileName: (format) =>
-        `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
+      fileName: (format) => `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
     },
     rollupOptions: {
       external: ["vue"],

@@ -30,21 +30,14 @@ module.exports = {
       },
     ],
   ],
-  coverageReporters: [
-    ["lcov", { projectRoot: "../../" }],
-    ["html", { projectRoot: "../../" }],
-    "text-summary",
-  ],
+  coverageReporters: [["lcov", { projectRoot: "../../" }], ["html", { projectRoot: "../../" }], "text-summary"],
   moduleFileExtensions: ["js", "vue", "json"],
-  transformIgnorePatterns: [
-    "../../node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)",
-  ],
+  transformIgnorePatterns: ["../../node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)"],
   modulePaths: ["<rootDir>/src", "../../node_modules"],
   transform: {
     ".*\\.(vue)$": "@vue/vue3-jest",
     "^.+\\.vue$": "@vue/vue3-jest",
-    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
-      "jest-transform-stub",
+    ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$": "jest-transform-stub",
     "^.+\\.js$": "../../node_modules/babel-jest",
     "^.+\\.mjs$": "../../node_modules/babel-jest",
   },

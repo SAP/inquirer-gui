@@ -47,9 +47,6 @@ describe("Question of custom type date", () => {
     wrapper.setProps({ questions: questionDate });
     await nextTick();
 
-    expect(
-      wrapper.find("p.question-label > span.question-message").element
-        .innerHTML,
-    ).toBe("birthday");
+    expect(wrapper.find("p.question-label > span.question-message").element.innerHTML).toBe("birthday");
   });
 });

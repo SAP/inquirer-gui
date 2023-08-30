@@ -116,10 +116,7 @@ module.exports = class InquirerGuiBackend {
       }
     }
     if (relevantQuestion !== undefined) {
-      const response = await relevantQuestion[methodName].apply(
-        this.questions,
-        params,
-      );
+      const response = await relevantQuestion[methodName].apply(this.questions, params);
       console.log(response);
       return response;
     }

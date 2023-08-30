@@ -2,13 +2,7 @@
   <div>
     <div class="pa-0 ma-0">
       <div class="MultiInputRow">
-        <input
-          type="checkbox"
-          name=""
-          :id="getId('input')"
-          @change="onAnswerChanged"
-          v-model="checkVal"
-        />
+        <input type="checkbox" name="" :id="getId('input')" @change="onAnswerChanged" v-model="checkVal" />
         <span class="question-hint">{{ question.title }}</span>
         <span class="question-hint" v-if="question.hint">
           <v-tooltip location="top" max-width="350px">

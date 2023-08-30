@@ -1,4 +1,4 @@
 declare class InquirerGuiPlugin {
-    questionType: String;
-    component: Object;
+  questionType: String;
+  component: Object;
 }
