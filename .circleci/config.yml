@@ -80,9 +80,6 @@ jobs: # a collection of steps
           name: authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/.npmrc
       - run:
-          name: ignore lerna error on modified .npmrc
-          command: git update-index --assume-unchanged .npmrc
-      - run:
           name: publish package
           command: npm run release:publish
 
