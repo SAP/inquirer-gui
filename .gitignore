@@ -36,6 +36,7 @@ node_modules/
 
 # Optional npm cache directory
 .npm
+.npmrc
 package-lock.json
 
 # yarn lockfile (this project uses pnpm)
