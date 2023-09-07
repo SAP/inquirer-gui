@@ -14,7 +14,7 @@
 
 The `master` branch now supports Vue3 and Vuetify3.
 
-The `Form` component, builtin plugins and all custom plugins were migrated.
+The `Form` component, builtin plugins, and all custom plugins were migrated.
 The new versioning is **3.x.y**.
 
 # Vue2 maintenance mode
