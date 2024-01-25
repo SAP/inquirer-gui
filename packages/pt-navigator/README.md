@@ -146,6 +146,13 @@ import "@sap-devx/pt-navigator/dist/pt-navigator.css";
 
 ![alt text](Screenshot4.png "Override group title and group avatar styles")
 
+- Override style for specific navigator type
+  - For tab style
+  ![alt text](Screenshot6.png "Override style for tab type navigator")
+
+  - For stepper style
+  ![alt text](Screenshot7.png "Override style for stepper type navigator")
+
 - Override “group summary” styles:
 
 ![alt text](Screenshot5.png "Override group summary styles")
