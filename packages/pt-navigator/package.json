@@ -1,0 +1,75 @@
+{
+  "name": "@sap-devx/pt-navigator",
+  "displayName": "BAS Navigator control",
+  "version": "1.0.0",
+  "description": "BAS Navigator control",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Lucy Liu",
+    "email": "lu.liu@sap.com"
+  },
+  "publisher": "SAP",
+  "main": "dist/pt-navigator.umd.js",
+  "module": "./dist/pt-navigator.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/pt-navigator.es.js",
+      "require": "./dist/pt-navigator.umd.js"
+    },
+    "./dist/pt-navigator.css": {
+      "import": "./dist/pt-navigator.css",
+      "require": "./dist/pt-navigator.css"
+    }
+  },
+  "scripts": {
+    "ci": "npm-run-all clean build test copy-coverage",
+    "clean": "rimraf ./dist ./reports ./coverage",
+    "copy-coverage": "rimraf ../../coverage ../../reports && shx cp -r ./coverage ../../coverage && shx cp -r ./reports ../../reports",
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore",
+    "prepublishOnly": "npm run build",
+    "test": "jest -w 1",
+    "localpack": "npm pack --pack-destination ."
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -V -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "strip-ansi": "^6.0.0",
+    "vue": "^3.3.4",
+    "vuetify": "^3.4.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.22.5",
+    "@vue/test-utils": "2.4.0",
+    "@vue/vue3-jest": "^29.2.4",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "jest-junit": "^16.0.0",
+    "jest-serializer-vue": "^3.1.0",
+    "jest-transform-stub": "^2.0.0"
+  }
+}
