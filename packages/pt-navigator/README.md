@@ -88,7 +88,7 @@ It can display the groups in a way like wizard steps or tabs control
 ## Control Event
 
 - on-goto-step<br/>
-    When click a group title, this event is emitted .
+  When click a group title, this event is emitted .
   - For "tab" type, the event is emitted with group index parameter(zero based).
   - For "stepper" type, the event is emitted with number of steps to go back.
 
