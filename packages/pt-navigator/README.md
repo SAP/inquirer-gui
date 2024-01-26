@@ -25,23 +25,23 @@ It can display the groups in a way like wizard steps or tabs control
 
 ## Control Properties
 
-- navigationType:
+- navigationType<br/>
   It can be two values:
 
   - “tab“ : It is a navigation control like tab control. Each group is linkable. It is default value.
   - “stepper”: it is like wizard stepper control that force a user to move linearly through your groups
 
-- prompt-index:
+- prompt-index<br/>
   It is the current group index(zero based)
 
-- prompts:
+- prompts<br/>
   It is the groups array, for example:
 
 ```js
   [{name:”database”},{name:”authorization”}]
 ```
 
-- prompt-answers:
+- prompt-answers<br/>
   It is only for “stepper” navigation type. It is a group summarization, for example:
 
 ```js
@@ -61,7 +61,7 @@ It can display the groups in a way like wizard steps or tabs control
   }
 ```
 
-- All-answers:
+- All-answers<br/>
   It is only for “tab” navigation type. It is initially all the groups summaries. For example:
 
 ```js
@@ -87,8 +87,10 @@ It can display the groups in a way like wizard steps or tabs control
 
 ## Control Event
 
-- on-goto-step:
-  When click a group title, this event is emitted with group index parameter(zero based).
+- on-goto-step<br/>
+    When click a group title, this event is emitted .
+  - For "tab" type, the event is emitted with group index parameter(zero based).
+  - For "stepper" type, the event is emitted with number of steps to go back.
 
 ### Usage
 
@@ -142,19 +144,19 @@ import "@sap-devx/pt-navigator/dist/pt-navigator.css";
 
 ## Style overide
 
-- Override “group title” and “group avatar” styles:
+- Override “group title” and “group avatar” styles<br/>
 
 ![alt text](Screenshot4.png "Override group title and group avatar styles")
 
-- Override style for specific navigator type
+- Override style for specific navigator type<br/>
 
-  - For tab style
+  - For tab style<br/>
     ![alt text](Screenshot6.png "Override style for tab type navigator")
 
-  - For stepper style
+  - For stepper style<br/>
     ![alt text](Screenshot7.png "Override style for stepper type navigator")
 
-- Override “group summary” styles:
+- Override “group summary” styles<br/>
 
 ![alt text](Screenshot5.png "Override group summary styles")
 
