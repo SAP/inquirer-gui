@@ -42,7 +42,7 @@ It can display the groups in a way like wizard steps or tabs control
 ```
 
 - prompt-answers:
-  It is the current group summarization, for example:
+  It is only for “stepper” navigation type. It is a group summarization, for example:
 
 ```js
   {
@@ -62,7 +62,7 @@ It can display the groups in a way like wizard steps or tabs control
 ```
 
 - All-answers:
-  It is initially all the groups summaries. For example:
+  It is only for “tab” navigation type. It is initially all the groups summaries. For example:
 
 ```js
   {
@@ -147,11 +147,12 @@ import "@sap-devx/pt-navigator/dist/pt-navigator.css";
 ![alt text](Screenshot4.png "Override group title and group avatar styles")
 
 - Override style for specific navigator type
+
   - For tab style
-  ![alt text](Screenshot6.png "Override style for tab type navigator")
+    ![alt text](Screenshot6.png "Override style for tab type navigator")
 
   - For stepper style
-  ![alt text](Screenshot7.png "Override style for stepper type navigator")
+    ![alt text](Screenshot7.png "Override style for stepper type navigator")
 
 - Override “group summary” styles:
 
