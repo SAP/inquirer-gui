@@ -16,7 +16,7 @@
 
 ## Description
 
-PTNavigator is a Productivity Tools Navigator control.
+PTNavigator is a navigator control in Productivity Tools .
 It can display the groups in a way like wizard steps or tabs control
 
 ## Anatomy
