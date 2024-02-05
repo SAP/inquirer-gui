@@ -6,17 +6,17 @@
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/inquirer-gui)](https://api.reuse.software/info/github.com/SAP/inquirer-gui)
 [![dependentbot](https://api.dependabot.com/badges/status?host=github&repo=SAP/inquirer-gui)](https://dependabot.com/)
 
-# PTNavigator Control --- stepper style
+# CommonNavigator Control --- stepper style
 
-![alt text](Screenshot1.png "Stepper style screenshot of PTNavigator")
+![alt text](Screenshot1.png "Stepper style screenshot of CommonNavigator")
 
-# PTNavigator Control --- tab style
+# CommonNavigator Control --- tab style
 
-![alt text](Screenshot2.png "Tab style screenshot of PTNavigator")
+![alt text](Screenshot2.png "Tab style screenshot of CommonNavigator")
 
 ## Description
 
-PTNavigator is a navigator control in Productivity Tools .
+CommonNavigator is a navigator control in Productivity Tools .
 It can display the groups in a way like wizard steps or tabs control
 
 ## Anatomy
@@ -131,15 +131,15 @@ The properties values looks like the following:
 Import the control:
 
 ```js
-import PTNavigator from "@sap-devx/pt-navigator";
+import CommonNavigator from "@sap-devx/controls-common-navigator";
 const naviOptions = { vuetify };
-app.use(PTNavigator, naviOptions);
+app.use(CommonNavigator, naviOptions);
 ```
 
 Import the css file:
 
 ```js
-import "@sap-devx/pt-navigator/dist/pt-navigator.css";
+import "@sap-devx/controls-common-navigator/dist/common-navigator.css";
 ```
 
 ## Style overide

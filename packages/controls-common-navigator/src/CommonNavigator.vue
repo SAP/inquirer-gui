@@ -140,11 +140,11 @@ div.PTNavigationTabClass {
 
       background-color: var(
         --vscode-editor-background,
-        #252526
+        white
       ) !important; // Override Vuetifys theme specific selector `.theme--dark.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step`
 
       //background-color: transparent !important; // Required since  Vuetify `.v-application .primary` adds background-color !important
-      color: var(--vscode-foreground, #ccc);
+      color: var(--vscode-foreground, #616161);
       border: 1px solid;
       height: 10px !important;
       width: 10px !important;
@@ -162,16 +162,16 @@ div.PTNavigationTabClass {
       line-height: 17px;
       color: var(
         --vscode-foreground,
-        #ccc
+        #616161
       ) !important; // Required since Vuetify adds inline color for selector: `.theme--dark.v-stepper .v-stepper__label`
       transition: 0.3s ease-in-out;
     }
     &--complete {
       .v-stepper-item__avatar {
-        background-color: var(--vscode-foreground, #ccc) !important;
+        background-color: var(--vscode-foreground, #616161) !important;
         border-color: var(
           --vscode-foreground,
-          #ccc
+          #616161
         ) !important; // Required since Vuetify adds border-color !important for selector `.v-application .primary`
       }
     }
@@ -179,15 +179,15 @@ div.PTNavigationTabClass {
       .v-stepper-item__title {
         color: var(
           --vscode-pickerGroup-foreground,
-          #616161
+          #0066bf
         ) !important; // Required since Vuetify adds inline color for selector: `.theme--dark.v-stepper .v-stepper__label`
         transition: 0.3s ease-in-out;
       }
       .v-stepper-item__avatar {
-        background-color: var(--vscode-pickerGroup-foreground, #616161) !important;
+        background-color: var(--vscode-pickerGroup-foreground, #0066bf) !important;
         border-color: var(
           --vscode-pickerGroup-foreground,
-          #616161
+          #0066bf
         ) !important; // Required since Vuetify adds border-color !important for selector `.v-application .primary`
       }
     }
@@ -262,7 +262,7 @@ div.PTNavigationStepperClass {
 }
 div.v-application {
   div.v-stepper {
-    background-color: var(--vscode-editor-background, #252526);
+    background-color: var(--vscode-editor-background, white);
     box-shadow: none;
     padding-top: 10px;
     .breadcrumbs-container {

@@ -9,16 +9,16 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.js"),
-      name: "pt-navigator",
+      name: "common-navigator",
       formats: ["cjs", "umd", "es"],
-      fileName: (format) => `pt-navigator.${format === "cjs" ? "common" : format}.js`,
+      fileName: (format) => `common-navigator.${format === "cjs" ? "common" : format}.js`,
     },
     rollupOptions: {
       external: ["vue"],
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "pt-navigator.css";
+          if (assetInfo.name === "style.css") return "common-navigator.css";
           return assetInfo.name;
         },
         globals: {

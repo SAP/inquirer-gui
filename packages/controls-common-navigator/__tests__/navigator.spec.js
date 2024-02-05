@@ -4,7 +4,7 @@ import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 
-import PTNavigator from "../src/PTNavigator.vue";
+import CommonNavigator from "../src/CommonNavigator.vue";
 
 class ResizeObserver {
   observe() {}
@@ -24,7 +24,7 @@ describe("Test navigator common control", () => {
     });
 
     const options = {};
-    wrapper = mount(PTNavigator, {
+    wrapper = mount(CommonNavigator, {
       global: {
         plugins: [vuetify, [options]],
       },
@@ -147,35 +147,4 @@ describe("Test navigator common control", () => {
     confirm.trigger("click");
     expect(wrapper.emitted().onGotoStep).toBeTruthy();
   });
-  /*test("Navigator Summary More", async () => {
-    wrapper.setProps({ 
-      promptIndex:1, 
-      prompts:[{name: "group1"}], 
-      promptAnswers:{
-        promptName:"group1",
-        answers:[
-          {label:"akey1", value: "a"},
-          {label:"akey2", value: "a"},
-          {label:"akey3", value: "a"},
-          {label:"akey4", value: "a"},
-          {label:"akey5", value: "a"},
-          {label:"akey6", value: "a"},
-          {label:"akey7", value: "a"}
-        ]
-      },
-      navigationType:"stepper"
-    });
-
-    await nextTick();
-    let items = document.body.querySelectorAll(".more");
-    expect(items).toHaveLength(1);
-    expect(items[0].textContent).toEqual("More...");
-
-    items[0].trigger("click");
-    await nextTick();
-
-    items = document.body.querySelectorAll(".more");
-    expect(items).toHaveLength(1);
-    expect(items[0].textContent).toEqual("Less...");
-  });*/
 });

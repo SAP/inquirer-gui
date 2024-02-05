@@ -74,7 +74,7 @@ defineExpose({
 $line-height: 1.42rem; // Approximation of line height (`lh` not available)
 
 .breadcrumbs-container {
-  color: var(--vscode-foreground, #cccccc);
+  color: var(--vscode-foreground, #616161);
   .answer-box {
     /* 5 lines */
     max-height: calc(5 * #{$line-height});

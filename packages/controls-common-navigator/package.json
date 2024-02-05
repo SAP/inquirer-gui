@@ -1,8 +1,8 @@
 {
-  "name": "@sap-devx/pt-navigator",
-  "displayName": "BAS Navigator control",
+  "name": "@sap-devx/controls-common-navigator",
+  "displayName": "BAS Common Navigator control",
   "version": "1.0.0",
-  "description": "BAS Navigator control",
+  "description": "BAS Common Navigator control",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/inquirer-gui"
@@ -13,16 +13,16 @@
     "email": "lu.liu@sap.com"
   },
   "publisher": "SAP",
-  "main": "dist/pt-navigator.umd.js",
-  "module": "./dist/pt-navigator.es.js",
+  "main": "dist/common-navigator.umd.js",
+  "module": "./dist/common-navigator.es.js",
   "exports": {
     ".": {
-      "import": "./dist/pt-navigator.es.js",
-      "require": "./dist/pt-navigator.umd.js"
+      "import": "./dist/common-navigator.es.js",
+      "require": "./dist/common-navigator.umd.js"
     },
-    "./dist/pt-navigator.css": {
-      "import": "./dist/pt-navigator.css",
-      "require": "./dist/pt-navigator.css"
+    "./dist/common-navigator.css": {
+      "import": "./dist/common-navigator.css",
+      "require": "./dist/common-navigator.css"
     }
   },
   "scripts": {
