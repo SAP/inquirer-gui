@@ -1,21 +1,21 @@
 {
   "name": "sample-app-vite",
-  "private": true,
   "version": "3.0.2",
+  "private": true,
   "description": "",
   "license": "ISC",
   "author": "",
   "main": "index.js",
   "scripts": {
+    "prebuild": "npm run clean && npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
     "build": "vite build",
     "build-dev": "vite build --mode development --disable-plugin @vue/cli-plugin-eslint",
+    "clean": "shx rm -rf ./dist ./form",
+    "copy-autocomplete-plugin": "copyfiles -V -f ../../packages/auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../../packages/auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",
+    "copy-inquirer-gui": "copyfiles -V -f ../../packages/inquirer-gui/dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../../packages/inquirer-gui/package.json ./node_modules/@sap-devx/inquirer-gui",
     "prep-local": "cd ../../packages/inquirer-gui && npm run build && cd ../../examples/sample-app-vite && copyfiles -V -f ../../packages/inquirer-gui/dist/* ./form",
     "prepublishOnly": "npm run build",
-    "serve": "vite",
-    "copy-inquirer-gui": "copyfiles -V -f ../../packages/inquirer-gui/dist/* ./node_modules/@sap-devx/inquirer-gui/dist && copyfiles -f ../../packages/inquirer-gui/package.json ./node_modules/@sap-devx/inquirer-gui",
-    "copy-autocomplete-plugin": "copyfiles -V -f ../../packages/auto-complete-plugin/dist/* ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/dist && copyfiles -f ../../packages/auto-complete-plugin/package.json ./node_modules/@sap-devx/inquirer-gui-auto-complete-plugin/",
-    "prebuild": "npm run clean && npm run prep-local && npm run copy-inquirer-gui && npm run copy-autocomplete-plugin",
-    "clean": "shx rm -rf ./dist ./form"
+    "serve": "vite"
   },
   "dependencies": {
     "@mdi/font": "^4.9.95",

@@ -13,8 +13,6 @@
     "email": "eyal.barlev@sap.com"
   },
   "publisher": "SAP",
-  "main": "dist/form.umd.js",
-  "module": "./dist/form.es.js",
   "exports": {
     ".": {
       "import": "./dist/form.es.js",
@@ -25,12 +23,14 @@
       "require": "./dist/form.css"
     }
   },
+  "main": "dist/form.umd.js",
+  "module": "./dist/form.es.js",
   "scripts": {
+    "build": "vite build",
+    "build-dev": "vite build --mode development",
     "ci": "npm-run-all clean build test copy-coverage",
     "clean": "rimraf ./dist ./reports ./coverage",
     "copy-coverage": "rimraf ../../coverage ../../reports && shx cp -r ./coverage ../../coverage && shx cp -r ./reports ../../reports",
-    "build": "vite build",
-    "build-dev": "vite build --mode development",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore",
     "prepublishOnly": "npm run build",
     "test": "jest -w 1"
@@ -58,7 +58,7 @@
     "lodash": "^4.17.21",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
-    "vuetify": "^3.3.10"
+    "vuetify": "^3.5.4"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",

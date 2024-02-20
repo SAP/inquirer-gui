@@ -18,14 +18,14 @@
   >
     <template v-slot:item="{ item, props }">
       <v-list-item
-        :disabled="item.type === 'separator'"
+        :disabled="item?.raw?.type === 'separator'"
         v-bind="props"
         :title="item?.raw?.name"
         :value="item?.raw?.value"
       >
-        <v-divider v-if="getDividerType(item) === 'divider'"></v-divider>
-        <v-list-subheader v-else-if="getDividerType(item) === 'header'">{{
-          stripEscapeChars(item.line)
+        <v-divider v-if="getDividerType(item.raw) === 'divider'"></v-divider>
+        <v-list-subheader v-else-if="getDividerType(item.raw) === 'header'">{{
+          stripEscapeChars(item.raw?.ine)
         }}</v-list-subheader>
         <v-list-item-title v-else :id="props['aria-labelledby']">{{ item.name }}</v-list-item-title>
       </v-list-item>

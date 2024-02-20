@@ -16,7 +16,7 @@
   >
     <template v-slot:item="{ item, props }">
       <v-list-item
-        :disabled="item.type === 'separator'"
+        :disabled="item?.raw?.type === 'separator'"
         v-bind="props"
         :title="item?.raw?.name"
         :value="item?.raw?.value"

@@ -336,6 +336,8 @@ const questions1 = [
       filteredStates = states.filter((state) => {
         return state.startsWith(input);
       });
+      // Add separator to the top of the list
+      filteredStates.unshift({ type: "separator", line: "──────────────" });
       console.log(`States: ${JSON.stringify(answers)}`);
       if (answers && answers.country !== "USA") {
         filteredStates.unshift("Not Applicable");
