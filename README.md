@@ -57,7 +57,7 @@ Use the provided `sample-app`:
 
 ```sh
 npm install
-cd sample-app
+cd examples/sample-app
 npm install
 npm run serve
 ```
@@ -70,7 +70,7 @@ Use the provided `sample-app-vite`:
 
 ```sh
 npm install
-cd sample-app-vite
+cd examples/sample-app-vite
 npm install
 npm run serve
 ```
@@ -90,7 +90,7 @@ npm install
 If using Visual Studio Code, run the `WebSocket Server` debug configuration. This will start the sample WebSocket server that listens for requests on port `8081`.
 
 ```sh
-cd sample-app
+cd examples/sample-app
 npm install
 npm run serve
 ```
@@ -102,7 +102,7 @@ This will run the web server on `localhost` on an available port. Open the provi
 Use the provided `sample-vscode-extension`:
 
 ```sh
-cd sample-vscode-extension
+cd examples/sample-vscode-extension
 npm install
 npm run compile
 npm run copy-dist
