@@ -2,8 +2,12 @@
   "name": "@sap-devx/inquirer-gui-login-plugin",
   "version": "3.0.1",
   "description": "Login plugin for inquirer-gui",
-  "main": "dist/loginPlugin.umd.js",
-  "module": "./dist/loginPlugin.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SAP/inquirer-gui/tree/master/login-plugin"
+  },
+  "license": "Apache-2.0",
+  "author": "Eyal Barlev",
   "exports": {
     ".": {
       "import": "./dist/loginPlugin.es.js",
@@ -14,19 +18,15 @@
       "require": "./dist/loginPlugin.css"
     }
   },
+  "main": "dist/loginPlugin.umd.js",
+  "module": "./dist/loginPlugin.es.js",
   "scripts": {
-    "ci": "npm-run-all clean build",
     "build": "vite build",
     "build-dev": "vite build --mode development",
+    "ci": "npm-run-all clean build",
     "clean": "rimraf ./dist",
     "prepublishOnly": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/SAP/inquirer-gui/tree/master/login-plugin"
-  },
-  "author": "Eyal Barlev",
-  "license": "Apache-2.0",
   "dependencies": {
     "vue": "^3.3.4"
   }
