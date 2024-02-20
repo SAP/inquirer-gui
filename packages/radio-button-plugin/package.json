@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-radio-plugin",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "Sample radio plugin for inquirer-gui",
   "repository": {
     "type": "git",
