@@ -25,7 +25,7 @@
       >
         <v-divider v-if="getDividerType(item.raw) === 'divider'"></v-divider>
         <v-list-subheader v-else-if="getDividerType(item.raw) === 'header'">{{
-          stripEscapeChars(item.raw?.ine)
+          stripEscapeChars(item.raw?.line)
         }}</v-list-subheader>
         <v-list-item-title v-else :id="props['aria-labelledby']">{{ item.name }}</v-list-item-title>
       </v-list-item>
