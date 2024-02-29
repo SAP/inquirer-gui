@@ -61,7 +61,7 @@ It can display the groups in a way like wizard steps or tabs control
   }
 ```
 
-- All-answers<br/>
+- All-answers <br/>
   It is only for “tab” navigation type. It is initially all the groups summaries. For example:
 
 ```js
