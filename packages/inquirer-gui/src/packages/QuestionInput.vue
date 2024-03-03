@@ -11,17 +11,15 @@
 </template>
 
 <script>
-import utils from "../utils";
-
 export default {
   name: "QuestionInput",
   props: {
     question: Object,
   },
   methods: {
-    onInput: utils.debounce(function (val) {
+    onInput(val) {
       this.$emit("answerChanged", this.question.name, val);
-    }, 280),
+    },
     getInputType(questionType) {
       switch (questionType) {
         case "password":

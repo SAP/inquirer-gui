@@ -58,7 +58,7 @@
     "lodash": "^4.17.21",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
-    "vuetify": "^3.5.4"
+    "vuetify": "^3.5.7"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
