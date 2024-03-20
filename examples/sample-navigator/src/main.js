@@ -10,12 +10,6 @@ const app = createApp({
   render: () =>
     h(App, {
       ref: "appRef",
-      /*onNextSection: () => {
-        if (vm.questionsIndex < questionsArray.length - 1) {
-          vm.questionsIndex++;
-          vm.prompt(questionsArray[vm.questionsIndex]);
-        }
-      },*/
     }),
   data() {
     return {};

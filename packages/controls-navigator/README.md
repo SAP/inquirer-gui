@@ -16,7 +16,7 @@
 
 ## Description
 
-Navigator is a navigator control in Productivity Tools .
+Navigator is a navigation control .
 It can display the groups in a way like wizard steps or tabs control
 
 ## Anatomy
@@ -97,7 +97,7 @@ It can display the groups in a way like wizard steps or tabs control
 If writing a Vue application, simply add the following line to your `<template>` tag:
 
 ```html
-<PTNavigator
+<NavigatorControl
   :prompt-index="promptIndex"
   :prompts="prompts"
   :all-answers=" allAnswers "

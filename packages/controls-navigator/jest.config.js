@@ -7,13 +7,7 @@ module.exports = {
   coverageProvider: "v8",
   testRegex: "(/__tests__/(.*).(test|spec)).[jt]sx?$" /* eslint-disable-line */,
   collectCoverage: true,
-  // moduleNameMapper: {
-  //   '^vue$': '../../node_modules/vue'
-  // },
-  // modulePathIgnorePatterns: [
-  //   "<rootDir>/sample-app",
-  //   "<rootDir>/sample-app-vite"
-  // ],
+
   collectCoverageFrom: [
     "src/**/*.{js,vue}",
     "!**/node_modules/**",
@@ -44,10 +38,10 @@ module.exports = {
   snapshotSerializers: ["../../node_modules/jest-serializer-vue"],
   coverageThreshold: {
     global: {
-      branches: 85,
-      functions: 90,
-      lines: 90,
-      statements: 90,
+      branches: 96,
+      functions: 96,
+      lines: 96,
+      statements: 96,
     },
   },
 };

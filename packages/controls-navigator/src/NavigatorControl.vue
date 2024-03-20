@@ -10,7 +10,7 @@
           @click="gotoStep(index)"
         />
         <div class="breadcrumbs-container">
-          <YOUIBreadcrumbs
+          <BreadcrumbsContainer
             :id="`breadcrumbs-${index}`"
             class="breadcrumbs"
             :breadcrumbs="answers[prompts[index - 1] ? prompts[index - 1].name : undefined]"
@@ -23,8 +23,8 @@
 
 <script setup>
 import { computed, ref, toRefs, unref, watchEffect } from "vue";
-import YOUIBreadcrumbs from "./YOUIBreadcrumbs.vue";
-import * as _ from "lodash";
+import BreadcrumbsContainer from "./BreadcrumbsContainer.vue";
+import { isEmpty } from "lodash";
 const props = defineProps({
   promptIndex: {
     type: Number,
@@ -56,6 +56,7 @@ const answers = ref({});
 
 const currentStep = ref(0);
 
+//travel is used to keep track of the steps that have been visited
 const travel = ref({});
 
 const steps = computed(() => {
@@ -82,7 +83,7 @@ watchEffect(() => {
   }
 });
 watchEffect(() => {
-  if (unref(allAnswers) && !_.isEmpty(unref(allAnswers))) {
+  if (unref(allAnswers) && !isEmpty(unref(allAnswers))) {
     // Vue 2 requires a new object for reactivity to trigger updates
     answers.value = Object.assign({}, unref(answers), unref(allAnswers));
   }
@@ -109,7 +110,7 @@ const isTraveled = (index) => {
   return index !== currentStep.value && !!travel.value[index];
 };
 const getNavigateClass = () => {
-  return navigationType.value === "tab" ? "PTNavigationTabClass" : "PTNavigationStepperClass";
+  return navigationType.value === "tab" ? "NavigationTabClass" : "NavigationStepperClass";
 };
 const getComplete = (index) => {
   // numOfSteps is number of steps to go back
@@ -128,7 +129,7 @@ defineExpose({
 </script>
 
 <style lang="scss">
-div.PTNavigationTabClass {
+div.NavigationTabClass {
   div.v-stepper .v-stepper-item {
     padding-left: 0px;
     padding-top: 10px;
@@ -138,10 +139,7 @@ div.PTNavigationTabClass {
     .v-stepper-item__avatar {
       font-size: 0px;
 
-      background-color: var(
-        --vscode-editor-background,
-        white
-      ) !important; // Override Vuetifys theme specific selector `.theme--dark.v-stepper .v-stepper__step:not(.v-stepper__step--active):not(.v-stepper__step--complete):not(.v-stepper__step--error) .v-stepper__step__step`
+      background-color: var(--vscode-editor-background, white) !important;
 
       //background-color: transparent !important; // Required since  Vuetify `.v-application .primary` adds background-color !important
       color: var(--vscode-foreground, #616161);
@@ -194,7 +192,7 @@ div.PTNavigationTabClass {
   }
 }
 
-div.PTNavigationStepperClass {
+div.NavigationStepperClass {
   div.v-stepper .v-stepper-item {
     padding-left: 0px;
     padding-top: 10px;
@@ -230,10 +228,7 @@ div.PTNavigationStepperClass {
     &--complete {
       opacity: unset !important; // Overrides the default opacity of .v-stepper-item in case of complete step
       .v-stepper-item__title {
-        color: var(
-          --vscode-textLink-foreground,
-          #3794ff
-        ) !important; // Override Vuetifys theme specific selectors `.theme--dark.v-stepper .v-stepper__step--complete .v-stepper__label`
+        color: var(--vscode-textLink-foreground, #3794ff) !important;
         text-decoration-line: underline;
         cursor: pointer;
         &:hover {

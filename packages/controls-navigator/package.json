@@ -1,8 +1,8 @@
 {
   "name": "@sap-devx/controls-navigator",
-  "displayName": "BAS Navigator control",
+  "displayName": "Navigator control",
   "version": "1.0.0",
-  "description": "BAS Navigator control",
+  "description": "Navigator control",
   "repository": {
     "type": "git",
     "url": "https://github.com/SAP/inquirer-gui"
@@ -26,15 +26,13 @@
     }
   },
   "scripts": {
-    "ci": "npm-run-all clean build test copy-coverage",
+    "ci": "npm-run-all clean build test",
     "clean": "rimraf ./dist ./reports ./coverage",
-    "copy-coverage": "rimraf ../../coverage ../../reports && shx cp -r ./coverage ../../coverage && shx cp -r ./reports ../../reports",
     "build": "vite build",
     "build-dev": "vite build --mode development",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore",
     "prepublishOnly": "npm run build",
-    "test": "jest -w 1",
-    "localpack": "npm pack --pack-destination ."
+    "test": "jest -w 1"
   },
   "husky": {
     "hooks": {

@@ -1,33 +1,33 @@
 {
-  "name": "sample-navigator-control",
+  "name": "sample-navigator",
+  "version": "0.0.0",
   "private": true,
-  "version": "3.0.2",
-  "description": "",
-  "license": "ISC",
-  "author": "",
-  "main": "index.js",
   "scripts": {
-    "build": "vue-cli-service build",
-    "build-dev": "vue-cli-service build --mode development --disable-plugin @vue/cli-plugin-eslint",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --fix --ignore-path .gitignore",
     "prep-local": "cd ../../packages/controls-navigator && npm run build && cd ../../examples/sample-navigator",
-    "prepublishOnly": "npm run build",
-    "serve": "vue-cli-service serve --disable-plugin @vue/cli-plugin-eslint",
-    "test": "vue-cli-service test:unit",
     "copy-navigator": "copyfiles -V -f ../../packages/controls-navigator/dist/* ./node_modules/@sap-devx/controls-navigator/dist && copyfiles -f ../../packages/controls-navigator/package.json ./node_modules/@sap-devx/controls-navigator",
     "prebuild": "npm run prep-local && npm run copy-navigator",
     "clean": "shx rm -rf ./dist ./navigator"
   },
   "dependencies": {
-    "@mdi/font": "^4.9.95",
+    "@mdi/font": "7.0.96",
     "material-design-icons-iconfont": "^5.0.1",
-    "vue": "^3.3.4",
+    "core-js": "^3.29.0",
+    "roboto-fontface": "*",
+    "vue": "^3.3.8",
     "vuetify": "^3.3.10"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@vitejs/plugin-vue": "^4.0.0",
     "copyfiles": "^2.4.1",
-    "sass-loader": "^13.3.2"
+    "eslint": "^8.37.0",
+    "eslint-plugin-vue": "^9.3.0",
+    "sass": "^1.60.0",
+    "unplugin-fonts": "^1.0.3",
+    "vite": "^4.2.0",
+    "vite-plugin-vuetify": "^1.0.0"
   }
 }

@@ -4,8 +4,14 @@ import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 
-import NavigatorControl from "../src/NavigatorControl.vue";
+import NavigatorControl from "../../controls-navigator/src/NavigatorControl.vue";
 
+class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+global.ResizeObserver = ResizeObserver;
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Test navigator common control", () => {
   let wrapper;

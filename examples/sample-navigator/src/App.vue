@@ -1,7 +1,7 @@
 <template>
-  <v-app id="app" class="vscode">
+  <v-app id="app">
     <v-row>
-      <v-col class="ms-5" cols="3">
+      <v-col class="ms-9" cols="3">
         <v-radio-group v-model="navigationType" inline style="margin-top: 10px; margin-bottom: 0px">
           <v-radio label="tab" value="tab"></v-radio>
           <v-radio label="stepper" value="stepper"></v-radio>
@@ -103,12 +103,7 @@ export default {
       if (this.promptIndex < this.prompts.length - 1) this.promptIndex++;
     },
   },
-  mounted() {
-    const mutationCallback = () => {};
-    const observer = new MutationObserver(mutationCallback);
-    const targetNode = document.getElementsByTagName("body")[0];
-    observer.observe(targetNode, { attributes: true });
-  },
+  mounted() {},
 };
 </script>
 
