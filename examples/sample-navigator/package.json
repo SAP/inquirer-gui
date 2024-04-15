@@ -1,6 +1,6 @@
 {
   "name": "sample-navigator",
-  "version": "0.0.0",
+  "version": "3.0.6",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
-    "material-design-icons-iconfont": "^5.0.1",
     "core-js": "^3.29.0",
+    "material-design-icons-iconfont": "^5.0.1",
     "roboto-fontface": "*",
     "vue": "^3.3.8",
     "vuetify": "^3.3.10"
