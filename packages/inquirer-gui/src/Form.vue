@@ -451,9 +451,9 @@ export default {
               const whenPromise = question.when(answers);
               whenPromises.push(whenPromise);
               let response = await whenPromise;
-              // When question was shouldShow === false, and
-              //   it becomes shouldShow === true, call validate()
-              if (!question.shouldShow && response) {
+              // When question was shouldShow === false or question is invalid, and
+              // it becomes shouldShow === true, call validate()
+              if ((!question.shouldShow || !question.isValid) && response) {
                 shouldValidate = true;
               }
               question.shouldShow = response;
