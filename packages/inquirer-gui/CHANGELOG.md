@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.7](https://github.com/SAP/inquirer-gui/compare/v3.0.6...v3.0.7) (2024-04-16)
+
+### Bug Fixes
+
+- field validation condition is fixed if the “when” condition is defined ([#697](https://github.com/SAP/inquirer-gui/issues/697)) ([9f72b62](https://github.com/SAP/inquirer-gui/commit/9f72b620bd9f604b09e44a7e0bfaadb0663268b9))
+
 ## [3.0.6](https://github.com/SAP/inquirer-gui/compare/v3.0.5...v3.0.6) (2024-04-15)
 
 **Note:** Version bump only for package @sap-devx/inquirer-gui
