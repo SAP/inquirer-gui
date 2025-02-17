@@ -11,6 +11,8 @@ const questionConfirm = [
     type: "confirm",
     name: "confirm",
     message: "Are you sure?",
+    labelTrue: "Accept",
+    labelFalse: "Decline",
     default: false,
   },
 ];
