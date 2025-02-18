@@ -417,6 +417,8 @@ const questions2 = [
     type: "confirm",
     name: "confirm",
     message: "Are you sure?",
+    labelTrue: "Yes, I am sure!",
+    labelFalse: "No, I am still contemplating...",
     default: false,
   },
   {
