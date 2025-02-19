@@ -11,11 +11,31 @@ const questionConfirm = [
     type: "confirm",
     name: "confirm",
     message: "Are you sure?",
+    default: false,
+  },
+];
+
+const questionConfirmWithOneLabel = [
+  {
+    type: "confirm",
+    name: "confirm",
+    message: "Do you agree?",
+    labelTrue: "Accept",
+    default: false,
+  },
+];
+
+const questionConfirmWithTwoLabels = [
+  {
+    type: "confirm",
+    name: "confirm",
+    message: "Do you agree?",
     labelTrue: "Accept",
     labelFalse: "Decline",
     default: false,
   },
 ];
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type confirm", () => {
   let vuetify;
@@ -42,6 +62,90 @@ describe("Question of type confirm", () => {
 
     const confirm = wrapper.find("label");
     confirm.trigger("click");
+
+    await nextTick();
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength - 1];
+    // test answers
+    expect(answered[0].confirm).toEqual(true);
+  });
+
+  test("Confirm renders default labels", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionConfirm: QuestionConfirm,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionConfirm });
+    await nextTick();
+
+    const labels = wrapper.findAll("label");
+
+    expect(labels.at(0).text()).toBe("Yes");
+    expect(labels.at(1).text()).toBe("No");
+
+    labels.at(0).trigger("click");
+
+    await nextTick();
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength - 1];
+    // test answers
+    expect(answered[0].confirm).toEqual(true);
+  });
+
+  test("Confirm renders only one overridden label", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionConfirm: QuestionConfirm,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionConfirmWithOneLabel });
+    await nextTick();
+
+    const labels = wrapper.findAll("label");
+
+    expect(labels.at(0).text()).toBe("Accept");
+    expect(labels.at(1).text()).toBe("No");
+
+    labels.at(0).trigger("click");
+
+    await nextTick();
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength - 1];
+    // test answers
+    expect(answered[0].confirm).toEqual(true);
+  });
+
+  test("Confirm renders two overridden labels", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionConfirm: QuestionConfirm,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionConfirmWithTwoLabels });
+    await nextTick();
+
+    const labels = wrapper.findAll("label");
+
+    expect(labels.at(0).text()).toBe("Accept");
+    expect(labels.at(1).text()).toBe("Decline");
+
+    labels.at(0).trigger("click");
 
     await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();

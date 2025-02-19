@@ -360,6 +360,13 @@ const questions1 = [
     choices: ["Yes", "No", "Maybe"],
     default: "No",
   },
+  {
+    type: "confirm",
+    name: "confirm",
+    message: "Do you want to save your changes?",
+    labelFalse: "No, discard changes",
+    default: false,
+  },
 ];
 
 const questions2 = [
