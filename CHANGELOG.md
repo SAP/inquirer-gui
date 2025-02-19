@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/SAP/inquirer-gui/compare/v3.0.8...v3.1.0) (2025-02-19)
+
+### Features
+
+- extended QuestionConfirm label customization ([a7eb09d](https://github.com/SAP/inquirer-gui/commit/a7eb09da6b84698d7a91b190da364db294320a5f))
+
 ## [3.0.8](https://github.com/SAP/inquirer-gui/compare/v3.0.7...v3.0.8) (2024-04-25)
 
 ### Bug Fixes
