@@ -6,6 +6,7 @@
     :type="getInputType(question.type)"
     hide-details="auto"
     density="compact"
+    :placeholder="question.placeholder"
     variant="outlined"
   ></v-text-field>
 </template>
