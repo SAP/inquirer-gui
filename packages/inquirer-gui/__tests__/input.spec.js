@@ -30,6 +30,16 @@ const questionInput = [
   },
 ];
 
+const questionInputPlaceholder = [
+  {
+    type: "input",
+    name: "input",
+    message: "An input",
+    default: "default input",
+    placeholder: "This is a placeholder.",
+  },
+];
+
 const questionPassword = [
   {
     type: "password",
@@ -354,6 +364,23 @@ describe("Questions of type input, password and number", () => {
     expect(answered[0].input).toEqual(value1);
     // test validation
     expect(answered[1]).toBeUndefined();
+  });
+
+  test("Input with placeholder value", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionInputPlaceholder });
+    await nextTick();
+
+    const input = wrapper.find("input");
+    expect(input.element.placeholder).toBe("This is a placeholder.");
   });
 
   test("Input with invalid input", async () => {
