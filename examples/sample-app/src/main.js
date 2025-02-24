@@ -145,6 +145,7 @@ const questions0 = [
 const questions1 = [
   {
     name: "noType",
+    placeholder: "This is a placeholder.",
   },
   {
     type: "input",
@@ -182,15 +183,7 @@ const questions1 = [
     },
     name: "mood",
     message: "Select mood",
-    choices: [
-      {
-        value: "happy",
-        disabled: true,
-      },
-      {
-        value: "sad",
-      },
-    ],
+    choices: ["happy", "sad"],
     default: "happy",
   },
   {
@@ -383,21 +376,8 @@ const questions1 = [
     name: "survey",
     orientation: "vertical",
     message: "How did you hear about us?",
-    choices: [
-      {
-        value: "Friend/Colleague",
-      },
-      {
-        value: "Social Media",
-      },
-      {
-        value: "Online",
-      },
-      {
-        value: "Other",
-      },
-    ],
-    default: "Other",
+    default: "Google",
+    choices: ["Google", "Facebook", "Twitter", { value: "LinkedIn", disabled: true }, "Other"],
   },
 ];
 
