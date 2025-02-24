@@ -13,14 +13,7 @@ const questionRadio = [
     type: "radio",
     name: "pat",
     message: "Your pat",
-    choices: [
-      {
-        value: "dog",
-      },
-      {
-        value: "cat",
-      },
-    ],
+    choices: ["dog", "cat"],
     default: ["cat"],
   },
 ];
@@ -31,15 +24,13 @@ const questionRadioDisabled = [
     name: "pat",
     message: "Your mood",
     choices: [
-      {
-        value: "happy",
-      },
+      "happy",
       {
         value: "sad",
         disabled: true,
       },
     ],
-    default: ["happy"],
+    default: "happy",
   },
 ];
 

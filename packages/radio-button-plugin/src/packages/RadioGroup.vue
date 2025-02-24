@@ -9,7 +9,7 @@
     >
       <v-radio
         class="radioClass"
-        v-for="item in question.choices"
+        v-for="item in convertChoices(question.choices)"
         :key="item.value"
         :label="item.value"
         :value="item.value"
@@ -39,6 +39,14 @@ export default {
     },
     hasItem() {
       return this.question.choices.length > 0;
+    },
+    convertChoices(choices) {
+      return choices.map((item) => {
+        if (typeof item === "string") {
+          return { value: item, disabled: false };
+        }
+        return item;
+      });
     },
   },
 };
