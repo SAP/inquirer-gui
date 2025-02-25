@@ -38,12 +38,12 @@ export default {
       return this.hasItem() && this.question.visible !== false;
     },
     hasItem() {
-      return this.question.choices.length > 0;
+      return this.question.choices && this.question.choices.length > 0;
     },
     convertChoices(choices) {
       return choices.map((item) => {
         if (typeof item === "string") {
-          return { value: item, disabled: false };
+          return { value: item };
         }
         return item;
       });
