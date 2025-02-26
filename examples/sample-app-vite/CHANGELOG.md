@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/SAP/inquirer-gui/compare/v3.1.0...v3.2.0) (2025-02-26)
+
+### Features
+
+- vertical orientation, disabled prop, and placeholder support ([5a355ec](https://github.com/SAP/inquirer-gui/commit/5a355ecceab7f3df213f89801c8695b2836ac8f6))
+
 # [3.1.0](https://github.com/SAP/inquirer-gui/compare/v3.0.8...v3.1.0) (2025-02-19)
 
 **Note:** Version bump only for package sample-app-vite
