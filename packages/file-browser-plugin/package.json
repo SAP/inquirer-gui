@@ -29,9 +29,11 @@
   "scripts": {
     "build": "vite build",
     "build-dev": "vite build --mode development",
-    "ci": "npm-run-all clean build",
+    "ci": "npm-run-all clean build test copy-coverage",
+    "copy-coverage": "rimraf ../../coverage ../../reports && shx cp -r ./coverage ../../coverage && shx cp -r ./reports ../../reports",
     "clean": "rimraf ./dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "jest -w 1"
   },
   "dependencies": {
     "vue": "^3.3.4"

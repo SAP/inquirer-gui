@@ -3,7 +3,7 @@ import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
-import FormVue from "../src/Form.vue";
+import FormVue from "../../inquirer-gui/src/Form.vue";
 
 import RadioGroupPlugin from "../../radio-button-plugin/src";
 // import RadioGroupPlugin from "@sap-devx/inquirer-gui-radio-plugin";
