@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - tech-debt-maintenance
+  pull_request:
+    branches:
+      - tech-debt-maintenance
+  workflow_dispatch:
+
+jobs:
+  test-node20:
+    runs-on: ubuntu-latest
+    container:
+      image: cimg/node:16.19
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
+
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      image: cimg/node:16.19
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Restore npm cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run ci
+      - name: Run coveralls
+        env:
+          COVERALLS_SERVICE_NAME: github-actions
+          COVERALLS_GIT_BRANCH: ${{ github.ref_name }}
+        run: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+      - name: Define environment variable with latest commit's message
+        run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+      - name: Lint commit message
+        run: echo "$COMMIT_MESSAGE" | npx commitlint
+      - name: Save npm cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-reports
+          path: reports/junit
+      - name: Upload coverage
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+
+  compliance:
+    runs-on: ubuntu-latest
+    container:
+      image: cimg/python:3.10.0
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install reuse
+        run: pip3 install --user reuse
+      - name: Run compliance check
+        run: ~/.local/bin/reuse lint
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Build for publish
+        run: npm run ci
+      - name: Authenticate with registry
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Publish package
+        run: npm publish
