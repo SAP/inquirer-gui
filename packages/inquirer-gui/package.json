@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
@@ -68,7 +68,7 @@
     "@sap-devx/inquirer-gui-folder-browser-plugin": "^3.0.3",
     "@sap-devx/inquirer-gui-label-plugin": "^3.0.3",
     "@sap-devx/inquirer-gui-login-plugin": "^3.0.3",
-    "@sap-devx/inquirer-gui-radio-plugin": "^3.0.3",
+    "@sap-devx/inquirer-gui-radio-plugin": "^3.2.0",
     "@sap-devx/inquirer-gui-single-checkbox-plugin": "^3.0.3",
     "@sap-devx/inquirer-gui-tiles-plugin": "^3.0.3",
     "@vue/test-utils": "2.4.0",
