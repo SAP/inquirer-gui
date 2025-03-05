@@ -71,7 +71,7 @@
     "@sap-devx/inquirer-gui-radio-plugin": "^3.2.0",
     "@sap-devx/inquirer-gui-single-checkbox-plugin": "^3.0.3",
     "@sap-devx/inquirer-gui-tiles-plugin": "^3.0.3",
-    "@vue/test-utils": "2.4.0",
+    "@vue/test-utils": "2.4.6",
     "@vue/vue3-jest": "^29.2.4",
     "babel-jest": "^29.5.0",
     "jest": "^29.5.0",
