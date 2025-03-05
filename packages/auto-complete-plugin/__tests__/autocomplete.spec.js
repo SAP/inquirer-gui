@@ -3,11 +3,11 @@ import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
-import FormVue from "../src/Form.vue";
+import FormVue from "../../inquirer-gui/src/Form.vue";
 
 import QuestionAutoCompletePlugin from "../../auto-complete-plugin/src";
 // import QuestionAutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
-import utils from "./utils";
+import utils from "../../inquirer-gui/__tests__/utils";
 
 class ResizeObserver {
   observe() {}

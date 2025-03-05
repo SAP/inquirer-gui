@@ -486,6 +486,64 @@ describe("Questions of type input, password and number", () => {
     expect(name.element.value).toBe("0");
   });
 
+  test("onCustomEvent method", async () => {
+    const mockMethod = jest.fn().mockResolvedValue("mock response");
+    const question = {
+      name: "testQuestion",
+      type: "input",
+      message: "Test question",
+      customMethod: mockMethod,
+    };
+
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+      },
+      props: {
+        questions: [question],
+      },
+    });
+
+    await nextTick();
+
+    const callback = jest.fn();
+    await wrapper.vm.onCustomEvent("testQuestion", "customMethod", callback, "param1", "param2");
+
+    expect(mockMethod).toHaveBeenCalledWith("param1", "param2");
+    expect(callback).toHaveBeenCalledWith("mock response");
+  });
+
+  test("onCustomEvent method with error", async () => {
+    const mockMethod = jest.fn().mockRejectedValue(new Error("mock error"));
+    const question = {
+      name: "testQuestion",
+      type: "input",
+      message: "Test question",
+      customMethod: mockMethod,
+    };
+
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+      },
+      props: {
+        questions: [question],
+      },
+    });
+
+    await nextTick();
+
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const callback = jest.fn();
+    await wrapper.vm.onCustomEvent("testQuestion", "customMethod", callback, "param1", "param2");
+
+    expect(mockMethod).toHaveBeenCalledWith("param1", "param2");
+    expect(callback).not.toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith("Could not evaluate customMethod() for testQuestion");
+
+    consoleErrorSpy.mockRestore();
+  });
+
   test("Input with conditions", async () => {
     const wrapper = mount(FormVue, {
       global: {
