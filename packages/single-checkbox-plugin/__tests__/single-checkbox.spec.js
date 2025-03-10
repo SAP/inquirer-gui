@@ -5,7 +5,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../../inquirer-gui/src/Form.vue";
 
-import SingleCheckBoxPlugin from "../../single-checkbox-plugin/src";
+import SingleCheckBoxPlugin from "../src";
 // import SingleCheckBoxPlugin from "@sap-devx/inquirer-gui-single-checkbox-plugin";
 
 const questionSingleCheckbox = [
