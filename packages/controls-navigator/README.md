@@ -108,7 +108,7 @@ If writing a Vue application, simply add the following line to your `<template>`
   :prompt-answers="{}"
   navigation-type="tab"
   @on-goto-step="gotoStep"
-  :showIconForError=true
+  :showIconForError="true"
 />
 ```
 
