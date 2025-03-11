@@ -165,5 +165,7 @@ describe("Test navigator common control", () => {
     let itemWarnings = document.body.querySelectorAll(".NavigatorSummaryWarningValueClass");
     expect(itemWarnings).toHaveLength(1);
     expect(itemWarnings[0].textContent).toEqual("");
+    itemWarnings = document.body.querySelectorAll(".mdi-close-circle-outline");
+    expect(itemWarnings).toHaveLength(1);
   });
 });
