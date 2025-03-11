@@ -84,6 +84,9 @@ It can display the groups in a way like wizard steps or tabs control
           ]
   }
 ```
+- showIconForError<br/>
+If showIconForError equals true, we will use icon to represent the error type and we use the error value as the icon's tooltip. If showIconForError equals false, we display the error value with text in red.
+The default value is false.
 
 ## Control Event
 
