@@ -145,6 +145,7 @@ const questions0 = [
 const questions1 = [
   {
     name: "noType",
+    placeholder: "This is a placeholder.",
   },
   {
     type: "input",
@@ -366,6 +367,17 @@ const questions1 = [
     message: "Do you want to save your changes?",
     labelFalse: "No, discard changes",
     default: false,
+  },
+  {
+    type: "input",
+    guiOptions: {
+      type: "radio",
+    },
+    name: "survey",
+    orientation: "vertical",
+    message: "How did you hear about us?",
+    default: "Google",
+    choices: ["Google", "Facebook", "Twitter", { value: "LinkedIn", disabled: true }, "Other"],
   },
 ];
 

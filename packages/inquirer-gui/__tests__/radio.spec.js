@@ -18,6 +18,30 @@ const questionRadio = [
   },
 ];
 
+const questionRadioNoChoices = [
+  {
+    type: "radio",
+    name: "pat",
+    message: "Your pat",
+  },
+];
+
+const questionRadioDisabled = [
+  {
+    type: "radio",
+    name: "pat",
+    message: "Your mood",
+    choices: [
+      "happy",
+      {
+        value: "sad",
+        disabled: true,
+      },
+    ],
+    default: "happy",
+  },
+];
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 
 describe("Question of type radio", () => {
@@ -54,5 +78,50 @@ describe("Question of type radio", () => {
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
     expect(answered[0].pat).toContain("dog");
+  });
+
+  test("Radio button with missing choices array", async () => {
+    const options = {};
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [RadioGroupPlugin, options]],
+      },
+      attachTo: document.body,
+    });
+    await nextTick();
+
+    wrapper.vm.registerPlugin(options.plugin);
+    wrapper.setProps({ questions: questionRadioNoChoices });
+    await nextTick();
+
+    const pat = wrapper.find('input[type="radio"]');
+    expect(pat.exists()).toBe(false);
+  });
+
+  test("Radio button with one disabled option", async () => {
+    const options = {};
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify, [RadioGroupPlugin, options]],
+      },
+      attachTo: document.body,
+    });
+    await nextTick();
+
+    wrapper.vm.registerPlugin(options.plugin);
+    wrapper.setProps({ questions: questionRadioDisabled });
+    await nextTick();
+
+    const pat = wrapper.find('input[value="sad"]');
+    // Simulate a click on the disabled option
+    pat.trigger("click");
+
+    await nextTick();
+
+    expect(wrapper.emitted().answered).toBeTruthy();
+    const emittedLength = wrapper.emitted().answered.length;
+    const answered = wrapper.emitted().answered[emittedLength - 1];
+    // test answers
+    expect(answered[0].pat).toContain("happy");
   });
 });

@@ -4,10 +4,17 @@
       style="margin-bottom: 0pt; padding-bottom: 0pt"
       @update:modelValue="onClick"
       :modelValue="question.answer"
-      inline
+      :inline="question.orientation !== 'vertical'"
       density="compact"
     >
-      <v-radio class="radioClass" v-for="item in question.choices" :key="item" :label="item" :value="item"></v-radio>
+      <v-radio
+        class="radioClass"
+        v-for="item in convertChoices(question.choices)"
+        :key="item.value"
+        :label="item.value"
+        :value="item.value"
+        :disabled="item.disabled"
+      ></v-radio>
     </v-radio-group>
   </div>
 </template>
@@ -31,7 +38,15 @@ export default {
       return this.hasItem() && this.question.visible !== false;
     },
     hasItem() {
-      return this.question.choices.length > 0;
+      return this.question.choices && this.question.choices.length > 0;
+    },
+    convertChoices(choices) {
+      return choices.map((item) => {
+        if (typeof item === "string") {
+          return { value: item };
+        }
+        return item;
+      });
     },
   },
 };

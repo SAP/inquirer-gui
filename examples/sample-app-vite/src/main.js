@@ -182,7 +182,7 @@ const questions1 = [
     },
     name: "mood",
     message: "Select mood",
-    choices: ["happy", "sad"],
+    choices: [{ value: "happy" }, { value: "sad", disabled: true }],
     default: "happy",
   },
   {
@@ -361,6 +361,17 @@ const questions1 = [
     message: "Do you agree to the conditions?",
     choices: ["Yes", "No", "Maybe"],
     default: "No",
+  },
+  {
+    type: "input",
+    guiOptions: {
+      type: "radio",
+    },
+    name: "survey",
+    orientation: "vertical",
+    message: "How did you hear about us?",
+    choices: [{ value: "Friend/Colleague" }, { value: "Social Media" }, { value: "Online" }, { value: "Other" }],
+    default: "Friend/Colleague",
   },
 ];
 
