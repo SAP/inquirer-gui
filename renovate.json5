@@ -1,0 +1,56 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  configMigration: true,
+  extends: [
+    'config:recommended',
+    ':pinDependencies',
+    ':pinDevDependencies',
+    'helpers:pinGitHubActionDigests',
+    'mergeConfidence:all-badges',
+  ],
+  schedule: [
+    'on friday and saturday',
+  ],
+  prHourlyLimit: 5,
+  packageRules: [
+    {
+      matchPackageNames: [
+        '@types/node',
+      ],
+      allowedVersions: '^20',
+    },
+    {
+      groupName: 'jest and related packages',
+      groupSlug: 'jest*',
+      matchPackageNames: [
+        '/jest/',
+      ],
+    },
+    {
+      matchPackageNames: [
+        'husky',
+        'lint-staged',
+        'cz-conventional-changelog',
+        '@commitlint/cli',
+        '@commitlint/config-conventional',
+        'prettier',
+        'npm-run-all',
+        'shx',
+        'rimraf',
+        'coveralls',
+        'nyc',
+        'ts-node',
+        '/eslint/',
+      ],
+      matchDepTypes: [
+        'devDependencies',
+      ],
+      matchUpdateTypes: [
+        'minor',
+        'patch',
+      ],
+      groupName: 'all non-major dev cli dependencies',
+      groupSlug: 'all-dev-cli-minor-patch',
+    },
+  ],
+}
