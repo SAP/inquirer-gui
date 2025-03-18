@@ -36,18 +36,18 @@
     "onCommand:inquirerUiExample.show"
   ],
   "dependencies": {
-    "@sap-devx/webview-rpc": "^0.4.1",
-    "cheerio": "^1.0.0-rc.12"
+    "@sap-devx/webview-rpc": "^0.4.2",
+    "cheerio": "^1.0.0"
   },
   "devDependencies": {
-    "@types/cheerio": "^0.22.31",
-    "@types/glob": "^7.1.1",
-    "@types/jest": "^25.1.2",
+    "@types/cheerio": "^0.22.35",
+    "@types/glob": "^7.2.0",
+    "@types/jest": "^25.2.3",
     "@types/node": "^12.11.7",
-    "@types/vscode": "^1.41.0",
+    "@types/vscode": "^1.98.0",
     "@vscode-logging/types": "^0.1.4",
     "glob": "^7.1.5",
-    "vscode-test": "^1.2.2"
+    "vscode-test": "^1.6.1"
   },
   "engines": {
     "vscode": "^1.41.0"
