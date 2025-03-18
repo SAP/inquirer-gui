@@ -76,7 +76,6 @@ describe("Question of type radio", () => {
     await nextTick();
 
     expect(wrapper.emitted().answered).toBeTruthy();
-    console.log({ wrapper });
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
