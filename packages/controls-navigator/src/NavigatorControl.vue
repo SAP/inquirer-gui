@@ -14,6 +14,7 @@
             :id="`breadcrumbs-${index}`"
             class="breadcrumbs"
             :breadcrumbs="answers[prompts[index - 1] ? prompts[index - 1].name : undefined]"
+            :showIconForError="showIconForError"
           />
         </div>
       </template>
@@ -46,9 +47,13 @@ const props = defineProps({
     type: String,
     default: "tab",
   },
+  showIconForError: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const { promptIndex, prompts, allAnswers, promptAnswers, navigationType } = toRefs(props);
+const { promptIndex, prompts, allAnswers, promptAnswers, navigationType, showIconForError } = toRefs(props);
 
 const emits = defineEmits(["onGotoStep"]);
 

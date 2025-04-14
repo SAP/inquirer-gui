@@ -13,10 +13,10 @@ export default defineConfig({
       formats: ["cjs", "umd", "es"],
       fileName: (format) => `${CONTROL_NAME}.${format === "cjs" ? "control" : format}.js`,
     },
+    sourcemap: true,
     rollupOptions: {
       external: ["vue"],
       output: {
-        sourcemap: true,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return `${CONTROL_NAME}.css`;
           return assetInfo.name;

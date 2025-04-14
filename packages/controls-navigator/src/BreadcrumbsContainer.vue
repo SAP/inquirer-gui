@@ -8,8 +8,18 @@
       data-test="answerBox"
     >
       <div v-for="(item, index) in breadcrumbs" class="answer" data-test="breadcrumbs" :key="`answer-${index}`">
-        <span class="NavigatorSummaryKeyClass">{{ item.label ? item.label + ":" : "" }} </span
-        ><span :class="getValueClass(item.type)">{{ item.value }}</span>
+        <span class="NavigatorSummaryKeyClass">{{ item.label ? item.label + ":" : "" }} </span>
+
+        <span v-if="showIconForError && isErrorType(item.type)" :class="getValueClass(item.type)">
+          <v-tooltip location="top" max-width="350px">
+            <template v-slot:activator="{ props }">
+              <v-icon v-bind="props">mdi-close-circle-outline</v-icon>
+            </template>
+            <span>{{ item.value }}</span>
+          </v-tooltip>
+        </span>
+
+        <span v-else :class="getValueClass(item.type)">{{ item.value }}</span>
       </div>
     </div>
     <div v-if="showMoreLess" class="more" data-test="moreLessButton" @click="showMore = !showMore">
@@ -31,6 +41,10 @@ const props = defineProps({
   breadcrumbs: {
     type: Array,
     default: () => [],
+  },
+  showIconForError: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -63,6 +77,9 @@ const getValueClass = (type) => {
   } else {
     return "NavigatorSummaryValueClass";
   }
+};
+const isErrorType = (type) => {
+  return type === "warning";
 };
 defineExpose({
   calcIsMore,

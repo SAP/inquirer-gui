@@ -936,4 +936,452 @@ describe("Questions of type input, password and number", () => {
 
     expect(addMessageDependant.find("span.messages-text").text()).toEqual("Some dependant warning message");
   });
+
+  test("should return _default for input type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "input", _default: "hello" })).toBe("hello");
+  });
+
+  test("should return empty string if _default is undefined for input type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "input", _default: undefined })).toBe("");
+  });
+
+  test("should return _default for number type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "number", _default: 42 })).toBe(42);
+  });
+
+  test("should return 0 if _default is undefined for number type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "number", _default: undefined })).toBe(0);
+  });
+
+  test("should return _default for confirm type if it is false", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: false })).toBe(false);
+  });
+
+  test("should return true if _default is undefined or true for confirm type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: undefined })).toBe(true);
+    expect(wrapper.vm.getInitialAnswer({ type: "confirm", _default: true })).toBe(true);
+  });
+
+  test("should call setInvalid if _choices is not an array for list type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    wrapper.vm.getInitialAnswer({ type: "list", _choices: null });
+    expect(wrapper.vm.setInvalid).toHaveBeenCalled();
+  });
+
+  test("should call setInvalid if _default is undefined for list type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    wrapper.vm.getInitialAnswer({ type: "list", _choices: ["a"], _default: undefined });
+    expect(wrapper.vm.setInvalid).toHaveBeenCalled();
+  });
+
+  test("should return correct choice for list type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "list",
+        _choices: [{ value: "a" }, { value: "b" }],
+        _default: "b",
+      }),
+    ).toBe("b");
+  });
+
+  test("should return correct choice for expand type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "expand",
+        _choices: [{ value: "x" }, { value: "y" }],
+        _default: "x",
+      }),
+    ).toBe("x");
+  });
+
+  test("should return correct values for checkbox type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "checkbox",
+        _choices: [{ value: "a" }, { value: "b", checked: true }],
+        _default: ["a"],
+      }),
+    ).toEqual(["a", "b"]);
+  });
+
+  test("should return empty array for checkbox type if no defaults or checked", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "checkbox", _choices: [{ value: "a" }, { value: "b" }] })).toEqual([]);
+  });
+
+  test("should call setInvalid for unrecognized type without _default", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    wrapper.vm.getInitialAnswer({ type: "unknown", _default: undefined });
+    expect(wrapper.vm.setInvalid).toHaveBeenCalled();
+  });
+
+  test("should return _default for unrecognized type if provided", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(wrapper.vm.getInitialAnswer({ type: "unknown", _default: "custom" })).toBe("custom");
+  });
+
+  // Additional tests to cover complex choice cases
+  test("should return correct choice for list type with numeric _default", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "list",
+        _choices: [{ value: "a" }, { value: "b" }],
+        _default: 1,
+      }),
+    ).toBe("b");
+  });
+
+  test("should call setInvalid if numeric _default is out of range for list type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    wrapper.vm.getInitialAnswer({ type: "list", _choices: [{ value: "a" }], _default: 2 });
+    expect(wrapper.vm.setInvalid).toHaveBeenCalled();
+  });
+
+  test("should return correct choice for expand type with numeric _default", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "expand",
+        _choices: [{ value: "x" }, { value: "y" }],
+        _default: 1,
+      }),
+    ).toBe("y");
+  });
+
+  test("should call setInvalid if numeric _default is out of range for expand type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    wrapper.vm.getInitialAnswer({ type: "expand", _choices: [{ value: "x" }], _default: 2 });
+    expect(wrapper.vm.setInvalid).toHaveBeenCalled();
+  });
+
+  test("should return correct values for checkbox type with checked choices", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "checkbox",
+        _choices: [
+          { value: "a", checked: true },
+          { value: "b", checked: true },
+        ],
+        _default: [],
+      }),
+    ).toEqual(["a", "b"]);
+  });
+
+  test("should return correct values for checkbox type with __ForceDefault", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+    wrapper.vm.setInvalid = jest.fn();
+
+    wrapper.setProps({ questions: questionInput });
+    await nextTick();
+
+    expect(
+      wrapper.vm.getInitialAnswer({
+        type: "checkbox",
+        _choices: [
+          { value: "a", checked: true },
+          { value: "b", checked: true },
+        ],
+        _default: ["a"],
+        __ForceDefault: true,
+      }),
+    ).toEqual(["a"]);
+  });
+
+  test("getComponentByQuestionType handles question.guiOptions.type", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionInput: InputVue,
+        },
+      },
+      attachTo: document.body,
+    });
+
+    const question = {
+      type: "input",
+      name: "input",
+      message: "An input",
+      guiOptions: {
+        type: "customType",
+      },
+    };
+
+    wrapper.vm.plugins = [
+      {
+        questionType: "customType",
+        component: "CustomComponent",
+      },
+    ];
+
+    const component = wrapper.vm.getComponentByQuestionType(question);
+
+    expect(component).toBe("CustomComponent");
+  });
 });

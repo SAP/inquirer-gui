@@ -141,4 +141,31 @@ describe("Test navigator common control", () => {
     confirm.trigger("click");
     expect(wrapper.emitted().onGotoStep).toBeTruthy();
   });
+  test("Navigator Tabs with show error in icon", async () => {
+    wrapper.setProps({
+      promptIndex: 0,
+      prompts: [{ name: "group1" }, { name: "group2" }],
+      allAnswers: {
+        group1: [
+          { label: "akey1", value: "aType" },
+          { label: "akey2", value: "a", type: "warning" },
+        ],
+        group2: [
+          { label: "bkey1", value: "bType" },
+          { label: "", value: "b" },
+        ],
+      },
+      promptAnswers: {},
+      navigationType: "tab",
+      showIconForError: true,
+    });
+
+    await nextTick();
+
+    let itemWarnings = document.body.querySelectorAll(".NavigatorSummaryWarningValueClass");
+    expect(itemWarnings).toHaveLength(1);
+    expect(itemWarnings[0].textContent).toEqual("");
+    itemWarnings = document.body.querySelectorAll(".mdi-close-circle-outline");
+    expect(itemWarnings).toHaveLength(1);
+  });
 });
