@@ -5,6 +5,7 @@
         <v-radio-group v-model="navigationType" inline style="margin-top: 10px; margin-bottom: 0px">
           <v-radio label="tab" value="tab"></v-radio>
           <v-radio label="stepper" value="stepper"></v-radio>
+          <v-radio label="tab with error icon" value="tabWithErrorIcon"></v-radio>
         </v-radio-group>
         <v-divider />
         <NavigatorControl
@@ -14,6 +15,16 @@
           :all-answers="allAnswers"
           :prompt-answers="{}"
           navigation-type="tab"
+          @on-goto-step="gotoTab"
+        />
+        <NavigatorControl
+          v-if="navigationType === 'tabWithErrorIcon'"
+          :prompt-index="promptIndex"
+          :prompts="prompts"
+          :all-answers="allAnswers"
+          :prompt-answers="{}"
+          navigation-type="tab"
+          show-icon-for-error="true"
           @on-goto-step="gotoTab"
         />
         <NavigatorControl

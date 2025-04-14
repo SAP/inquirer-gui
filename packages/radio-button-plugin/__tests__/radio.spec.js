@@ -6,6 +6,8 @@ import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../../inquirer-gui/src/Form.vue";
 
 import RadioGroupPlugin from "../../radio-button-plugin/src";
+import RadioGroup from "../src/packages/RadioGroup.vue";
+
 // import RadioGroupPlugin from "@sap-devx/inquirer-gui-radio-plugin";
 
 const questionRadio = [
@@ -78,6 +80,20 @@ describe("Question of type radio", () => {
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
     expect(answered[0].pat).toContain("dog");
+  });
+
+  test("should return the correct radio ID", () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        question: {
+          name: "testQuestion",
+          choices: ["choice1", "choice2"],
+        },
+      },
+    });
+
+    const radioId = wrapper.vm.getRadioId("testName");
+    expect(radioId).toBe("radio_testName");
   });
 
   test("Radio button with missing choices array", async () => {

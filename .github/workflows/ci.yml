@@ -73,11 +73,10 @@ jobs:
         - name: Build
           run: npm run ci
 
-        - name: Upload coverage to Coveralls
-          env:
-            COVERALLS_SERVICE_NAME: github-actions
-            COVERALLS_GIT_BRANCH: ${{ github.ref_name }}
-          run: cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+        - name: Publish to coveralls.io
+          uses: coverallsapp/github-action@v1.1.2
+          with:
+            github-token: ${{ github.token }}
 
         - name: Define environment variable with latest commit's message
           run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
@@ -120,6 +119,8 @@ jobs:
           node-version: ${{ matrix.node_version }}
       - name: Install dependencies
         run: npm install
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Build for publish
         run: npm run ci
       - name: Authenticate with registry
