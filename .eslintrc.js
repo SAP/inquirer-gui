@@ -40,6 +40,7 @@ module.exports = {
         "no-inner-declarations": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/ban-types": "off",
+        "no-param-reassign": ["error", { props: true }],
       },
     },
   ],
