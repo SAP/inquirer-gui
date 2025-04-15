@@ -1,7 +1,8 @@
 <template>
-  <v-card id="question-checkbox-v-card" variant="outlined" :rounded="0">
+  <v-card id="question-checkbox-v-card" variant="text" :rounded="0">
     <v-list
       density="compact"
+      active-class="nobg"
       max-height="60vh"
       class="overflow-y-auto v-list--subheader"
       id="question-checkbox-v-list"
@@ -42,5 +43,28 @@ export default {
 <style>
 .v-messages {
   min-height: 0px;
+}
+div#question-checkbox-v-card {
+  border: none !important;
+}
+div#question-checkbox-v-list-item {
+  padding-left: 0 !important;
+  --v-hover-opacity: 0 !important;
+}
+form.inquirer-gui div.v-list,
+div[role="listbox"].v-theme--light.v-list {
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f) !important;
+}
+.nobg,
+div.v-list-item--active {
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f) !important;
+  --v-activated-opacity: 0 !important;
+  --v-hover-opacity: 0 !important;
+}
+div.v-list-item__spacer {
+  display: none !important;
+}
+div.v-list-item-action.v-list-item-action--start {
+  margin-right: 0 !important;
 }
 </style>
