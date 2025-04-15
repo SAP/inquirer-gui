@@ -138,10 +138,11 @@ export class InquirerGui {
     if (relevantQuestion !== undefined) {
       // This part is a bit dirty, but the idea is to keep
       // this file clean of references to vscode:
+      let finalParams = params;
       if (methodName === "getFilePath") {
-        params = [...params, this.showOpenDialog];
+        finalParams = [...params, this.showOpenDialog];
       }
-      const response = await relevantQuestion[methodName].apply(this.questions, params);
+      const response = await relevantQuestion[methodName].apply(this.questions, finalParams);
       console.log(response);
       return response;
     }
