@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/inquirer-gui",
   "displayName": "Inquirer GUI",
-  "version": "3.4.0",
+  "version": "3.2.1",
   "description": "Inquirer Graphical User Interface",
   "repository": {
     "type": "git",
