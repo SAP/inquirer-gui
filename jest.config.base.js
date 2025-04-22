@@ -24,7 +24,9 @@ module.exports = {
   ],
   coverageReporters: [["lcov", { projectRoot: "/" }], ["html", { projectRoot: "/" }], "text-summary"],
   moduleFileExtensions: ["js", "vue", "json"],
-  transformIgnorePatterns: ["node_modules/(?!(@sap-devx|vuetify|material-design-icons-iconfont|@mdi/font)/)"],
+  transformIgnorePatterns: [
+    "node_modules/(?!(@sap-devx|vuetify|@vscode-elements|lit|material-design-icons-iconfont|@mdi/font)/)",
+  ],
   modulePaths: ["<rootDir>/src", "node_modules"],
   transform: {
     ".*\\.(vue)$": "@vue/vue3-jest",

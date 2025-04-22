@@ -14,7 +14,7 @@ const questionRadio = [
   {
     type: "radio",
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
     choices: ["dog", "cat"],
     default: ["cat"],
   },
@@ -24,7 +24,7 @@ const questionRadioNoChoices = [
   {
     type: "radio",
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
   },
 ];
 
@@ -44,6 +44,35 @@ const questionRadioDisabled = [
   },
 ];
 
+const vscodeStubs = {
+  VscodeRadioGroup: {
+    template: "<div><slot></slot></div>",
+  },
+  VscodeRadio: {
+    props: ["label", "value", "disabled"],
+    template: `
+        <div>
+          <input
+            type="radio"
+            :value="value"
+            :id="label"
+            name="radio-group"
+            :disabled="disabled"
+            @change="emitChange"
+          />
+          <label :for="label">{{ label }}</label>
+        </div>
+      `,
+    methods: {
+      emitChange() {
+        if (!this.disabled) {
+          this.$emit("change", { target: { value: this.value } });
+        }
+      },
+    },
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 
 describe("Question of type radio", () => {
@@ -61,6 +90,7 @@ describe("Question of type radio", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -84,6 +114,9 @@ describe("Question of type radio", () => {
 
   test("should return the correct radio ID", () => {
     const wrapper = mount(RadioGroup, {
+      global: {
+        stubs: vscodeStubs,
+      },
       props: {
         question: {
           name: "testQuestion",
@@ -101,6 +134,7 @@ describe("Question of type radio", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -119,6 +153,7 @@ describe("Question of type radio", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

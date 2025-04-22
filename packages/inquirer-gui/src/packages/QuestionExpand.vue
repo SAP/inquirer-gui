@@ -7,7 +7,7 @@
       class="v-list--subheader"
     >
       <template v-for="(item, i) in question._choices">
-        <v-divider v-if="item.type === 'separator'" :key="`divider-${i}`"></v-divider>
+        <vscode-divider v-if="item.type === 'separator'" :key="`divider-${i}`"></vscode-divider>
         <v-list-item v-else :key="`item-${i}`" :value="item.value">
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
           <v-list-item-title v-text="item.name"></v-list-item-title>

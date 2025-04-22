@@ -18,7 +18,8 @@
     "material-design-icons-iconfont": "^5.0.1",
     "roboto-fontface": "*",
     "vue": "^3.3.8",
-    "vuetify": "3.8.0"
+    "vuetify": "3.8.0",
+    "@vscode-elements/elements": "1.11.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.2.3",

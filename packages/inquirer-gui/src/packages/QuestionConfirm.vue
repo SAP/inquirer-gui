@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <v-radio-group @update:modelValue="onClick" :modelValue="question.answer" inline density="compact">
-      <v-radio :label="question.labelTrue || 'Yes'" :value="true"></v-radio>
-      <v-radio :label="question.labelFalse || 'No'" :value="false"></v-radio>
-    </v-radio-group>
-  </div>
+  <vscode-radio-group @change="onClick" :value="question.answer">
+    <vscode-radio :label="question.labelTrue || 'Yes'" :value="true"></vscode-radio>
+    <vscode-radio :label="question.labelFalse || 'No'" :value="false"></vscode-radio>
+  </vscode-radio-group>
 </template>
 
 <script>
@@ -16,7 +14,7 @@ export default {
   methods: {
     onClick(answer) {
       if (answer !== undefined) {
-        this.$emit("answerChanged", this.question.name, answer);
+        this.$emit("answerChanged", this.question.name, answer.target.value === "true");
       }
     },
   },

@@ -36,6 +36,32 @@ const questionConfirmWithTwoLabels = [
   },
 ];
 
+const vscodeStubs = {
+  VscodeRadioGroup: {
+    template: "<div><slot></slot></div>",
+  },
+  VscodeRadio: {
+    props: ["label", "value"],
+    template: `
+        <div>
+          <input
+            type="radio"
+            :value="value"
+            :id="label"
+            name="radio-group"
+            @change="emitChange"
+          />
+          <label :for="label">{{ label }}</label>
+        </div>
+      `,
+    methods: {
+      emitChange() {
+        this.$emit("change", { target: { value: this.value } });
+      },
+    },
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type confirm", () => {
   let vuetify;
@@ -54,6 +80,7 @@ describe("Question of type confirm", () => {
         components: {
           QuestionConfirm: QuestionConfirm,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -78,6 +105,7 @@ describe("Question of type confirm", () => {
         components: {
           QuestionConfirm: QuestionConfirm,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -106,6 +134,7 @@ describe("Question of type confirm", () => {
         components: {
           QuestionConfirm: QuestionConfirm,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -134,6 +163,7 @@ describe("Question of type confirm", () => {
         components: {
           QuestionConfirm: QuestionConfirm,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

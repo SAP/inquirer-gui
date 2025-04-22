@@ -10,11 +10,15 @@
       @update:selected="onAnswerChanged"
     >
       <template v-for="(item, i) in question._choices">
-        <v-divider v-if="item.type === 'separator'" :key="`divider-${i}`" id="question-checkbox-v-divider"></v-divider>
+        <vscode-divider
+          v-if="item.type === 'separator'"
+          :key="`divider-${i}`"
+          id="question-checkbox-v-divider"
+        ></vscode-divider>
         <v-list-item v-else :key="`item-${i}`" :value="item.value" id="question-checkbox-v-list-item">
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
-              <v-checkbox-btn :model-value="isActive" color="primary"></v-checkbox-btn>
+              <vscode-checkbox :value="isActive" :checked="isActive" color="primary"></vscode-checkbox>
             </v-list-item-action>
           </template>
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->

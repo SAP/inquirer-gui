@@ -4,7 +4,16 @@ import vue from "@vitejs/plugin-vue";
 const path = require("path");
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          // Instruct the compiler to treat VSCode Elements Web Components as custom elements.
+          isCustomElement: (tag) => tag.startsWith("vscode-"),
+        },
+      },
+    }),
+  ],
   base: "./",
   build: {
     lib: {
