@@ -58,7 +58,7 @@
     "lodash": "^4.17.21",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
-    "vuetify": "3.8.0",
+    "vuetify": "3.8.1",
     "@vscode-elements/elements": "1.11.0"
   },
   "devDependencies": {

@@ -43,8 +43,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-messages {
   min-height: 0px;
+}
+::v-deep(.v-list-item__overlay) {
+  opacity: 0 !important;
 }
 </style>
