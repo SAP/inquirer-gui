@@ -22,10 +22,10 @@ export default defineConfig({
       formats: ["cjs", "umd", "es"],
       fileName: (format) => `form.${format === "cjs" ? "common" : format}.js`,
     },
-    sourcemap: true,
     rollupOptions: {
       external: ["vue"],
       output: {
+        sourcemap: true,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return "form.css";
           return assetInfo.name;

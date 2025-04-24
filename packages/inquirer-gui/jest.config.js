@@ -1,6 +1,5 @@
 module.exports = {
   verbose: true,
-  silent: true,
   testEnvironment: "jest-environment-jsdom",
   testEnvironmentOptions: {
     customExportConditions: ["node", "node-addons"],

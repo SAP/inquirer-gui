@@ -22,7 +22,7 @@
     "@sap-devx/webview-rpc": "^0.3.1",
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^3.3.4",
-    "vuetify": "3.8.1",
+    "vuetify": "^3.3.10",
     "@vscode-elements/elements": "1.11.0"
   }
 }
