@@ -18,7 +18,12 @@
         <v-list-item v-else :key="`item-${i}`" :value="item.value" id="question-checkbox-v-list-item">
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
-              <vscode-checkbox :value="isActive" :checked="isActive" color="primary"></vscode-checkbox>
+              <vscode-checkbox
+                :class="{ 'checked-item': isActive }"
+                :value="isActive"
+                :checked="isActive"
+                color="primary"
+              ></vscode-checkbox>
             </v-list-item-action>
           </template>
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
@@ -49,5 +54,10 @@ export default {
 }
 ::v-deep(.v-list-item__overlay) {
   opacity: 0 !important;
+}
+.checked-item {
+  --vscode-settings-checkboxBackground: var(--vscode-focusBorder, #1976d2);
+  --vscode-settings-checkboxBorder: transpared;
+  --vscode-settings-checkboxForeground: white;
 }
 </style>

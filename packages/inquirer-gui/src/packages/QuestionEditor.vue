@@ -21,6 +21,7 @@ export default {
 <style>
 vscode-textarea {
   width: 100%;
-  min-height: 184px !important; /* can be removed. Added for visual parity with Vuetify */
+  min-height: 184px;
+  --vscode-font-size: 16px;
 }
 </style>

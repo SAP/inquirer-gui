@@ -95,7 +95,7 @@ describe("Question of type confirm", () => {
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
-    expect(answered[0].confirm).toEqual(true);
+    expect(answered[0].confirm).toBeTruthy();
   });
 
   test("Confirm renders default labels", async () => {
@@ -124,7 +124,7 @@ describe("Question of type confirm", () => {
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
-    expect(answered[0].confirm).toEqual(true);
+    expect(answered[0].confirm).toBeTruthy();
   });
 
   test("Confirm renders only one overridden label", async () => {
@@ -153,7 +153,7 @@ describe("Question of type confirm", () => {
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
-    expect(answered[0].confirm).toEqual(true);
+    expect(answered[0].confirm).toBeTruthy();
   });
 
   test("Confirm renders two overridden labels", async () => {
@@ -182,6 +182,6 @@ describe("Question of type confirm", () => {
     const emittedLength = wrapper.emitted().answered.length;
     const answered = wrapper.emitted().answered[emittedLength - 1];
     // test answers
-    expect(answered[0].confirm).toEqual(true);
+    expect(answered[0].confirm).toBeTruthy();
   });
 });

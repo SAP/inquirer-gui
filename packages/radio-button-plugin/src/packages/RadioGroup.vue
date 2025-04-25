@@ -9,8 +9,9 @@
     <vscode-radio
       class="radioClass"
       v-for="(item, index) in convertChoices(question.choices)"
+      :class="{ 'checked-radio': isChecked(item.value) }"
       :id="`${item.value}-${index}`"
-      :name="item.value"
+      :name="question.name"
       :checked="isChecked(item.value)"
       :key="item.value"
       :label="item.value"
@@ -56,8 +57,17 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 vscode-radio {
   margin-right: 20px !important; /* necessary due to the vuetify *{pading: 0; margin: 0} */
+  --vscode-font-size: 16px;
+  --vscode-settings-checkboxForeground: var(--vscode-focusBorder, #1976d2);
+  --vscode-settings-checkboxBackground: transparent;
+}
+vscode-radio-group {
+  margin-left: 5px;
+}
+vscode-radio.checked-radio {
+  --vscode-settings-checkboxBorder: var(--vscode-focusBorder, #1976d2);
 }
 </style>
