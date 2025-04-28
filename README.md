@@ -43,7 +43,7 @@ There are several use-cases for the consuming `inquirer-gui` component:
 - You can use it in a browser or in Visual Studio Code.
 - You can provide the questions in the frontend or in the backend (providing questions in the backend implies more flexibility in composing questions)
 
-We provide examples for some of the above use-cases.
+We provide examples for some of the above use cases.
 
 First, clone this directory:
 
