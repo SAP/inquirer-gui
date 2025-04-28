@@ -1,7 +1,7 @@
 {
   "name": "sample-inquirer-gui-vscode-extension",
   "displayName": "Inquirer GUI",
-  "version": "3.0.3",
+  "version": "3.4.0",
   "private": true,
   "description": "",
   "categories": [
