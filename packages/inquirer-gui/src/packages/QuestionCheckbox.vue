@@ -10,11 +10,20 @@
       @update:selected="onAnswerChanged"
     >
       <template v-for="(item, i) in question._choices">
-        <v-divider v-if="item.type === 'separator'" :key="`divider-${i}`" id="question-checkbox-v-divider"></v-divider>
+        <vscode-divider
+          v-if="item.type === 'separator'"
+          :key="`divider-${i}`"
+          id="question-checkbox-v-divider"
+        ></vscode-divider>
         <v-list-item v-else :key="`item-${i}`" :value="item.value" id="question-checkbox-v-list-item">
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
-              <v-checkbox-btn :model-value="isActive" color="primary"></v-checkbox-btn>
+              <vscode-checkbox
+                :class="{ 'checked-item': isActive }"
+                :value="isActive"
+                :checked="isActive"
+                color="primary"
+              ></vscode-checkbox>
             </v-list-item-action>
           </template>
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
@@ -39,8 +48,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-messages {
   min-height: 0px;
+}
+::v-deep(.v-list-item__overlay) {
+  opacity: 0 !important;
+}
+.checked-item {
+  --vscode-settings-checkboxBackground: var(--vscode-focusBorder, #1976d2);
+  --vscode-settings-checkboxBorder: transpared;
+  --vscode-settings-checkboxForeground: white;
 }
 </style>

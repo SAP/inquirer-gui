@@ -5,7 +5,16 @@ import vue from "@vitejs/plugin-vue";
 const PACKAGE_NAME = "singleCheckboxPlugin";
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          // Instruct the compiler to treat VSCode Elements Web Components as custom elements.
+          isCustomElement: (tag) => tag.startsWith("vscode-"),
+        },
+      },
+    }),
+  ],
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.js"),
@@ -13,10 +22,10 @@ export default defineConfig({
       formats: ["cjs", "umd", "es"],
       fileName: (format) => `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
     },
-    sourcemap: true,
     rollupOptions: {
       external: ["vue"],
       output: {
+        sourcemap: true,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === "style.css") return `${PACKAGE_NAME}.css`;
           return assetInfo.name;
