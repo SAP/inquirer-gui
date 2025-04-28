@@ -1,8 +1,7 @@
 <template>
-  <v-card id="question-checkbox-v-card" variant="text" :rounded="0">
+  <v-card id="question-checkbox-v-card" variant="outlined" :rounded="0">
     <v-list
       density="compact"
-      active-class="nobg"
       max-height="60vh"
       class="overflow-y-auto v-list--subheader"
       id="question-checkbox-v-list"
