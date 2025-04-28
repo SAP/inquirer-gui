@@ -23,7 +23,7 @@
         :title="item?.raw?.name"
         :value="item?.raw?.value"
       >
-        <v-divider v-if="getDividerType(item.raw) === 'divider'"></v-divider>
+        <vscode-divider v-if="getDividerType(item.raw) === 'divider'"></vscode-divider>
         <v-list-subheader v-else-if="getDividerType(item.raw) === 'header'">{{
           stripEscapeChars(item.raw?.line)
         }}</v-list-subheader>
@@ -32,7 +32,7 @@
     </template>
     <template v-slot:append-item>
       <div v-if="moreInfo" class="moreInfoBottom">
-        <v-divider />
+        <vscode-divider></vscode-divider>
         <div class="moreInfo">{{ moreInfo }}</div>
       </div>
     </template>

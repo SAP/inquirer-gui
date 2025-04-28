@@ -1,13 +1,5 @@
 <template>
-  <v-textarea
-    @update:modelValue="onInput"
-    :modelValue="question.answer"
-    aria-describedby="validation-message"
-    hide-details="auto"
-    rows="7"
-    density="compact"
-    variant="outlined"
-  ></v-textarea>
+  <vscode-textarea @change="onInput" :value="question.answer"></vscode-textarea>
 </template>
 
 <script>
@@ -20,8 +12,16 @@ export default {
   },
   methods: {
     onInput: utils.debounce(function (val) {
-      this.$emit("answerChanged", this.question.name, val);
+      this.$emit("answerChanged", this.question.name, val.target.value);
     }, 280),
   },
 };
 </script>
+
+<style scoped>
+vscode-textarea {
+  width: 100%;
+  min-height: 184px;
+  --vscode-font-size: 16px;
+}
+</style>

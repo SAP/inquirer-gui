@@ -41,6 +41,14 @@ import TilesPlugin from "../../../packages/tiles-plugin/src";
 
 import SAP_IMAGE from "./sapImage";
 import WORKFLOW_IMAGE from "./workflowImage";
+import("./assets/vscode-theme.css");
+
+// Import the VSCode elements components
+import "@vscode-elements/elements/dist/vscode-textarea/index.js";
+import "@vscode-elements/elements/dist/vscode-checkbox/index.js";
+import "@vscode-elements/elements/dist/vscode-radio-group/index.js";
+import "@vscode-elements/elements/dist/vscode-radio/index.js";
+import "@vscode-elements/elements/dist/vscode-divider/index.js";
 
 /**
  *  During development:

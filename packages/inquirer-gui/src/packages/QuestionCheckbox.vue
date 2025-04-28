@@ -1,8 +1,7 @@
 <template>
-  <v-card id="question-checkbox-v-card" variant="text" :rounded="0">
+  <v-card id="question-checkbox-v-card" variant="outlined" :rounded="0">
     <v-list
       density="compact"
-      active-class="nobg"
       max-height="60vh"
       class="overflow-y-auto v-list--subheader"
       id="question-checkbox-v-list"
@@ -11,11 +10,20 @@
       @update:selected="onAnswerChanged"
     >
       <template v-for="(item, i) in question._choices">
-        <v-divider v-if="item.type === 'separator'" :key="`divider-${i}`" id="question-checkbox-v-divider"></v-divider>
+        <vscode-divider
+          v-if="item.type === 'separator'"
+          :key="`divider-${i}`"
+          id="question-checkbox-v-divider"
+        ></vscode-divider>
         <v-list-item v-else :key="`item-${i}`" :value="item.value" id="question-checkbox-v-list-item">
           <template v-slot:prepend="{ isActive }">
             <v-list-item-action start>
-              <v-checkbox-btn :model-value="isActive" color="primary"></v-checkbox-btn>
+              <vscode-checkbox
+                :class="{ 'checked-item': isActive }"
+                :value="isActive"
+                :checked="isActive"
+                color="primary"
+              ></vscode-checkbox>
             </v-list-item-action>
           </template>
           <!-- eslint-disable-next-line vue/no-v-text-v-html-on-component -->
@@ -40,31 +48,30 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-messages {
   min-height: 0px;
 }
 div#question-checkbox-v-card {
-  border: none !important;
+  border: none;
 }
 div#question-checkbox-v-list-item {
-  padding-left: 0 !important;
-  --v-hover-opacity: 0 !important;
+  padding-left: 0;
+  --v-hover-opacity: 0;
 }
 form.inquirer-gui div.v-list,
 div[role="listbox"].v-theme--light.v-list {
-  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f) !important;
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
 }
-.nobg,
 div.v-list-item--active {
-  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f) !important;
-  --v-activated-opacity: 0 !important;
-  --v-hover-opacity: 0 !important;
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+  --v-activated-opacity: 0;
+  --v-hover-opacity: 0;
 }
 div.v-list-item__spacer {
-  display: none !important;
+  display: none;
 }
 div.v-list-item-action.v-list-item-action--start {
-  margin-right: 0 !important;
+  margin: 0;
 }
 </style>

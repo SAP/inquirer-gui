@@ -9,13 +9,13 @@ default-test: &default-test
 
 defaults: &defaults
   docker:
-    - image: cimg/node:20.19
+    - image: cimg/node:16.19
   working_directory: ~/repo
 
 jobs: # a collection of steps
-  test-node:
+  test-node16:
     docker:
-      - image: cimg/node:20.19 # Current BAS node version
+      - image: cimg/node:16.19 # Current BAS node version
     <<: *default-test
 
   compliance:
@@ -87,7 +87,7 @@ workflows:
   version: 2
   test-publish:
     jobs:
-      - test-node
+      - test-node16
       - compliance
       - build-and-test:
           filters:

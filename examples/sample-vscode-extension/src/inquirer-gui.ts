@@ -74,7 +74,7 @@ const questions1 = [
       hint: "Please select",
     },
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
     choices: ["dog", "cat"],
     default: "cat",
   },

@@ -41,6 +41,7 @@ import DateInputPlugin from "../../sample-plugin/src";
 
 import SAP_IMAGE from "./sapImage";
 import WORKFLOW_IMAGE from "./workflowImage";
+import("./assets/vscode-theme.css");
 
 /**
  *  During development:

@@ -45,10 +45,10 @@
     "@commitlint/config-conventional": "17.6.1",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
-    "@vitejs/plugin-vue": "5.2.3",
+    "@vitejs/plugin-vue": "^4.2.3",
     "babel-eslint": "^10.1.0",
     "copyfiles": "^2.4.1",
-    "coveralls": "3.1.1",
+    "coveralls": "2.13.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.44.0",
     "eslint-plugin-vue": "^9.17.0",
@@ -62,7 +62,7 @@
     "sass": "^1.63.6",
     "shx": "0.3.4",
     "typescript": "^5.2.2",
-    "vite": "6.2.6",
+    "vite": "^4.3.9",
     "yorkie": "^2.0.0"
   }
 }

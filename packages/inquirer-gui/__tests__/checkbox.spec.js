@@ -86,6 +86,13 @@ const questionCheckboxCheckedForceDefault = [
     __ForceDefault: true,
   },
 ];
+
+const vscodeStubs = {
+  VscodeDivider: {
+    template: "<div></div>",
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type checkbox", () => {
   let vuetify;
@@ -104,6 +111,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -129,6 +137,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -154,6 +163,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -179,6 +189,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -197,6 +208,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

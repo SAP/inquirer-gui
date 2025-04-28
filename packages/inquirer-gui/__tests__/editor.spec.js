@@ -43,15 +43,29 @@ describe("Question of type editor and filter func", () => {
         components: {
           QuestionEditor: QuestionEditor,
         },
+        stubs: {
+          VscodeTextarea: {
+            template: "<textarea></textarea>",
+          },
+        },
       },
       attachTo: document.body,
     });
-    wrapper.setProps({ questions: questionEditor });
+    // Provide answers with a name property
+    const answers = { name: "testName" };
+    const updatedQuestions = questionEditor.map((question) => ({
+      ...question,
+      message: question.message(answers),
+      default: question.default(answers),
+      filter: question.filter,
+    }));
+
+    wrapper.setProps({ questions: updatedQuestions });
     await nextTick();
 
     const notes = wrapper.find("textarea");
     notes.element.value = value1;
-    notes.trigger("input");
+    notes.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);
