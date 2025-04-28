@@ -18,7 +18,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 vscode-textarea {
   width: 100%;
   min-height: 184px;
