@@ -155,6 +155,9 @@ const vscodeStubs = {
   VscodeDivider: {
     template: "<div class='divider'></div>",
   },
+  VscodeTextfield: {
+    template: "<div></div>",
+  },
 };
 
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test

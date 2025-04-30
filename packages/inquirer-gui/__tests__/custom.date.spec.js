@@ -17,6 +17,12 @@ const questionDate = [
   },
 ];
 
+const vscodeStubs = {
+  VscodeTextfield: {
+    template: "<div></div>",
+  },
+};
+
 enableAutoUnmount(afterEach);
 
 describe("Question of custom type date", () => {
@@ -36,6 +42,7 @@ describe("Question of custom type date", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [QuestionDateTimePlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

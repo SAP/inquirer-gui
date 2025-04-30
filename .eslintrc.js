@@ -50,5 +50,6 @@ module.exports = {
   plugins: ["vue"],
   rules: {
     "vue/no-mutating-props": "off",
+    "vue/no-deprecated-slot-attribute": "off",
   },
 };

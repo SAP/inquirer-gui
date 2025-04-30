@@ -21,6 +21,26 @@ const questionFileBrowser = [
 ];
 enableAutoUnmount(afterEach); // Ensures wrapper component gets cleaned up after each test
 
+const vscodeStubs = {
+  "vscode-textfield": {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+        <slot></slot>
+      </div>
+    `,
+    props: ["value"],
+  },
+  "v-icon": {
+    template: "<i></i>",
+  },
+};
+
 describe("Question of type file browser", () => {
   let vuetify;
 
@@ -36,6 +56,7 @@ describe("Question of type file browser", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [QuestionFileBrowserPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -45,7 +66,7 @@ describe("Question of type file browser", () => {
     wrapper.setProps({ questions: questionFileBrowser });
 
     await nextTick();
-    const icon = wrapper.findComponent({ name: "v-icon" });
+    const icon = wrapper.find("i");
     icon.trigger("click");
 
     await nextTick();
@@ -58,6 +79,7 @@ describe("Question of type file browser", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [QuestionFileBrowserPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -69,6 +91,7 @@ describe("Question of type file browser", () => {
     await nextTick();
     const input = wrapper.find("input");
     input.setValue("/home/user");
+    input.trigger("change");
 
     await nextTick();
 

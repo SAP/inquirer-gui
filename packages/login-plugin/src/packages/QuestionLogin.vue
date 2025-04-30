@@ -1,15 +1,13 @@
 <template>
-  <v-text-field
+  <vscode-textfield
     ref="login"
     @keyup.enter="onLogin"
-    @update:modelValue="onInput"
-    :modelValue="question.answer"
-    hide-details="auto"
+    @change="onInput"
+    :name="question.name"
+    :value="question.answer"
     type="password"
-    density="compact"
-    variant="outlined"
   >
-    <template v-slot:append-inner>
+    <template slot="content-after">
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-icon v-bind="props" @click="onLogin">mdi-account-arrow-right-outline</v-icon>
@@ -17,7 +15,7 @@
         <span>Login</span>
       </v-tooltip>
     </template>
-  </v-text-field>
+  </vscode-textfield>
 </template>
 
 <script>
@@ -45,8 +43,14 @@ export default {
       this.$emit("answerChanged", this.question.name, this.question.answer);
     },
     onInput(value) {
-      this.question.answer = value;
+      this.question.answer = value.target.value;
     },
   },
 };
 </script>
+<style>
+vscode-textfield {
+  width: 100%;
+  min-height: 40px;
+}
+</style>
