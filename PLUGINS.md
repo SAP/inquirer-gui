@@ -29,11 +29,11 @@ If you want to understand what you're doing, keep reading.
    ```
 3. Install the `Form` Vue.js plugin:
    ```js
-   app.use(Form);
+      app.use(Form);
    ```
 4. Render the `Form`:
    ```html
-   <form ref="form" :questions="questions" @answered="onAnswered" />
+      <form ref="form" :questions="questions" @answered="onAnswered" />
    ```
 
 ### Registering a Plugin
@@ -43,7 +43,7 @@ Import and register the custom control as follows:
 - From npm:
 
   ```js
-  import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
+     import FileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
 
   let options = {};
   app.use(FileBrowserPlugin, options);
