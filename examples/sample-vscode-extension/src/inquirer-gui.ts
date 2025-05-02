@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 
 function funcReplacer(key: any, value: any) {

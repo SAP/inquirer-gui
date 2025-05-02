@@ -27,7 +27,7 @@ export default defineConfig({
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "form.css";
+          if (assetInfo.name === "inquirer-gui.css") return "form.css";
           return assetInfo.name;
         },
         globals: {
