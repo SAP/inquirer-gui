@@ -176,6 +176,8 @@ A form element plugin is a `javascript` object with this structure:
 }
 ```
 
+
+
 Where `questionType` is the string provided in the question's `type` property, and `component` is a `Vue` component that renders questions of the given type.
 
 There is example of a custom form element in the `/sample-plugin` folder. It is defined as a `Vue plugin` and was published as `@sap-devx/inquirer-gui-date-plugin` on `npm`.
