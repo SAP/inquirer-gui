@@ -52,14 +52,15 @@ export default {
 .v-messages {
   min-height: 0px;
 }
-div#question-checkbox-v-card{
+div#question-checkbox-v-card {
   border: none;
 }
-div#question-checkbox-v-list-item{
+div#question-checkbox-v-list-item {
   padding-left: 0;
   --v-hover-opacity: 0;
 }
-form.inquirer-gui div.v-list, div[role=listbox].v-theme--light.v-list{
+form.inquirer-gui div.v-list,
+div[role="listbox"].v-theme--light.v-list {
   background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
 }
 div.v-list-item--active {
@@ -67,10 +68,10 @@ div.v-list-item--active {
   --v-activated-opacity: 0;
   --v-hover-opacity: 0;
 }
-div.v-list-item__spacer{
+div.v-list-item__spacer {
   display: none;
 }
-div.v-list-item-action.v-list-item-action--start{
+div.v-list-item-action.v-list-item-action--start {
   margin: 0;
 }
 </style>
