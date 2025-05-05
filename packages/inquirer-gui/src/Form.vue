@@ -72,7 +72,7 @@
         }}</span>
       </div>
     </template>
-    <v-text-field id="form-single-input-issue-key-enter-workaround" style="display: none" />
+    <vscode-textfield id="form-single-input-issue-key-enter-workaround" style="display: none"></vscode-textfield>
   </v-form>
 </template>
 

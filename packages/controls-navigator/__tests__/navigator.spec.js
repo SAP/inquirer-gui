@@ -17,10 +17,15 @@ describe("Test navigator common control", () => {
       components,
     });
 
-    const options = {};
     wrapper = mount(NavigatorControl, {
       global: {
-        plugins: [vuetify, [options]],
+        plugins: [vuetify],
+        directives: {
+          resize: {
+            mounted() {},
+            beforeUnmount() {},
+          },
+        },
       },
       attachTo: document.body,
     });

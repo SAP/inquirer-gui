@@ -91,6 +91,23 @@ const vscodeStubs = {
   VscodeDivider: {
     template: "<div></div>",
   },
+  VscodeCheckbox: {
+    template: "<div></div>",
+  },
+  VscodeTextfield: {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          :placeholder="placeholder"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+      </div>
+    `,
+    props: ["value", "placeholder"],
+  },
 };
 
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
@@ -173,7 +190,7 @@ describe("Question of type checkbox", () => {
     const name = wrapper.find("input");
     const country = "A country";
     name.element.value = country;
-    name.trigger("input");
+    name.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);

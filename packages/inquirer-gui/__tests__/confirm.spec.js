@@ -60,6 +60,9 @@ const vscodeStubs = {
       },
     },
   },
+  VscodeTextfield: {
+    template: "<div></div>",
+  },
 };
 
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
@@ -117,7 +120,8 @@ describe("Question of type confirm", () => {
     expect(labels.at(0).text()).toBe("Yes");
     expect(labels.at(1).text()).toBe("No");
 
-    labels.at(0).trigger("click");
+    const radios = wrapper.findAll("input[type='radio']");
+    await radios.at(0).setValue();
 
     await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
@@ -146,7 +150,8 @@ describe("Question of type confirm", () => {
     expect(labels.at(0).text()).toBe("Accept");
     expect(labels.at(1).text()).toBe("No");
 
-    labels.at(0).trigger("click");
+    const radios = wrapper.findAll("input[type='radio']");
+    await radios.at(0).setValue();
 
     await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();
@@ -175,7 +180,8 @@ describe("Question of type confirm", () => {
     expect(labels.at(0).text()).toBe("Accept");
     expect(labels.at(1).text()).toBe("Decline");
 
-    labels.at(0).trigger("click");
+    const radios = wrapper.findAll("input[type='radio']");
+    await radios.at(0).setValue();
 
     await nextTick();
     expect(wrapper.emitted().answered).toBeTruthy();

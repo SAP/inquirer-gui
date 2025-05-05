@@ -47,6 +47,9 @@ describe("Question of type editor and filter func", () => {
           VscodeTextarea: {
             template: "<textarea></textarea>",
           },
+          VscodeTextfield: {
+            template: "<div></div>",
+          },
         },
       },
       attachTo: document.body,
