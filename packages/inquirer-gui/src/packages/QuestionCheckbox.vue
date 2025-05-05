@@ -52,12 +52,25 @@ export default {
 .v-messages {
   min-height: 0px;
 }
-::v-deep(.v-list-item__overlay) {
-  opacity: 0 !important;
+div#question-checkbox-v-card{
+  border: none;
 }
-.checked-item {
-  --vscode-settings-checkboxBackground: var(--vscode-focusBorder, #1976d2);
-  --vscode-settings-checkboxBorder: transpared;
-  --vscode-settings-checkboxForeground: white;
+div#question-checkbox-v-list-item{
+  padding-left: 0;
+  --v-hover-opacity: 0;
+}
+form.inquirer-gui div.v-list, div[role=listbox].v-theme--light.v-list{
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+}
+div.v-list-item--active {
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+  --v-activated-opacity: 0;
+  --v-hover-opacity: 0;
+}
+div.v-list-item__spacer{
+  display: none;
+}
+div.v-list-item-action.v-list-item-action--start{
+  margin: 0;
 }
 </style>
