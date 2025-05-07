@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-label-plugin",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Label plugin for inquirer-gui",
   "repository": {
     "type": "git",
