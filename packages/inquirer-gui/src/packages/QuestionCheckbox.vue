@@ -1,9 +1,18 @@
 <template>
-  <v-card id="question-checkbox-v-card" variant="outlined" :rounded="0">
+  <v-card
+    id="question-checkbox-v-card"
+    variant="outlined"
+    :rounded="0"
+    :class="{ 'single-choice': question._choices.length === 1 }"
+  >
     <v-list
       density="compact"
       max-height="60vh"
-      class="overflow-y-auto v-list--subheader"
+      :class="
+        question._choices.length === 1
+          ? 'list-single overflow-y-auto v-list--subheader'
+          : 'overflow-y-auto v-list--subheader'
+      "
       id="question-checkbox-v-list"
       select-strategy="classic"
       :selected="question.answer"
@@ -52,12 +61,26 @@ export default {
 .v-messages {
   min-height: 0px;
 }
-::v-deep(.v-list-item__overlay) {
-  opacity: 0 !important;
+div#question-checkbox-v-card.single-choice {
+  border: none;
 }
-.checked-item {
-  --vscode-settings-checkboxBackground: var(--vscode-focusBorder, #1976d2);
-  --vscode-settings-checkboxBorder: transpared;
-  --vscode-settings-checkboxForeground: white;
+.list-single > div#question-checkbox-v-list-item {
+  padding-left: 0;
+  --v-hover-opacity: 0;
+}
+form.inquirer-gui > .single-choice > div.v-list,
+.single-choice > div[role="listbox"].v-theme--light.v-list {
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+}
+.list-single > div.v-list-item--active {
+  background-color: var(--vscode-editor-background, var(--v-theme-background), #1f1f1f);
+  --v-activated-opacity: 0;
+  --v-hover-opacity: 0;
+}
+.single-choice > div.v-list-item__spacer {
+  display: none;
+}
+div.v-list-item-action.v-list-item-action--start {
+  margin: 0;
 }
 </style>
