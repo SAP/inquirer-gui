@@ -46,7 +46,7 @@
     "@types/node": "^12.11.7",
     "@types/vscode": "^1.41.0",
     "@vscode-logging/types": "^0.1.4",
-    "glob": "^7.1.5",
+    "glob": "^11.0.2",
     "vscode-test": "^1.2.2"
   },
   "engines": {
