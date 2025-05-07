@@ -83,4 +83,13 @@ form.inquirer-gui > .single-choice > div.v-list,
 div.v-list-item-action.v-list-item-action--start {
   margin: 0;
 }
+::v-deep(.v-list-item__overlay) {
+  opacity: 0 !important;
+}
+
+.checked-item {
+  --vscode-settings-checkboxBackground: var(--vscode-focusBorder, #1976d2);
+  --vscode-settings-checkboxBorder: transparent;
+  --vscode-settings-checkboxForeground: white;
+}
 </style>
