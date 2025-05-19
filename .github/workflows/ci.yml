@@ -1,129 +1,35 @@
-name: CI
-
+name: Continuous Integration
 on:
+  # Trigger the workflow on push or pull request,
+  # but only for the master branch
+  # See: https://github.community/t/duplicate-checks-on-push-and-pull-request-simultaneous-event/18012
   push:
     branches:
-      - tech-debt-maintenance
+      - master*
   pull_request:
     branches:
-      - tech-debt-maintenance
-  workflow_dispatch:
+      - master*
 
 jobs:
-  test-node:
+  build:
+    name: Full Build (node ${{ matrix.node_version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node_version:
           - 20.x
+      # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
       fail-fast: false
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v1
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      # using `v1` because of: https://github.com/actions/checkout/issues/246
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
+
       - name: Install dependencies
         run: npm install
-      - name: Run tests
+
+      - name: Build
         run: npm run ci
-
-  compliance:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version:
-          - 20.x
-      fail-fast: false
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v1
-      - name: Install reuse
-        run: pip install reuse --user
-      - name: Run compliance check
-        run: ~/.local/bin/reuse lint
-
-  build-and-test:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          node_version:
-            - 20.x
-        fail-fast: false
-
-      steps:
-        - name: Checkout repository
-          uses: actions/checkout@v1
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: ${{ matrix.node_version }}
-        - name: Restore npm cache
-          uses: actions/cache@v3
-          with:
-            path: ~/.npm
-            key: dependency-cache-${{ hashFiles('package.json') }}
-            restore-keys: |
-              dependency-cache-
-
-        - name: Install dependencies
-          run: npm install
-
-        - name: Build
-          run: npm run ci
-
-        - name: Publish to coveralls.io
-          uses: coverallsapp/github-action@v1.1.2
-          with:
-            github-token: ${{ github.token }}
-
-        - name: Define environment variable with latest commit's message
-          run: echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
-
-        - name: Lint commit message
-          run: echo "$COMMIT_MESSAGE" | npx commitlint
-
-        - name: Save npm cache
-          uses: actions/cache@v3
-          with:
-            path: ~/.npm
-            key: dependency-cache-${{ hashFiles('package.json') }}
-
-        - name: Upload test results
-          uses: actions/upload-artifact@v4
-          with:
-            name: junit-reports
-            path: reports/junit
-
-        - name: Upload coverage reports
-          uses: actions/upload-artifact@v4
-          with:
-            name: coverage
-            path: coverage
-
-  publish:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version:
-          - 20.x
-      fail-fast: false
-    needs: build-and-test
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v1
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node_version }}
-      - name: Install dependencies
-        run: npm install
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Build for publish
-        run: npm run ci
-      - name: Authenticate with registry
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-      - name: Publish package
-        run: npm publish
