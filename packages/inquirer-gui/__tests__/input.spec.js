@@ -587,14 +587,14 @@ describe("Questions of type input, password and number", () => {
     expect(wrapper.emitted().whensEvaluated).toBeTruthy();
 
     let inputs = wrapper.findAll("input");
-    expect(inputs.length).toEqual(4);
+    expect(inputs.length).toEqual(3);
     inputs.at(0).element.value = "hide";
     inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
     inputs = wrapper.findAll("input");
-    expect(inputs.length).toEqual(3);
+    expect(inputs.length).toEqual(2);
   });
 
   test("Input with message as a function", async () => {
