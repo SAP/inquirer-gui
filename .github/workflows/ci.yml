@@ -16,9 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version:
-          - 20.x
-          - 22.x
+        node_version: [20.x, 22.x]
       # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
       fail-fast: false
 
@@ -28,6 +26,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
