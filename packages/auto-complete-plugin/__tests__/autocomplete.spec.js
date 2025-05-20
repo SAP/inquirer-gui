@@ -68,6 +68,26 @@ const emptyTextQuestion = [
     emptyText: "No results found...",
   },
 ];
+const vscodeStubs = {
+  "vscode-textfield": {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          :placeholder="placeholder"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+        <slot></slot>
+      </div>
+    `,
+    props: ["value", "placeholder"],
+  },
+  "vscode-divider": {
+    template: "<div></div>",
+  },
+};
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Tests autocomplete question", () => {
   let wrapper;
@@ -83,6 +103,7 @@ describe("Tests autocomplete question", () => {
     wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [QuestionAutoCompletePlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -140,7 +161,7 @@ describe("Tests autocomplete question", () => {
     const inputComp = wrapper.findComponent({ name: "QuestionInput" });
     const q1Input = inputComp.find("input");
     q1Input.element.value = "4";
-    q1Input.trigger("input");
+    q1Input.trigger("change");
     await utils.sleep(300);
 
     const autocompleteComp = wrapper.findComponent({

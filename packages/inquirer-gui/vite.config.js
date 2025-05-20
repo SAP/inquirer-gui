@@ -4,7 +4,16 @@ import vue from "@vitejs/plugin-vue";
 const path = require("path");
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          // Instruct the compiler to treat VSCode Elements Web Components as custom elements.
+          isCustomElement: (tag) => tag.startsWith("vscode-"),
+        },
+      },
+    }),
+  ],
   base: "./",
   build: {
     lib: {
@@ -13,13 +22,13 @@ export default defineConfig({
       formats: ["cjs", "umd", "es"],
       fileName: (format) => `form.${format === "cjs" ? "common" : format}.js`,
     },
-    sourcemap: true,
     rollupOptions: {
       external: ["vue"],
       output: {
+        sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return "form.css";
-          return assetInfo.name;
+          if (assetInfo.names.includes("inquirer-gui.css")) return "form.css";
+          return assetInfo.names[0];
         },
         globals: {
           vue: "Vue",

@@ -40,6 +40,7 @@ module.exports = {
         "no-inner-declarations": "off",
         "@typescript-eslint/no-unused-vars": "off",
         "@typescript-eslint/ban-types": "off",
+        "no-param-reassign": ["error", { props: true }],
       },
     },
   ],
@@ -49,5 +50,6 @@ module.exports = {
   plugins: ["vue"],
   rules: {
     "vue/no-mutating-props": "off",
+    "vue/no-deprecated-slot-attribute": "off",
   },
 };

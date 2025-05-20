@@ -52,6 +52,16 @@ const questionExpandWithSeparator = [
     choices: ["Yes", "No", { type: "separator" }, "Maybe"],
   },
 ];
+
+const vscodeStubs = {
+  VscodeDivider: {
+    template: "<div></div>",
+  },
+  VscodeTextfield: {
+    template: "<div></div>",
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type expand", () => {
   let vuetify;
@@ -69,6 +79,7 @@ describe("Question of type expand", () => {
         components: {
           QuestionExpand: QuestionExpand,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -94,6 +105,7 @@ describe("Question of type expand", () => {
         components: {
           QuestionExpand: QuestionExpand,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -111,6 +123,7 @@ describe("Question of type expand", () => {
         components: {
           QuestionExpand: QuestionExpand,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -135,6 +148,7 @@ describe("Question of type expand", () => {
         components: {
           QuestionExpand: QuestionExpand,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -152,6 +166,7 @@ describe("Question of type expand", () => {
         components: {
           QuestionExpand: QuestionExpand,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

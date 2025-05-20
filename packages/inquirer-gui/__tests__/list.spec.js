@@ -150,6 +150,16 @@ const questionListValidate = [
     validate: (input) => (input ? true : "select list3 item"),
   },
 ];
+
+const vscodeStubs = {
+  VscodeDivider: {
+    template: "<div class='divider'></div>",
+  },
+  VscodeTextfield: {
+    template: "<div></div>",
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type list", () => {
   let vuetify;
@@ -167,6 +177,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -184,6 +195,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -209,6 +221,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -224,7 +237,7 @@ describe("Question of type list", () => {
 
     const list = document.body.querySelector(".v-list");
     expect(list.querySelectorAll(".v-list-item")).toHaveLength(6);
-    expect(list.querySelectorAll(".v-divider")).toHaveLength(1);
+    expect(list.querySelectorAll(".divider")).toHaveLength(1);
     expect(list.querySelectorAll(".v-list-subheader")).toHaveLength(1);
 
     const subheader = list.querySelectorAll(".v-list-subheader")[0];
@@ -238,6 +251,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -259,6 +273,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -280,6 +295,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -301,6 +317,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -322,6 +339,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -347,6 +365,7 @@ describe("Question of type list", () => {
         components: {
           QuestionList: QuestionList,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

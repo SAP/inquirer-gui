@@ -324,6 +324,23 @@ const questionsWithAdditionalMessages = [
     },
   },
 ];
+const vscodeStubs = {
+  VscodeTextfield: {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          :placeholder="placeholder"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+        <slot></slot>
+      </div>
+    `,
+    props: ["value", "placeholder"],
+  },
+};
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Questions of type input, password and number", () => {
   let vuetify;
@@ -341,6 +358,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -352,7 +370,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("input");
+    name.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -370,6 +388,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -389,6 +408,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -400,7 +420,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("input");
+    name.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -419,6 +439,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -430,7 +451,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("input");
+    name.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -447,6 +468,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -458,7 +480,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("input");
+    name.trigger("change");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -473,6 +495,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -498,6 +521,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
       },
       props: {
         questions: [question],
@@ -525,6 +549,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
       },
       props: {
         questions: [question],
@@ -548,6 +573,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -563,7 +589,7 @@ describe("Questions of type input, password and number", () => {
     let inputs = wrapper.findAll("input");
     expect(inputs.length).toEqual(4);
     inputs.at(0).element.value = "hide";
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -577,6 +603,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -588,7 +615,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -602,6 +629,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -613,7 +641,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -625,7 +653,7 @@ describe("Questions of type input, password and number", () => {
     const anotherValue = "another value";
 
     inputs.at(1).element.value = dirtyValue;
-    inputs.at(1).trigger("input");
+    inputs.at(1).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -633,7 +661,7 @@ describe("Questions of type input, password and number", () => {
     expect(inputs.at(1).element.value).toBe(dirtyValue);
 
     inputs.at(0).element.value = anotherValue;
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -647,6 +675,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -658,7 +687,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -670,7 +699,7 @@ describe("Questions of type input, password and number", () => {
     const anotherValue = "another value";
 
     inputs.at(1).element.value = dirtyValue;
-    inputs.at(1).trigger("input");
+    inputs.at(1).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -678,7 +707,7 @@ describe("Questions of type input, password and number", () => {
     expect(inputs.at(1).element.value).toBe(dirtyValue);
 
     inputs.at(0).element.value = anotherValue;
-    inputs.at(0).trigger("input");
+    inputs.at(0).trigger("change");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -690,6 +719,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -708,6 +738,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -724,6 +755,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -743,6 +775,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -775,6 +808,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -809,6 +843,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -863,7 +898,7 @@ describe("Questions of type input, password and number", () => {
     // Ensure link is removed from dom when re-validated with non-link validation message
     // There is an issue with this test. Running the actual code in-situ works as expected.
     /* valWithCmdInput.element.value = "triggerValTex";
-    valWithCmdInput.trigger("input");
+    valWithCmdInput.trigger("change");
     await utils.sleep(300);
     
     const validationText = wrapper.find("#validation-msg-" + 1);
@@ -878,6 +913,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -941,6 +977,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -959,6 +996,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -977,6 +1015,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -995,6 +1034,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1013,6 +1053,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1031,6 +1072,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1050,6 +1092,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1069,6 +1112,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1088,6 +1132,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1112,6 +1157,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1136,6 +1182,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1160,6 +1207,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1178,6 +1226,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1197,6 +1246,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1216,6 +1266,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1240,6 +1291,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1259,6 +1311,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1283,6 +1336,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1302,6 +1356,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1329,6 +1384,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },
@@ -1357,6 +1413,7 @@ describe("Questions of type input, password and number", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify],
+        stubs: vscodeStubs,
         components: {
           QuestionInput: InputVue,
         },

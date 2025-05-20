@@ -1,14 +1,11 @@
 <template>
-  <v-text-field
-    @update:modelValue="onInput"
-    :modelValue="question.answer"
-    class="pa-0 ma-0"
+  <vscode-textfield
+    @change="onInput"
+    :name="question.name"
+    :value="question.answer"
     :type="getInputType(question.type)"
-    hide-details="auto"
-    density="compact"
     :placeholder="question.placeholder"
-    variant="outlined"
-  ></v-text-field>
+  ></vscode-textfield>
 </template>
 
 <script>
@@ -19,7 +16,7 @@ export default {
   },
   methods: {
     onInput(val) {
-      this.$emit("answerChanged", this.question.name, val);
+      this.$emit("answerChanged", this.question.name, val.target.value);
     },
     getInputType(questionType) {
       switch (questionType) {
@@ -43,5 +40,11 @@ export default {
 
 .col {
   padding-bottom: 0px;
+}
+
+vscode-textfield {
+  width: 100%;
+  min-height: 40px;
+  --vscode-font-size: 16px;
 }
 </style>

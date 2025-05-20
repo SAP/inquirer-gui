@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/controls-navigator",
   "displayName": "Navigator control",
-  "version": "3.3.0",
+  "version": "3.4.1",
   "description": "Navigator control",
   "repository": {
     "type": "git",
@@ -57,11 +57,11 @@
     "lodash": "^4.17.21",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
-    "vuetify": "3.8.1"
+    "vuetify": "^3.4.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
-    "@vue/test-utils": "2.4.6",
+    "@vue/test-utils": "2.4.0",
     "@vue/vue3-jest": "^29.2.4",
     "babel-jest": "^29.5.0",
     "jest": "^29.5.0",
