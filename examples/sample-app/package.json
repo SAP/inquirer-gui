@@ -31,6 +31,6 @@
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "copyfiles": "^2.4.1",
-    "sass-loader": "^13.3.2"
+    "sass-loader": "^16.0.5"
   }
 }
