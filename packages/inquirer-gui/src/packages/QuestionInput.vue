@@ -1,7 +1,6 @@
 <template>
   <vscode-textfield
     @input="onInput"
-    @change="onInput"
     :name="question.name"
     :value="question.answer"
     :type="getInputType(question.type)"

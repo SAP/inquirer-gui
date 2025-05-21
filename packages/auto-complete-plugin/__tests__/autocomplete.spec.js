@@ -161,7 +161,7 @@ describe("Tests autocomplete question", () => {
     const inputComp = wrapper.findComponent({ name: "QuestionInput" });
     const q1Input = inputComp.find("input");
     q1Input.element.value = "4";
-    q1Input.trigger("change");
+    q1Input.trigger("input");
     await utils.sleep(300);
 
     const autocompleteComp = wrapper.findComponent({
