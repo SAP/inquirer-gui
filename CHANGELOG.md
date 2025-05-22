@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.2](https://github.com/SAP/inquirer-gui/compare/v3.3.0...v3.4.2) (2025-05-22)
+
+### Bug Fixes
+
+- bug fixes for input fields and radio buttons ([#762](https://github.com/SAP/inquirer-gui/issues/762)) ([a037b9c](https://github.com/SAP/inquirer-gui/commit/a037b9cbe58c7a7369e7dc59e11dd8f1f022acdf))
+
 ## [3.4.1](https://github.com/SAP/inquirer-gui/compare/v3.4.0...v3.4.1) (2025-05-07)
 
 **Note:** Version bump only for package root
