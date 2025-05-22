@@ -1,5 +1,5 @@
 <template>
-  <v-form class="inquirer-gui">
+  <v-form class="inquirer-gui" @submit.prevent>
     <template v-for="(question, index) in questions" :key="question.name">
       <p :key="'label-' + index" class="question-label" v-if="question.shouldShow">
         <span class="question-message">{{ question._message }}</span>
@@ -72,7 +72,6 @@
         }}</span>
       </div>
     </template>
-    <vscode-textfield id="form-single-input-issue-key-enter-workaround" style="display: none"></vscode-textfield>
   </v-form>
 </template>
 

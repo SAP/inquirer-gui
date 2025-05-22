@@ -190,7 +190,7 @@ describe("Question of type checkbox", () => {
     const name = wrapper.find("input");
     const country = "A country";
     name.element.value = country;
-    name.trigger("change");
+    name.trigger("input");
 
     // wait to account for debounce
     await utils.sleep(300);

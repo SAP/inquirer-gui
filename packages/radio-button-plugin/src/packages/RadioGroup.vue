@@ -28,12 +28,33 @@ export default {
   props: {
     question: Object,
   },
+  data() {
+    return {
+      defaultValue: null,
+    };
+  },
+  async mounted() {
+    // Await default value if it's a function that returns a promise
+    if (typeof this.question.default === "function") {
+      const result = this.question.default();
+      this.defaultValue = result instanceof Promise ? await result : result;
+    } else {
+      this.defaultValue = this.question.default;
+    }
+    // If no answer or default, auto-select the first non-disabled option
+    if (!this.question.answer && this.defaultValue == null) {
+      const firstAvailable = this.convertChoices(this.question.choices)?.find((item) => !item.disabled);
+      if (firstAvailable) {
+        this.$emit("answerChanged", this.question.name, firstAvailable.value);
+      }
+    }
+  },
   methods: {
     getRadioId(name) {
       return `radio_${name}`;
     },
     isChecked(value) {
-      return this.question.answer ? this.question.answer === value : this.question.default === value;
+      return this.question.answer != null ? this.question.answer === value : this.defaultValue === value;
     },
     onClick(answer) {
       if (answer) {
@@ -47,7 +68,7 @@ export default {
       return this.question.choices && this.question.choices.length > 0;
     },
     convertChoices(choices) {
-      return choices.map((item) => {
+      return choices?.map((item) => {
         if (typeof item === "string") {
           return { value: item };
         }

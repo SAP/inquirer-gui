@@ -21,7 +21,9 @@ const questionConfirmWithOneLabel = [
     name: "confirm",
     message: "Do you agree?",
     labelTrue: "Accept",
-    default: false,
+    default: () => {
+      return false;
+    },
   },
 ];
 
@@ -32,7 +34,9 @@ const questionConfirmWithTwoLabels = [
     message: "Do you agree?",
     labelTrue: "Accept",
     labelFalse: "Decline",
-    default: false,
+    default: async () => {
+      return false;
+    },
   },
 ];
 

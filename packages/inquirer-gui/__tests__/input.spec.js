@@ -370,7 +370,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("change");
+    name.trigger("input");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -420,7 +420,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("change");
+    name.trigger("input");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -451,7 +451,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("change");
+    name.trigger("input");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -480,7 +480,7 @@ describe("Questions of type input, password and number", () => {
 
     const name = wrapper.find("input");
     name.element.value = value1;
-    name.trigger("change");
+    name.trigger("input");
 
     // wait to account for debounce
     await utils.sleep(300);
@@ -587,14 +587,14 @@ describe("Questions of type input, password and number", () => {
     expect(wrapper.emitted().whensEvaluated).toBeTruthy();
 
     let inputs = wrapper.findAll("input");
-    expect(inputs.length).toEqual(4);
+    expect(inputs.length).toEqual(3);
     inputs.at(0).element.value = "hide";
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
     inputs = wrapper.findAll("input");
-    expect(inputs.length).toEqual(3);
+    expect(inputs.length).toEqual(2);
   });
 
   test("Input with message as a function", async () => {
@@ -615,7 +615,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -641,7 +641,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -653,7 +653,7 @@ describe("Questions of type input, password and number", () => {
     const anotherValue = "another value";
 
     inputs.at(1).element.value = dirtyValue;
-    inputs.at(1).trigger("change");
+    inputs.at(1).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -661,7 +661,7 @@ describe("Questions of type input, password and number", () => {
     expect(inputs.at(1).element.value).toBe(dirtyValue);
 
     inputs.at(0).element.value = anotherValue;
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -687,7 +687,7 @@ describe("Questions of type input, password and number", () => {
 
     let inputs = wrapper.findAll("input");
     inputs.at(0).element.value = newValue;
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -699,7 +699,7 @@ describe("Questions of type input, password and number", () => {
     const anotherValue = "another value";
 
     inputs.at(1).element.value = dirtyValue;
-    inputs.at(1).trigger("change");
+    inputs.at(1).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 
@@ -707,7 +707,7 @@ describe("Questions of type input, password and number", () => {
     expect(inputs.at(1).element.value).toBe(dirtyValue);
 
     inputs.at(0).element.value = anotherValue;
-    inputs.at(0).trigger("change");
+    inputs.at(0).trigger("input");
     // wait to account for debounce
     await utils.sleep(300);
 

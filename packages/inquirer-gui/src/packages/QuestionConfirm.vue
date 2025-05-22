@@ -23,12 +23,31 @@ export default {
   props: {
     question: Object,
   },
+  data() {
+    return {
+      defaultValue: null,
+    };
+  },
+  async mounted() {
+    // Await default value if it's a function that returns a promise
+    if (typeof this.question.default === "function") {
+      const result = this.question.default();
+      this.defaultValue = result instanceof Promise ? await result : result;
+    } else {
+      this.defaultValue = this.question.default;
+    }
+
+    // If no answer or default, auto-select true
+    if (!this.question.answer && this.defaultValue == null) {
+      this.$emit("answerChanged", this.question.name, true);
+    }
+  },
   methods: {
     onClick(answer) {
       this.$emit("answerChanged", this.question.name, answer.target.value);
     },
     isChecked(value) {
-      return this.question.answer ? this.question.answer === value : this.question.default === value;
+      return this.question.answer != null ? this.question.answer === value : this.defaultValue === value;
     },
   },
 };
