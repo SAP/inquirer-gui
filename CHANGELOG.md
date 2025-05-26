@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.4.1](https://github.com/SAP/inquirer-gui/compare/v3.4.0...v3.4.1) (2025-05-07)
+
+**Note:** Version bump only for package root
+
+# [3.4.0](https://github.com/SAP/inquirer-gui/compare/v3.3.0...v3.4.0) (2025-04-28)
+
+**Note:** Version bump only for package root
+
+# [3.3.0](https://github.com/SAP/inquirer-gui/compare/v3.2.0...v3.3.0) (2025-03-12)
+
+### Features
+
+- support show icon for error ([#707](https://github.com/SAP/inquirer-gui/issues/707)) ([a3eb15b](https://github.com/SAP/inquirer-gui/commit/a3eb15b6aee6528d842a263e7dc9e3f44fd9d18a))
+
 # [3.2.0](https://github.com/SAP/inquirer-gui/compare/v3.1.0...v3.2.0) (2025-02-26)
 
 ### Features

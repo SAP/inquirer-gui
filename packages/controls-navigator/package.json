@@ -1,7 +1,7 @@
 {
   "name": "@sap-devx/controls-navigator",
   "displayName": "Navigator control",
-  "version": "3.0.6",
+  "version": "3.4.1",
   "description": "Navigator control",
   "repository": {
     "type": "git",

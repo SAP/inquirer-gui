@@ -21,7 +21,7 @@
         :title="item?.raw?.name"
         :value="item?.raw?.value"
       >
-        <v-divider v-if="getDividerType(item.raw) === 'divider'"></v-divider>
+        <vscode-divider v-if="getDividerType(item.raw) === 'divider'"></vscode-divider>
         <v-list-subheader v-else-if="getDividerType(item.raw) === 'header'">{{
           stripEscapeChars(item.raw.line)
         }}</v-list-subheader>

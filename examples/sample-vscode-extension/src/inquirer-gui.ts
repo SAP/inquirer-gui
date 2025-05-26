@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import { IRpc } from "@sap-devx/webview-rpc/out.ext/rpc-common";
 
 function funcReplacer(key: any, value: any) {
@@ -74,7 +75,7 @@ const questions1 = [
       hint: "Please select",
     },
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
     choices: ["dog", "cat"],
     default: "cat",
   },
@@ -138,10 +139,11 @@ export class InquirerGui {
     if (relevantQuestion !== undefined) {
       // This part is a bit dirty, but the idea is to keep
       // this file clean of references to vscode:
+      let finalParams = params;
       if (methodName === "getFilePath") {
-        params = [...params, this.showOpenDialog];
+        finalParams = [...params, this.showOpenDialog];
       }
-      const response = await relevantQuestion[methodName].apply(this.questions, params);
+      const response = await relevantQuestion[methodName].apply(this.questions, finalParams);
       console.log(response);
       return response;
     }

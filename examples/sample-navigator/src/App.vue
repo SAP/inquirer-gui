@@ -5,8 +5,9 @@
         <v-radio-group v-model="navigationType" inline style="margin-top: 10px; margin-bottom: 0px">
           <v-radio label="tab" value="tab"></v-radio>
           <v-radio label="stepper" value="stepper"></v-radio>
+          <v-radio label="tab with error icon" value="tabWithErrorIcon"></v-radio>
         </v-radio-group>
-        <v-divider />
+        <vscode-divider></vscode-divider>
         <NavigatorControl
           v-if="navigationType === 'tab'"
           :prompt-index="promptIndex"
@@ -14,6 +15,16 @@
           :all-answers="allAnswers"
           :prompt-answers="{}"
           navigation-type="tab"
+          @on-goto-step="gotoTab"
+        />
+        <NavigatorControl
+          v-if="navigationType === 'tabWithErrorIcon'"
+          :prompt-index="promptIndex"
+          :prompts="prompts"
+          :all-answers="allAnswers"
+          :prompt-answers="{}"
+          navigation-type="tab"
+          show-icon-for-error="true"
           @on-goto-step="gotoTab"
         />
         <NavigatorControl
@@ -25,7 +36,7 @@
           @on-goto-step="gotoStep"
         />
       </v-col>
-      <v-divider class="ms-3" style="margin-right: 20px" inset vertical></v-divider>
+      <vscode-divider class="ms-3" style="margin-right: 20px"></vscode-divider>
       <v-col class="ms-5">
         <div v-if="navigationType === 'stepper'" class="bottom-buttons-col" style="display: flex">
           <v-btn
@@ -43,7 +54,7 @@
             <v-icon right> mdi-chevron-right </v-icon>
           </v-btn>
         </div>
-        <v-divider />
+        <vscode-divider></vscode-divider>
         <div v-if="navigationType === 'stepper'" style="margin-top: 20px">Current Step: {{ promptIndex }}</div>
         <div style="margin-top: 20px" v-if="navigationType === 'tab'">
           {{ content }}

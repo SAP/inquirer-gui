@@ -86,6 +86,30 @@ const questionCheckboxCheckedForceDefault = [
     __ForceDefault: true,
   },
 ];
+
+const vscodeStubs = {
+  VscodeDivider: {
+    template: "<div></div>",
+  },
+  VscodeCheckbox: {
+    template: "<div></div>",
+  },
+  VscodeTextfield: {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          :placeholder="placeholder"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+      </div>
+    `,
+    props: ["value", "placeholder"],
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Question of type checkbox", () => {
   let vuetify;
@@ -104,6 +128,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -129,6 +154,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -154,6 +180,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -179,6 +206,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -197,6 +225,7 @@ describe("Question of type checkbox", () => {
         components: {
           QuestionCheckbox: QuestionCheckbox,
         },
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

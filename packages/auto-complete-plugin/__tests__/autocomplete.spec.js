@@ -3,11 +3,12 @@ import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
-import FormVue from "../src/Form.vue";
+import FormVue from "../../inquirer-gui/src/Form.vue";
 
 import QuestionAutoCompletePlugin from "../../auto-complete-plugin/src";
 // import QuestionAutoCompletePlugin from "@sap-devx/inquirer-gui-auto-complete-plugin";
-import utils from "./utils";
+import utils from "../../inquirer-gui/__tests__/utils";
+import autoCompleteUtils from "../src/utils";
 
 class ResizeObserver {
   observe() {}
@@ -67,6 +68,26 @@ const emptyTextQuestion = [
     emptyText: "No results found...",
   },
 ];
+const vscodeStubs = {
+  "vscode-textfield": {
+    template: `
+      <div>
+        <input
+          type="text"
+          :value="value"
+          :placeholder="placeholder"
+          @input="$emit('update:value', $event.target.value)"
+          @change="$emit('change', $event)"
+        />
+        <slot></slot>
+      </div>
+    `,
+    props: ["value", "placeholder"],
+  },
+  "vscode-divider": {
+    template: "<div></div>",
+  },
+};
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 describe("Tests autocomplete question", () => {
   let wrapper;
@@ -82,6 +103,7 @@ describe("Tests autocomplete question", () => {
     wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [QuestionAutoCompletePlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -222,5 +244,59 @@ describe("Tests autocomplete question", () => {
 
     const items2 = document.body.querySelectorAll(".v-list-item");
     expect(items2[1].textContent).toEqual(emptyTextQuestion[1].emptyText);
+  });
+
+  test("should assign value to name when only name exists", () => {
+    const input = [{ name: "Option A" }];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([{ name: "Option A", value: "Option A" }]);
+  });
+
+  test("should keep objects unchanged if they have both name and value properties", () => {
+    const input = [{ name: "Option A", value: "A" }];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([{ name: "Option A", value: "A" }]);
+  });
+
+  test("should keep objects unchanged if they have neither name nor value", () => {
+    const input = [{ id: 1 }];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([{ id: 1 }]);
+  });
+
+  test("should return correct format for string and number values", () => {
+    const input = ["Option A", 42, undefined];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([
+      { name: "Option A", value: "Option A" },
+      { name: 42, value: 42 },
+      { name: undefined, value: undefined },
+    ]);
+  });
+
+  test("should return undefined if input is not an array", () => {
+    const output = autoCompleteUtils.normalizeChoices("not an array");
+    expect(output).toBeUndefined();
+  });
+
+  test("should return correct format for number values", () => {
+    const input = [42];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([{ name: 42, value: 42 }]);
+  });
+
+  test("should return correct format for mixed values including numbers", () => {
+    const input = ["Option A", 42, { name: "Option B" }];
+    const output = autoCompleteUtils.normalizeChoices(input);
+    expect(output).toEqual([
+      { name: "Option A", value: "Option A" },
+      { name: 42, value: 42 },
+      { name: "Option B", value: "Option B" },
+    ]);
+  });
+
+  test("should handle values that are neither undefined, string, or number", () => {
+    const output = autoCompleteUtils.normalizeChoices([true]);
+    expect(output).toEqual([true]);
   });
 });

@@ -3,16 +3,18 @@ import { mount, enableAutoUnmount } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
-import FormVue from "../src/Form.vue";
+import FormVue from "../../inquirer-gui/src/Form.vue";
 
 import RadioGroupPlugin from "../../radio-button-plugin/src";
+import RadioGroup from "../src/packages/RadioGroup.vue";
+
 // import RadioGroupPlugin from "@sap-devx/inquirer-gui-radio-plugin";
 
 const questionRadio = [
   {
     type: "radio",
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
     choices: ["dog", "cat"],
     default: ["cat"],
   },
@@ -22,7 +24,7 @@ const questionRadioNoChoices = [
   {
     type: "radio",
     name: "pat",
-    message: "Your pat",
+    message: "Your pet",
   },
 ];
 
@@ -42,6 +44,35 @@ const questionRadioDisabled = [
   },
 ];
 
+const vscodeStubs = {
+  VscodeRadioGroup: {
+    template: "<div><slot></slot></div>",
+  },
+  VscodeRadio: {
+    props: ["label", "value", "disabled"],
+    template: `
+        <div>
+          <input
+            type="radio"
+            :value="value"
+            :id="label"
+            name="radio-group"
+            :disabled="disabled"
+            @change="emitChange"
+          />
+          <label :for="label">{{ label }}</label>
+        </div>
+      `,
+    methods: {
+      emitChange() {
+        if (!this.disabled) {
+          this.$emit("change", { target: { value: this.value } });
+        }
+      },
+    },
+  },
+};
+
 enableAutoUnmount(afterEach); //Ensures wrapper component gets cleaned up after each test
 
 describe("Question of type radio", () => {
@@ -59,6 +90,7 @@ describe("Question of type radio", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -80,11 +112,29 @@ describe("Question of type radio", () => {
     expect(answered[0].pat).toContain("dog");
   });
 
+  test("should return the correct radio ID", () => {
+    const wrapper = mount(RadioGroup, {
+      global: {
+        stubs: vscodeStubs,
+      },
+      props: {
+        question: {
+          name: "testQuestion",
+          choices: ["choice1", "choice2"],
+        },
+      },
+    });
+
+    const radioId = wrapper.vm.getRadioId("testName");
+    expect(radioId).toBe("radio_testName");
+  });
+
   test("Radio button with missing choices array", async () => {
     const options = {};
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });
@@ -103,6 +153,7 @@ describe("Question of type radio", () => {
     const wrapper = mount(FormVue, {
       global: {
         plugins: [vuetify, [RadioGroupPlugin, options]],
+        stubs: vscodeStubs,
       },
       attachTo: document.body,
     });

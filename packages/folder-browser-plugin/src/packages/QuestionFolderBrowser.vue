@@ -1,13 +1,6 @@
 <template>
-  <v-text-field
-    ref="path"
-    @update:modelValue="onAnswerChanged"
-    :modelValue="question.answer"
-    hide-details="auto"
-    density="compact"
-    variant="outlined"
-  >
-    <template v-slot:append-inner>
+  <vscode-textfield ref="path" @change="onAnswerChanged" :value="question.answer">
+    <template slot="content-after">
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
           <v-icon v-bind="props" @click="onSelectFolder">mdi-folder-outline</v-icon>
@@ -15,7 +8,7 @@
         <span>Browse for folder</span>
       </v-tooltip>
     </template>
-  </v-text-field>
+  </vscode-textfield>
 </template>
 
 <script>
@@ -37,9 +30,14 @@ export default {
     },
     onAnswerChanged(answer) {
       if (answer !== undefined) {
-        this.$emit("answerChanged", this.question.name, answer);
+        this.$emit("answerChanged", this.question.name, answer.target.value);
       }
     },
   },
 };
 </script>
+<style scoped>
+vscode-textfield {
+  padding-inline-end: 11px;
+}
+</style>
