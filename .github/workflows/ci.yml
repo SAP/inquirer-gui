@@ -12,17 +12,16 @@ on:
 
 jobs:
   build:
-    name: Full Build (Node ${{ matrix.node_version }}) 
+    name: Full Build (Node ${{ matrix.node_version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [20.x, 22.x]
+        node_version: [20.x, 22.x, 24.x]
       # https://stackoverflow.com/questions/61070925/github-actions-disable-auto-cancel-when-job-fails
       fail-fast: false
 
     steps:
-      # using `v1` because of: https://github.com/actions/checkout/issues/246
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node_version }}
