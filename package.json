@@ -6,7 +6,7 @@
     "examples/*"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "release:version": "lerna version",
     "release:publish": "lerna publish from-git --yes --no-verify-access",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages",
@@ -52,7 +52,7 @@
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.44.0",
     "eslint-plugin-vue": "^9.17.0",
-    "husky": "8.0.3",
+    "husky": "9.1.7",
     "jest-serializer-vue": "^3.1.0",
     "lerna": "8.1.2",
     "lint-staged": "15.5.1",
