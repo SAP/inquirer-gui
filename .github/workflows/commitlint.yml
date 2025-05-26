@@ -14,7 +14,8 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
       - uses: wagoid/commitlint-github-action@v6
+        with:
+          # https://github.com/wagoid/commitlint-github-action?tab=readme-ov-file#commitdepth
+          commitDepth: '1'
