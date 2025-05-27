@@ -79,3 +79,6 @@ dist
 
 # Other
 .DS_store
+
+## temp output of release script
+/last-ver-changelog.txt
