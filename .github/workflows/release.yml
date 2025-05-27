@@ -3,6 +3,11 @@ on:
   push:
     tags:
       - "v*.*.*"
+
+permissions:
+  # https://github.com/orgs/community/discussions/68252
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
