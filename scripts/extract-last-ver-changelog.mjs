@@ -20,5 +20,11 @@ const {
 
 const trimmedContent = content.trim();
 
+console.log(`Extracted last version changelog content:
+-----------------------------------
+${trimmedContent}
+-----------------------------------
+`);
+
 const lastVerChangelogPath = resolve(rootDir, "last-ver-changelog.txt");
 await writeFile(lastVerChangelogPath, trimmedContent, "utf-8");
