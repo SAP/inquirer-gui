@@ -23,10 +23,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # Generate changelog for the current release
-      - name: Generate Changelog
-        run: |
-          CHANGELOG=$(npx conventional-changelog -p angular -r 2 | sed '/^# \[\]/d' | sed '/./,$!d')
-          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
-          echo "$CHANGELOG" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+      - name: Generate Last Version (only) Changelog
+        run: node ./scripts/extract-last-ver-changelog.mjs
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: last-ver-changelog.txt
