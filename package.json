@@ -7,7 +7,6 @@
   ],
   "scripts": {
     "prepare": "husky",
-    "release:version": "lerna version",
     "release:publish": "lerna publish from-git --yes --no-verify-access",
     "ci": "npm-run-all legal:* format:validate lint:validate ci:subpackages",
     "ci:subpackages": "lerna run ci",

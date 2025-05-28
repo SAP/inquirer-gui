@@ -19,14 +19,16 @@ This monorepo uses Lerna's [Fixed/Locked][lerna-mode] which means all the sub-pa
 
 ### Release Process
 
-Performing a release requires push permissions to the repository.
+Release is triggered via a Github Workflow:
 
-- Ensure you are on the default branch and synced with origin.
-- `npm run release:version`
-- Follow the lerna CLI instructions.
-- Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) build in the build system
-  until successful completion.
-- Inspect the newly artifacts published on npmjs.com.
+- Open [bump versions and tag](https://github.com/SAP/inquirer-gui/actions/workflows/bump-versions-and-tag.yml) Action GUI.
+- Click on the `Run workflow` button.
+- Choose `automatic` in `semver release type" drop down
+  - You can also specify an exact semver bump (patch/minor/major).
+- Click on the `Run workflow` button.
+- Wait for the workflow to complete.
+- Track the newly pushed **tag** (`/^v[0-9]+(\.[0-9]+)*/`) [release build](https://github.com/SAP/inquirer-gui/actions/workflows/release.yml) in Github Actions
+- Inspect the newly artifacts published on npmjs.com / Github Releases.
 
 ## Report an Issue
 
