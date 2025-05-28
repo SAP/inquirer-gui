@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.3 (2025-05-28)
+
+**Note:** Version bump only for package @sap-devx/inquirer-gui-folder-browser-plugin
+
 ## [3.4.1](https://github.com/SAP/inquirer-gui/compare/v3.4.0...v3.4.1) (2025-05-07)
 
 **Note:** Version bump only for package @sap-devx/inquirer-gui-folder-browser-plugin

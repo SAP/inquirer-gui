@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.3 (2025-05-28)
+
+**Note:** Version bump only for package @sap-devx/inquirer-gui-date-plugin
+
 ## [3.0.3](https://github.com/SAP/inquirer-gui/sample-plugin/compare/v3.0.2...v3.0.3) (2024-02-20)
 
 ### Bug Fixes
