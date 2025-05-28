@@ -16,8 +16,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22.x'
-          # lerna ERR! E404 Not found
-          # lerna ERR! errno "undefined" is not a valid exit code - exiting with code 1
+          # This `registry-url` resolves an issue with lerna publishing:
+          # ```
+          #    lerna ERR! E404 Not found
+          #    lerna ERR! errno "undefined" is not a valid exit code - exiting with code 1
+          # ```
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
