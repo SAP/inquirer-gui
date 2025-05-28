@@ -1,13 +1,10 @@
 {
   "$schema": "node_modules/lerna/schemas/lerna-schema.json",
-  "allowBranch": "master",
   "command": {
-    "publish": {
-      "conventionalCommits": true
-    },
     "version": {
-      "message": "chore(release): release %s"
+      "message": "chore(release): release %s",
+      "allowBranch": "master"
     }
   },
-  "version": "3.4.1"
+  "version": "3.4.2"
 }

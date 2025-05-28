@@ -1,0 +1,44 @@
+name: Bump Versions and Tag
+on:
+  workflow_dispatch:
+    inputs:
+      semver:
+        type: choice
+        description: semver release type
+        options:
+          - automatic
+          - patch
+          - minor
+          - major
+
+# No need for custom permissions to push bumped versions
+# Because a custom PAT is used for checkout
+
+jobs:
+  version_packages:
+    runs-on: [self-hosted, solinas]
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          # Need custom service user token to allow bypassing default branch protection rules
+          # to push a bumped version directly to default branch (master/main)
+          token: ${{ secrets.SERVICE_USER_GIT_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Ensure Build Is Green
+        run: npm run ci
+
+      - name: Conventional Commits bump and tag
+        if: ${{ github.event.inputs.semver == 'automatic' }}
+        run: npx --no lerna version --conventional-commits --yes
+
+      - name: Manual version choice bump and tag
+        if: ${{ github.event.inputs.semver != 'automatic' }}
+        run: npx --no lerna version ${{ github.event.inputs.semver }} --yes
