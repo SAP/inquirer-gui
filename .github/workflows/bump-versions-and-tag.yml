@@ -38,7 +38,11 @@ jobs:
       - name: Conventional Commits bump and tag
         if: ${{ github.event.inputs.semver == 'automatic' }}
         run: npx --no lerna version --conventional-commits --yes
+        env:
+          GH_TOKEN: ${{ secrets.SERVICE_USER_GIT_TOKEN }}
 
       - name: Manual version choice bump and tag
         if: ${{ github.event.inputs.semver != 'automatic' }}
         run: npx --no lerna version ${{ github.event.inputs.semver }} --yes
+        env:
+          GH_TOKEN: ${{ secrets.SERVICE_USER_GIT_TOKEN }}
