@@ -27,6 +27,7 @@ export default {
   name: "RadioGroup",
   props: {
     question: Object,
+    answers: Object,
   },
   data() {
     return {
@@ -36,7 +37,7 @@ export default {
   async mounted() {
     // Await default value if it's a function that returns a promise
     if (typeof this.question.default === "function") {
-      const result = this.question.default();
+      const result = this.question.default(this.answers);
       this.defaultValue = result instanceof Promise ? await result : result;
     } else {
       this.defaultValue = this.question.default;

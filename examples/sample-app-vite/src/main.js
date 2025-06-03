@@ -187,6 +187,19 @@ const questions1 = [
     default: "happy",
   },
   {
+    type: "confirm",
+    name: "confirmWithAnswers",
+    message: "Are you certain you are happy?",
+    labelTrue: "Yes, I am!",
+    labelFalse: "No, I am sad...",
+    default: async function (answers) {
+      if (answers.mood === "happy") {
+        return true;
+      }
+      return false;
+    },
+  },
+  {
     type: "single-checkbox",
     hint: "Please check this option if you want a gift",
     name: "WantGift",

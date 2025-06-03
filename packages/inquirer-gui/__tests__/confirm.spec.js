@@ -34,11 +34,13 @@ const questionConfirmWithTwoLabels = [
     message: "Do you agree?",
     labelTrue: "Accept",
     labelFalse: "Decline",
-    default: async () => {
-      return false;
+    default: async (answers) => {
+      return answers.agree;
     },
   },
 ];
+
+const answers = { agree: true };
 
 const vscodeStubs = {
   VscodeRadioGroup: {
@@ -176,7 +178,7 @@ describe("Question of type confirm", () => {
       },
       attachTo: document.body,
     });
-    wrapper.setProps({ questions: questionConfirmWithTwoLabels });
+    wrapper.setProps({ questions: questionConfirmWithTwoLabels, answers });
     await nextTick();
 
     const labels = wrapper.findAll("label");
