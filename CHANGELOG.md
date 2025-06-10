@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.5 (2025-06-10)
+
+### Bug Fixes
+
+- radio controls do not use answers in default functions ([#780](https://github.com/SAP/inquirer-gui/issues/780)) ([79e6ae8](https://github.com/SAP/inquirer-gui/commit/79e6ae88820cc918bb6c01cf319f3c3eba18efae))
+
 ## 3.4.4 (2025-05-28)
 
 **Note:** Version bump only for package root
