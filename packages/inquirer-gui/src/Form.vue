@@ -738,6 +738,7 @@ a {
 .validation-link-icon {
   vertical-align: middle;
   padding-right: 5px;
+  color: var(--vscode-icon-foreground);
 }
 
 .add-messages,
