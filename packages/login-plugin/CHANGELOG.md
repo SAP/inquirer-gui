@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.6 (2025-07-15)
+
+**Note:** Version bump only for package @sap-devx/inquirer-gui-login-plugin
+
 ## 3.4.5 (2025-06-10)
 
 ### Bug Fixes
