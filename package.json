@@ -50,7 +50,7 @@
     "coveralls": "2.13.3",
     "cz-conventional-changelog": "3.3.0",
     "eslint": "^8.44.0",
-    "eslint-plugin-vue": "^9.17.0",
+    "eslint-plugin-vue": "^9.23.0",
     "husky": "9.1.7",
     "jest-serializer-vue": "^3.1.0",
     "lerna": "8.1.2",
