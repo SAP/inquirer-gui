@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-auto-complete-plugin",
-  "version": "3.4.7",
+  "version": "3.4.8",
   "description": "Auto-complete Vue plugin for https://github.com/mokkabonna/inquirer-autocomplete-prompt",
   "repository": {
     "type": "git",

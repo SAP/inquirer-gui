@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-date-plugin",
-  "version": "3.4.7",
+  "version": "3.4.8",
   "private": true,
   "description": "Sample date plugin for inquirer-gui",
   "repository": {
