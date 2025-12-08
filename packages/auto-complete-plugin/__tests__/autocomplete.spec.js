@@ -17,6 +17,19 @@ class ResizeObserver {
 }
 global.ResizeObserver = ResizeObserver;
 
+// Mock visualViewport for Vuetify's VOverlay component
+global.visualViewport = {
+  addEventListener: () => {},
+  removeEventListener: () => {},
+  width: 1024,
+  height: 768,
+  offsetLeft: 0,
+  offsetTop: 0,
+  pageLeft: 0,
+  pageTop: 0,
+  scale: 1,
+};
+
 let numResults = 0;
 const result1 = ["a", "b", "c"];
 const result2 = ["e", "f", "g", "h"];
