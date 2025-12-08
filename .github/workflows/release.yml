@@ -5,6 +5,7 @@ on:
       - "v*.*.*"
 
 permissions:
+  id-token: write
   # https://github.com/orgs/community/discussions/68252
   contents: write
 
@@ -15,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
           # This `registry-url` resolves an issue with lerna publishing:
           # ```
           #    lerna ERR! E404 Not found
@@ -31,8 +32,6 @@ jobs:
 
       - name: Publish to NPM
         run: npm run release:publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Generate Last Version (only) Changelog
         run: node ./scripts/extract-last-ver-changelog.mjs
