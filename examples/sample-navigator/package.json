@@ -22,13 +22,13 @@
     "vuetify": "^3.3.10"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "5.2.3",
+    "@vitejs/plugin-vue": "5.2.4",
     "copyfiles": "^2.4.1",
-    "eslint": "^8.37.0",
-    "eslint-plugin-vue": "^9.3.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.23.0",
     "sass": "^1.60.0",
     "unplugin-fonts": "^1.0.3",
     "vite": "6.3.4",
-    "vite-plugin-vuetify": "^1.0.0"
+    "vite-plugin-vuetify": "^2.1.0"
   }
 }
