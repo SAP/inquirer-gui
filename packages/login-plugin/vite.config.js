@@ -19,8 +19,8 @@ export default defineConfig({
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name === "style.css") return `${PACKAGE_NAME}.css`;
-          return assetInfo.name;
+          if (assetInfo.names.includes("inquirer-gui-login-plugin.css")) return `${PACKAGE_NAME}.css`;
+          return assetInfo.names[0];
         },
         globals: {
           vue: "Vue",
