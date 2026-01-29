@@ -18,7 +18,7 @@ export default defineConfig({
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.names.includes("inquirer-gui-navigator-control.css")) return `${CONTROL_NAME}.css`;
+          if (assetInfo.names?.some((name) => name.endsWith(".css"))) return `${CONTROL_NAME}.css`;
           return assetInfo.names[0];
         },
         globals: {

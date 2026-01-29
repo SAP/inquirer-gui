@@ -19,7 +19,7 @@ export default defineConfig({
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {
-          if (assetInfo.names.includes("inquirer-gui-folder-browser-plugin.css")) return `${PACKAGE_NAME}.css`;
+          if (assetInfo.names?.some((name) => name.endsWith(".css"))) return `${PACKAGE_NAME}.css`;
           return assetInfo.names[0];
         },
         globals: {
