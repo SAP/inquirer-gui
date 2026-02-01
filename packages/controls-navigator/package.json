@@ -54,7 +54,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "lodash": "^4.17.21",
+    "lodash": "4.17.23",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
     "vuetify": "^3.4.0"
