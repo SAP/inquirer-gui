@@ -87,6 +87,21 @@ const questionCheckboxCheckedForceDefault = [
   },
 ];
 
+const objectValueChoices = [
+  { name: "United States of America", value: { country: "USA", currency: "Dollar" } },
+  "Germany",
+  { name: "People's Republic of China", value: { country: "China", currency: "Yen" } },
+];
+const questionCheckboxCheckedObjectValues = [
+  {
+    type: "checkbox",
+    name: "citizenship",
+    message: "Your citizenship",
+    choices: objectValueChoices,
+    default: [{ country: "China", currency: "Yen" }],
+  },
+];
+
 const vscodeStubs = {
   VscodeDivider: {
     template: "<div></div>",
@@ -216,6 +231,25 @@ describe("Question of type checkbox", () => {
 
     expect(wrapper.props("questions")[0].answer[1]).toBe("China");
     expect(wrapper.props("questions")[0].answer).toHaveLength(2);
+  });
+
+  test("Checkbox with object values", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionCheckbox: QuestionCheckbox,
+        },
+        stubs: vscodeStubs,
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionCheckboxCheckedObjectValues });
+    await nextTick();
+    await nextTick();
+
+    expect(wrapper.props("questions")[0].answer[0]).toStrictEqual({ country: "China", currency: "Yen" });
+    expect(wrapper.props("questions")[0].answer).toHaveLength(1);
   });
 
   test("Checkbox with checked choice, but force default", async () => {
