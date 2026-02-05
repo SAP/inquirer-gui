@@ -56,7 +56,7 @@
   ],
   "dependencies": {
     "@vscode-elements/elements": "1.11.0",
-    "lodash": "4.17.23",
+    "lodash": "^4.17.23",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
     "vuetify": "^3.5.7"
