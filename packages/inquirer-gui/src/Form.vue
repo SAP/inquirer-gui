@@ -360,7 +360,7 @@ export default {
             // add to answers if choice is in default
             if (Array.isArray(question._default)) {
               let foundIndex = question._default.findIndex((currentDefaultValue) => {
-                return choice.value === currentDefaultValue;
+                return isEqual(choice.value, currentDefaultValue);
               });
               if (foundIndex >= 0) {
                 initialAnswersArray.push(choice.value);
