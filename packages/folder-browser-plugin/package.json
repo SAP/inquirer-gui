@@ -1,6 +1,6 @@
 {
   "name": "@sap-devx/inquirer-gui-folder-browser-plugin",
-  "version": "3.4.8",
+  "version": "3.4.9",
   "description": "Folder browser plugin for inquirer-gui",
   "keywords": [
     "inquirer",
