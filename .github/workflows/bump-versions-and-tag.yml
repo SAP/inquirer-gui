@@ -18,18 +18,18 @@ jobs:
   version_packages:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           # Need custom service user token to allow bypassing default branch protection rules
           # to push a bumped version directly to default branch (master/main)
           token: ${{ secrets.SERVICE_USER_GIT_TOKEN }}
 
       - name: Configure git credentials
-        uses: OleksiyRudenko/gha-git-credentials@v2
+        uses: OleksiyRudenko/gha-git-credentials@6132cfce45156e2c1562673f9be1a91a575ce879 # v2
         with:
           token: ${{ secrets.SERVICE_USER_GIT_TOKEN }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: "24.x"
 

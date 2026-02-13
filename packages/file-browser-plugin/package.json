@@ -36,6 +36,6 @@
     "test": "jest -w 1"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "3.5.28"
   }
 }
