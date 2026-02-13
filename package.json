@@ -60,7 +60,7 @@
     "rimraf": "5.0.10",
     "sass": "^1.63.6",
     "shx": "0.4.0",
-    "typescript": "^5.2.2",
+    "typescript": "^5.8.3",
     "vite": "6.3.4",
     "yorkie": "^2.0.0"
   }
