@@ -41,23 +41,30 @@
         :key="'validation-' + index"
         :id="'validation-msg-' + index"
       >
-        <span class="error-validation-text">{{ question.validationMessage }}</span>
-        <span class="question-link" v-if="question.validationLink">
+        <span class="error-validation-text" :ref="(el) => _registerErrorTextRef(question.name, el)">{{
+          question.validationMessage
+        }}</span>
+        <div class="question-link" v-if="shouldShowValidationLink(question)">
           <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
-            <img
+            <span
               class="validation-link-icon"
               v-if="question.validationLink.icon"
-              :src="question.validationLink.icon"
-            /><span v-text="question.validationLink.text" id="cmdLinkText"></span>
+              v-html="decodeSvgIcon(question.validationLink.icon)"
+            ></span
+            ><span v-text="question.validationLink.text" id="cmdLinkText"></span>
           </a>
           <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
-            <img
+            <span
               class="validation-link-icon"
               v-if="question.validationLink.icon"
-              :src="question.validationLink.icon"
-            /><span v-text="question.validationLink.text" id="urlLinkText"></span>
+              v-html="decodeSvgIcon(question.validationLink.icon)"
+            ></span
+            ><span v-text="question.validationLink.text" id="urlLinkText"></span>
           </a>
-        </span>
+        </div>
+        <div class="output-tab-link" v-if="shouldShowOutputTabLink(question)">
+          <a @click="executeCommand(question.guiOptions.showOutputTabLink.command)">View Details in the Output Tab</a>
+        </div>
       </div>
       <div
         v-else-if="shouldShowAdditionalMessages(question)"
@@ -107,6 +114,8 @@ export default {
         [Severity.information]: "information-outline",
         [Severity.error]: "close-circle-outline",
       },
+      // Tracks whether each question's error text overflows 2 lines (question.name -> boolean)
+      errorTextOverflow: {},
     };
   },
   computed: {
@@ -136,6 +145,33 @@ export default {
         (question.__origAnswer !== undefined || !(question.guiOptions && question.guiOptions.hint && !question.isDirty))
       );
     },
+    shouldShowValidationLink(question) {
+      return !!question.validationLink;
+    },
+    shouldShowOutputTabLink(question) {
+      return !!(question.guiOptions?.showOutputTabLink?.command && this.errorTextOverflow[question.name]);
+    },
+    // Register or unregister a DOM element ref for an error text span
+    _registerErrorTextRef(questionName, el) {
+      if (el) {
+        this._errorTextRefs[questionName] = el;
+      } else {
+        delete this._errorTextRefs[questionName];
+      }
+      this._updateErrorTextOverflow();
+    },
+    // Measure each tracked error text span and update overflow state.
+    // The CSS on .messages-text already applies -webkit-line-clamp: 2 + overflow: hidden,
+    // so scrollHeight > clientHeight reliably detects when the text is clamped.
+    _updateErrorTextOverflow() {
+      this.$nextTick(() => {
+        const updated = {};
+        for (const [name, el] of Object.entries(this._errorTextRefs)) {
+          updated[name] = el.scrollHeight > el.clientHeight;
+        }
+        this.errorTextOverflow = updated;
+      });
+    },
     removeShouldntShows(questions, answers) {
       for (let question of this.questions) {
         // remove answers to questions whose when() evaluated to false
@@ -143,6 +179,22 @@ export default {
           delete answers[question.name];
         }
       }
+    },
+    decodeSvgIcon(iconDataUri) {
+      // Decode base64 data URI SVG to inline SVG string
+      // This allows the SVG to use currentColor and inherit CSS color properties
+      if (iconDataUri && iconDataUri.startsWith("data:image/svg+xml;base64,")) {
+        try {
+          const base64 = iconDataUri.replace("data:image/svg+xml;base64,", "");
+          const decoded = atob(base64);
+          return decoded;
+        } catch (e) {
+          this.console.error("Failed to decode SVG icon:", e);
+          return "";
+        }
+      }
+      // If it's not a base64 data URI, return empty (could be a regular URL)
+      return "";
     },
     async doValidate(question, answer) {
       // evaluate validate()
@@ -182,11 +234,15 @@ export default {
       question.isValid = false;
       question.validationMessage = linkMsg.message;
       question.validationLink = linkMsg.link;
+      // Re-evaluate overflow now that the message has changed
+      this._updateErrorTextOverflow();
     },
     setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
       question.validationLink = undefined; // Ensure existing validation link is removed
       question.validationMessage = message;
+      // Re-evaluate overflow — message may have changed and may now be long enough to show the link
+      this._updateErrorTextOverflow();
     },
     setValid(question) {
       question.isValid = true;
@@ -686,6 +742,17 @@ export default {
   },
   created() {
     this.plugins = markRaw(Plugins.registerBuiltinPlugins());
+    this._errorTextRefs = {}; // non-reactive map: question.name -> DOM element
+  },
+  mounted() {
+    // Watch for container width changes to re-evaluate whether error text overflows 2+ lines
+    this._resizeObserver = new ResizeObserver(() => {
+      this._updateErrorTextOverflow();
+    });
+    this._resizeObserver.observe(this.$el);
+  },
+  beforeUnmount() {
+    this._resizeObserver?.disconnect();
   },
 };
 </script>
@@ -723,9 +790,23 @@ a {
 }
 
 /* Question hint div, Question link div */
-.question-hint,
+.question-hint {
+  padding-left: 4px;
+}
+
 .question-link {
   padding-left: 4px;
+  padding-top: 4px;
+
+  a {
+    color: var(--vscode-textLink-foreground, #3794ff);
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }
 
 /* Error validation text div */
@@ -736,9 +817,17 @@ a {
 
 /* Question valdation message with link icon img */
 .validation-link-icon {
+  display: inline-block;
   vertical-align: middle;
   padding-right: 5px;
-  color: var(--vscode-icon-foreground);
+  line-height: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    fill: var(--vscode-textLink-foreground);
+  }
 }
 
 .add-messages,
@@ -780,6 +869,26 @@ a {
     }
     &.severity-info {
       color: var(--vscode-foreground);
+    }
+  }
+}
+
+/* Validation messages need column layout for error text + link below */
+.validation-messages {
+  flex-direction: column;
+}
+
+/* Output tab link shown below a clamped error message. */
+.output-tab-link {
+  padding-top: 4px;
+
+  a {
+    color: var(--vscode-textLink-foreground, #3794ff);
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
     }
   }
 }
