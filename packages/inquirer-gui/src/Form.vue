@@ -62,10 +62,12 @@
             ><span v-text="question.validationLink.text" id="urlLinkText"></span>
           </a>
         </div>
-        <div class="output-tab-link" v-if="shouldShowOutputTabLink(question)">
-          <a @click="executeCommand(question.guiOptions.showOutputTabLink.command)">View Details in the Output Tab</a>
-        </div>
       </div>
+      <OutputTabLink
+        v-if="shouldShowOutputTabLink(question)"
+        :key="'output-tab-link-' + index"
+        @show-output-tab-link="$emit('showOutputTabLink')"
+      />
       <div
         v-else-if="shouldShowAdditionalMessages(question)"
         class="add-messages"
@@ -85,6 +87,7 @@
 <script>
 import { markRaw } from "vue";
 import Plugins from "./Plugins";
+import OutputTabLink from "./packages/OutputTabLink.vue";
 import isEqual from "lodash/isEqual";
 
 const NOT_ANSWERED = "Mandatory field";
@@ -98,6 +101,7 @@ const Severity = {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names, vue/no-reserved-component-names
   name: "Form",
+  components: { OutputTabLink },
   props: {
     questions: Array,
   },
@@ -149,7 +153,7 @@ export default {
       return !!question.validationLink;
     },
     shouldShowOutputTabLink(question) {
-      return !!(question.guiOptions?.showOutputTabLink?.command && this.errorTextOverflow[question.name]);
+      return !!(question.guiOptions?.showOutputTabLink === true && this.errorTextOverflow[question.name]);
     },
     // Register or unregister a DOM element ref for an error text span
     _registerErrorTextRef(questionName, el) {
@@ -878,18 +882,4 @@ a {
   flex-direction: column;
 }
 
-/* Output tab link shown below a clamped error message. */
-.output-tab-link {
-  padding-top: 4px;
-
-  a {
-    color: var(--vscode-textLink-foreground, #3794ff);
-    text-decoration: underline;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-}
 </style>
