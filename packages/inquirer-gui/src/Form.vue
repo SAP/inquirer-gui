@@ -155,25 +155,38 @@ export default {
     shouldShowOutputTabLink(question) {
       return !!(question.guiOptions?.showOutputTabLink === true && this.errorTextOverflow[question.name]);
     },
-    // Register or unregister a DOM element ref for an error text span
+    // Register or unregister a DOM element ref for an error text span.
+    // Vue 3 calls function refs on every re-render, so we guard against
+    // redundant updates to avoid infinite render loops.
     _registerErrorTextRef(questionName, el) {
       if (el) {
+        if (this._errorTextRefs[questionName] === el) return;
         this._errorTextRefs[questionName] = el;
       } else {
+        if (!(questionName in this._errorTextRefs)) return;
         delete this._errorTextRefs[questionName];
       }
       this._updateErrorTextOverflow();
     },
     // Measure each tracked error text span and update overflow state.
-    // The CSS on .messages-text already applies -webkit-line-clamp: 2 + overflow: hidden,
-    // so scrollHeight > clientHeight reliably detects when the text is clamped.
+    // Chromium doesn't report scrollHeight > clientHeight with -webkit-line-clamp,
+    // so we temporarily remove the clamp to measure the full content height.
     _updateErrorTextOverflow() {
       this.$nextTick(() => {
         const updated = {};
+        let changed = false;
         for (const [name, el] of Object.entries(this._errorTextRefs)) {
-          updated[name] = el.scrollHeight > el.clientHeight;
+          const clampedHeight = el.clientHeight;
+          el.style.webkitLineClamp = 'unset';
+          const fullHeight = el.scrollHeight;
+          el.style.webkitLineClamp = '';
+          const overflows = fullHeight > clampedHeight;
+          updated[name] = overflows;
+          if (this.errorTextOverflow[name] !== overflows) changed = true;
         }
-        this.errorTextOverflow = updated;
+        if (changed || Object.keys(updated).length !== Object.keys(this.errorTextOverflow).length) {
+          this.errorTextOverflow = updated;
+        }
       });
     },
     removeShouldntShows(questions, answers) {

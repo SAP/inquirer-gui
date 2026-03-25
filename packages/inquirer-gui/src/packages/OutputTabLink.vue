@@ -1,6 +1,6 @@
 <template>
   <div class="output-tab-link">
-    <a @click="$emit('show-output-tab-link')">View Details in the Output Tab</a>
+    <a @click="$emit('show-output-tab-link')">View details in the output tab.</a>
   </div>
 </template>
 
