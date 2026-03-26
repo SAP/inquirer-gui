@@ -44,24 +44,22 @@
         <span class="error-validation-text" :ref="(el) => _registerErrorTextRef(question.name, el)">{{
           question.validationMessage
         }}</span>
-        <div class="question-link" v-if="shouldShowValidationLink(question)">
+        <span class="question-link" v-if="question.validationLink">
           <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
-            <span
+            <img
               class="validation-link-icon"
               v-if="question.validationLink.icon"
-              v-html="decodeSvgIcon(question.validationLink.icon)"
-            ></span
-            ><span v-text="question.validationLink.text" id="cmdLinkText"></span>
+              :src="question.validationLink.icon"
+            /><span v-text="question.validationLink.text" id="cmdLinkText"></span>
           </a>
           <a v-else-if="question.validationLink.url" target="_blank" :href="question.validationLink.url">
-            <span
+            <img
               class="validation-link-icon"
               v-if="question.validationLink.icon"
-              v-html="decodeSvgIcon(question.validationLink.icon)"
-            ></span
-            ><span v-text="question.validationLink.text" id="urlLinkText"></span>
+              :src="question.validationLink.icon"
+            /><span v-text="question.validationLink.text" id="urlLinkText"></span>
           </a>
-        </div>
+        </span>
       </div>
       <OutputTabLink
         v-if="shouldShowOutputTabLink(question)"
@@ -149,9 +147,6 @@ export default {
         (question.__origAnswer !== undefined || !(question.guiOptions && question.guiOptions.hint && !question.isDirty))
       );
     },
-    shouldShowValidationLink(question) {
-      return !!question.validationLink;
-    },
     shouldShowOutputTabLink(question) {
       return !!(question.guiOptions?.showOutputTabLink === true && this.errorTextOverflow[question.name]);
     },
@@ -177,9 +172,9 @@ export default {
         let changed = false;
         for (const [name, el] of Object.entries(this._errorTextRefs)) {
           const clampedHeight = el.clientHeight;
-          el.style.webkitLineClamp = 'unset';
+          el.style.webkitLineClamp = "unset";
           const fullHeight = el.scrollHeight;
-          el.style.webkitLineClamp = '';
+          el.style.webkitLineClamp = "";
           const overflows = fullHeight > clampedHeight;
           updated[name] = overflows;
           if (this.errorTextOverflow[name] !== overflows) changed = true;
@@ -196,22 +191,6 @@ export default {
           delete answers[question.name];
         }
       }
-    },
-    decodeSvgIcon(iconDataUri) {
-      // Decode base64 data URI SVG to inline SVG string
-      // This allows the SVG to use currentColor and inherit CSS color properties
-      if (iconDataUri && iconDataUri.startsWith("data:image/svg+xml;base64,")) {
-        try {
-          const base64 = iconDataUri.replace("data:image/svg+xml;base64,", "");
-          const decoded = atob(base64);
-          return decoded;
-        } catch (e) {
-          this.console.error("Failed to decode SVG icon:", e);
-          return "";
-        }
-      }
-      // If it's not a base64 data URI, return empty (could be a regular URL)
-      return "";
     },
     async doValidate(question, answer) {
       // evaluate validate()
@@ -807,23 +786,9 @@ a {
 }
 
 /* Question hint div, Question link div */
-.question-hint {
-  padding-left: 4px;
-}
-
+.question-hint,
 .question-link {
   padding-left: 4px;
-  padding-top: 4px;
-
-  a {
-    color: var(--vscode-textLink-foreground, #3794ff);
-    text-decoration: underline;
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
 }
 
 /* Error validation text div */
@@ -834,17 +799,9 @@ a {
 
 /* Question valdation message with link icon img */
 .validation-link-icon {
-  display: inline-block;
   vertical-align: middle;
   padding-right: 5px;
-  line-height: 0;
-
-  svg {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    fill: var(--vscode-textLink-foreground);
-  }
+  color: var(--vscode-icon-foreground);
 }
 
 .add-messages,
@@ -894,5 +851,4 @@ a {
 .validation-messages {
   flex-direction: column;
 }
-
 </style>
