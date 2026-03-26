@@ -64,7 +64,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
     "@sap-devx/inquirer-gui-auto-complete-plugin": "^3.4.5",
-    "@sap-devx/inquirer-gui-date-plugin": "^3.4.5",
+    "@sap-devx/inquirer-gui-date-plugin": "3.0.1",
     "@sap-devx/inquirer-gui-file-browser-plugin": "^3.4.5",
     "@sap-devx/inquirer-gui-folder-browser-plugin": "^3.4.5",
     "@sap-devx/inquirer-gui-label-plugin": "^3.4.5",

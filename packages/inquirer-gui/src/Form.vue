@@ -67,7 +67,7 @@
         @show-output-tab-link="$emit('showOutputTabLink')"
       />
       <div
-        v-else-if="shouldShowAdditionalMessages(question)"
+        v-if="shouldShowAdditionalMessages(question)"
         class="add-messages"
         :key="'additional-msg-' + index"
         :id="'add-msg-' + index"
@@ -148,7 +148,13 @@ export default {
       );
     },
     shouldShowOutputTabLink(question) {
-      return !!(question.guiOptions?.showOutputTabLink === true && this.errorTextOverflow[question.name]);
+      const mode = question.showOutputTabLink;
+      if (!mode) return false;
+      if (mode === "validationMessageOverflow") {
+        return !!(question.shouldShow && !question.isValid && this.errorTextOverflow[question.name]);
+      }
+      // Function binding mode — check the evaluated result
+      return !!question._showOutputTabLink;
     },
     // Register or unregister a DOM element ref for an error text span.
     // Vue 3 calls function refs on every re-render, so we guard against
@@ -458,6 +464,16 @@ export default {
         }
       }
     },
+    async updateShowOutputTabLink(question, answers, questionIndex) {
+      if (typeof question.showOutputTabLink === "function") {
+        try {
+          question._showOutputTabLink = await question.showOutputTabLink(question.answer, answers);
+          this.questions.splice(questionIndex, 1, Object.assign({}, question));
+        } catch (e) {
+          this.console.error(`Could not evaluate showOutputTabLink() for ${question.name}`);
+        }
+      }
+    },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
         // we regard undefined as unanswered, so we do not
@@ -486,6 +502,7 @@ export default {
       if (answeredQuestion.isValid) {
         this.updateAdditionalMessages(answeredQuestion, answers, index);
       }
+      this.updateShowOutputTabLink(answeredQuestion, answers, index);
 
       // evaluate methods for other questions following answered question (e.g. when)
       let shouldStart = false;
@@ -567,6 +584,7 @@ export default {
             if (question.isValid) {
               this.updateAdditionalMessages(question, answers, questionIndex);
             }
+            this.updateShowOutputTabLink(question, answers, questionIndex);
           }
         }
         questionIndex++;
@@ -721,6 +739,10 @@ export default {
           // evaluate additionalMessages()
           if (typeof question.additionalMessages === "function" && question.isValid) {
             this.updateAdditionalMessages(question, answers, questionIndex);
+          }
+          // evaluate showOutputTabLink()
+          if (typeof question.showOutputTabLink === "function") {
+            this.updateShowOutputTabLink(question, answers, questionIndex);
           }
         }
         questionIndex++;
