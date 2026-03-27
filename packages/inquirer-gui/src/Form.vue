@@ -61,11 +61,6 @@
           </a>
         </span>
       </div>
-      <OutputTabLink
-        v-if="shouldShowOutputTabLink(question)"
-        :key="'output-tab-link-' + index"
-        @show-output-tab-link="$emit('showOutputTabLink')"
-      />
       <div
         v-if="shouldShowAdditionalMessages(question)"
         class="add-messages"
@@ -78,6 +73,11 @@
           question._additionalMessages.message
         }}</span>
       </div>
+      <OutputTabLink
+        v-if="shouldShowOutputTabLink(question)"
+        :key="'output-tab-link-' + index"
+        @show-output-tab-link="$emit('showOutputTabLink')"
+      />
     </template>
   </v-form>
 </template>
