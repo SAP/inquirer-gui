@@ -763,9 +763,17 @@ export default {
     this._errorTextRefs = {}; // non-reactive map: question.name -> DOM element
   },
   mounted() {
-    // Watch for container width changes to re-evaluate whether error text overflows 2+ lines
-    this._resizeObserver = new ResizeObserver(() => {
-      this._updateErrorTextOverflow();
+    // Watch for container WIDTH changes to re-evaluate whether error text overflows 2+ lines.
+    // We only re-measure when the width changes (not height) because text line-wrapping depends
+    // on container width. Ignoring height-only changes prevents false triggers when the dropdown
+    // menu opens/closes (which changes this.$el's height but not its width).
+    this._containerWidth = this.$el ? this.$el.getBoundingClientRect().width : 0;
+    this._resizeObserver = new ResizeObserver((entries) => {
+      const newWidth = entries[0]?.contentRect.width ?? 0;
+      if (newWidth !== this._containerWidth) {
+        this._containerWidth = newWidth;
+        this._updateErrorTextOverflow();
+      }
     });
     this._resizeObserver.observe(this.$el);
   },
