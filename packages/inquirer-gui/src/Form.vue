@@ -76,6 +76,7 @@
       <OutputTabLink
         v-if="shouldShowOutputTabLink(question)"
         :key="'output-tab-link-' + index"
+        :link-message="question._outputTabLinkMessage"
         @show-output-tab-link="$emit('showOutputTabLink')"
       />
     </template>
@@ -467,7 +468,16 @@ export default {
     async updateShowOutputTabLink(question, answers, questionIndex) {
       if (typeof question.showOutputTabLink === "function") {
         try {
-          question._showOutputTabLink = await question.showOutputTabLink(question.answer, answers);
+          const result = await question.showOutputTabLink(question.answer, answers);
+          if (result !== null && typeof result === "object" && "show" in result) {
+            // { show: boolean, linkMessage?: string }
+            question._showOutputTabLink = result.show;
+            question._outputTabLinkMessage = result.linkMessage ?? undefined;
+          } else {
+            // plain boolean
+            question._showOutputTabLink = !!result;
+            question._outputTabLinkMessage = undefined;
+          }
           this.questions.splice(questionIndex, 1, Object.assign({}, question));
         } catch (e) {
           this.console.error(`Could not evaluate showOutputTabLink() for ${question.name}`);

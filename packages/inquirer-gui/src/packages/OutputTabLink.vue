@@ -1,12 +1,18 @@
 <template>
   <div class="output-tab-link">
-    <a @click="$emit('show-output-tab-link')">View details in the output tab.</a>
+    <a @click="$emit('show-output-tab-link')">{{ linkMessage || "View details in the output tab." }}</a>
   </div>
 </template>
 
 <script>
 export default {
   name: "OutputTabLink",
+  props: {
+    linkMessage: {
+      type: String,
+      default: undefined,
+    },
+  },
   emits: ["show-output-tab-link"],
 };
 </script>
