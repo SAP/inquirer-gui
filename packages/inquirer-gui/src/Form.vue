@@ -780,7 +780,12 @@ export default {
   },
   created() {
     this.plugins = markRaw(Plugins.registerBuiltinPlugins());
-    this._errorTextRefs = {}; // non-reactive map: question.name -> DOM element
+    // Non-reactive map: question.name -> DOM element for error text spans.
+    // Initialized here (before mounted) but will remain empty until Vue's
+    // function refs fire after the first render — which happens no earlier
+    // than mounted(). So _updateErrorTextOverflow() called during created()
+    // would iterate an empty map and exit harmlessly.
+    this._errorTextRefs = {};
   },
   mounted() {
     // Watch for container WIDTH changes to re-evaluate whether error text overflows 2+ lines.
@@ -900,5 +905,14 @@ a {
 /* Validation messages need column layout for error text + link below */
 .validation-messages {
   flex-direction: column;
+
+  // Explicitly clamp error text to 2 lines so the overflow detector in
+  // _updateErrorTextOverflow() has a well-defined clamped height to compare
+  // against. Without this, the overflow detection for validationMessageOverflow
+  // mode would silently depend on the -webkit-line-clamp inherited from
+  // .messages-text via @extend — which could break if the nesting ever changes.
+  .error-validation-text {
+    -webkit-line-clamp: 2;
+  }
 }
 </style>
