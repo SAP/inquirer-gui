@@ -152,7 +152,13 @@ export default {
       const mode = question.showOutputTabLink;
       if (!mode) return false;
       if (mode === "validationMessageOverflow") {
-        return !!(question.shouldShow && !question.isValid && this.errorTextOverflow[question.name]);
+        return !!(
+          question.shouldShow &&
+          !question.isValid &&
+          (question.__origAnswer !== undefined ||
+            !(question.guiOptions && question.guiOptions.hint && !question.isDirty)) &&
+          this.errorTextOverflow[question.name]
+        );
       }
       // Function binding mode — check the evaluated result
       return !!question._showOutputTabLink;
@@ -684,6 +690,10 @@ export default {
         // visibility
         const shouldShow = question.when === false || typeof question.when === "function" ? false : true;
         question["shouldShow"] = shouldShow;
+
+        // output tab link
+        question["_showOutputTabLink"] = false;
+        question["_outputTabLinkMessage"] = undefined;
       }
 
       const answers = this.getAnswers();
