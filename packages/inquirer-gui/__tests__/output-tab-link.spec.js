@@ -1,19 +1,13 @@
 /* eslint-disable no-undef */
-import { mount, enableAutoUnmount } from "@vue/test-utils";
+import { mount, enableAutoUnmount, flushPromises } from "@vue/test-utils";
 import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../src/Form.vue";
 import InputVue from "../src/packages/QuestionInput.vue";
 import OutputTabLink from "../src/packages/OutputTabLink.vue";
-import utils from "./utils";
-
-class ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-global.ResizeObserver = ResizeObserver;
+// ResizeObserver polyfill is provided by setup.js (which also captures the callback,
+// enabling the _resizeObserver callback test below).
 
 global.visualViewport = {
   addEventListener: () => {},
@@ -118,10 +112,10 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(100);
+    await flushPromises();
 
-    // 1st pass must initialize these so they don't carry stale values
+    // 1st pass sets these synchronously; 2nd-pass async call (trigger==="initial") also
+    // resolves to false. flushPromises() ensures the async call has completed too.
     expect(wrapper.vm.questions[1]._showOutputTabLink).toBe(false);
     expect(wrapper.vm.questions[1]._outputTabLinkMessage).toBeUndefined();
   });
@@ -132,8 +126,7 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(false);
   });
@@ -144,13 +137,12 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     // Trigger the show condition
     const inputs = wrapper.findAll("input");
-    inputs.at(0).setValue("show");
-    await utils.sleep(300);
+    await inputs.at(0).setValue("show");
+    await flushPromises();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
     expect(wrapper.findComponent(OutputTabLink).props("linkMessage")).toBe("Custom link message");
@@ -162,12 +154,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     const inputs = wrapper.findAll("input");
-    inputs.at(0).setValue("show-no-msg");
-    await utils.sleep(300);
+    await inputs.at(0).setValue("show-no-msg");
+    await flushPromises();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
     expect(wrapper.findComponent(OutputTabLink).props("linkMessage")).toBeUndefined();
@@ -179,18 +170,17 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     // Show first
     const inputs = wrapper.findAll("input");
-    inputs.at(0).setValue("show");
-    await utils.sleep(300);
+    await inputs.at(0).setValue("show");
+    await flushPromises();
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
 
     // Then hide
-    inputs.at(0).setValue("hide");
-    await utils.sleep(300);
+    await inputs.at(0).setValue("hide");
+    await flushPromises();
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(false);
   });
 
@@ -200,12 +190,11 @@ describe("OutputTabLink — function-based showOutputTabLink", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithFunctionOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     const inputs = wrapper.findAll("input");
-    inputs.at(0).setValue("show");
-    await utils.sleep(300);
+    await inputs.at(0).setValue("show");
+    await flushPromises();
 
     await wrapper.findComponent(OutputTabLink).find("a").trigger("click");
     expect(wrapper.emitted("showOutputTabLink")).toBeTruthy();
@@ -226,13 +215,12 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     // Enter invalid answer to trigger validation
     const input = wrapper.find("input");
-    input.setValue("x");
-    await utils.sleep(300);
+    await input.setValue("x");
+    await flushPromises();
 
     // No overflow by default in jsdom → link should not appear
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(false);
@@ -244,15 +232,13 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
-    // Simulate overflow: set errorTextOverflow directly on the vm
+    // Simulate overflow by setting errorTextOverflow directly.
+    // No isDirty or __origAnswer mutation is needed: questionWithOverflowOutputTabLink has no
+    // guiOptions.hint, so the hint+not-dirty guard in shouldShowOutputTabLink is always true.
     const name = questionWithOverflowOutputTabLink[0].name;
     wrapper.vm.errorTextOverflow = { [name]: true };
-    // Mark as dirty to satisfy shouldShowValidationMessage guard
-    wrapper.vm.questions[0].isDirty = true;
-    wrapper.vm.questions[0].__origAnswer = "";
     await nextTick();
 
     expect(wrapper.findComponent(OutputTabLink).exists()).toBe(true);
@@ -264,8 +250,7 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowAndHint });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     const name = questionWithOverflowAndHint[0].name;
     // Force overflow but do NOT set __origAnswer or isDirty — shouldShowValidationMessage returns false
@@ -294,8 +279,7 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     const name = questionWithOverflowOutputTabLink[0].name;
     // Inject a fake DOM element where content does NOT overflow
@@ -318,8 +302,7 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
       attachTo: document.body,
     });
     wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
-    await nextTick();
-    await utils.sleep(300);
+    await flushPromises();
 
     const name = questionWithOverflowOutputTabLink[0].name;
     // Inject a fake DOM element where full height exceeds clamped height
@@ -331,6 +314,27 @@ describe("OutputTabLink — validationMessageOverflow mode", () => {
     wrapper.vm._errorTextRefs = { [name]: fakeEl };
     wrapper.vm._updateErrorTextOverflow();
     await nextTick();
+    await nextTick();
+
+    expect(wrapper.vm.errorTextOverflow[name]).toBe(true);
+  });
+
+  test("ResizeObserver callback triggers _updateErrorTextOverflow on width change", async () => {
+    const wrapper = mount(FormVue, {
+      global: { plugins: [vuetify], stubs: vscodeStubs, components: { QuestionInput: InputVue } },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionWithOverflowOutputTabLink });
+    await flushPromises();
+
+    const name = questionWithOverflowOutputTabLink[0].name;
+    // Inject a fake DOM element that overflows
+    const fakeEl = { clientHeight: 20, scrollHeight: 60, style: {} };
+    wrapper.vm._errorTextRefs = { [name]: fakeEl };
+
+    // Fire the ResizeObserver callback with a width different from the initial 0 (jsdom).
+    // The callback only calls _updateErrorTextOverflow when the width changes.
+    wrapper.vm._resizeObserver._callback([{ contentRect: { width: 500 } }]);
     await nextTick();
 
     expect(wrapper.vm.errorTextOverflow[name]).toBe(true);
