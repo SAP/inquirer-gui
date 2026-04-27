@@ -41,7 +41,9 @@
         :key="'validation-' + index"
         :id="'validation-msg-' + index"
       >
-        <span class="error-validation-text">{{ question.validationMessage }}</span>
+        <span class="error-validation-text" :ref="(el) => _registerErrorTextRef(question.name, el)">{{
+          question.validationMessage
+        }}</span>
         <span class="question-link" v-if="question.validationLink">
           <a v-if="question.validationLink.command" @click="executeCommand(question.validationLink.command)">
             <img
@@ -60,7 +62,7 @@
         </span>
       </div>
       <div
-        v-else-if="shouldShowAdditionalMessages(question)"
+        v-if="shouldShowAdditionalMessages(question)"
         class="add-messages"
         :key="'additional-msg-' + index"
         :id="'add-msg-' + index"
@@ -71,6 +73,12 @@
           question._additionalMessages.message
         }}</span>
       </div>
+      <OutputTabLink
+        v-if="shouldShowOutputTabLink(question)"
+        :key="'output-tab-link-' + index"
+        :link-message="question._outputTabLinkMessage"
+        @show-output-tab-link="$emit('showOutputTabLink')"
+      />
     </template>
   </v-form>
 </template>
@@ -78,6 +86,7 @@
 <script>
 import { markRaw } from "vue";
 import Plugins from "./Plugins";
+import OutputTabLink from "./packages/OutputTabLink.vue";
 import isEqual from "lodash/isEqual";
 
 const NOT_ANSWERED = "Mandatory field";
@@ -91,6 +100,7 @@ const Severity = {
 export default {
   // eslint-disable-next-line vue/multi-word-component-names, vue/no-reserved-component-names
   name: "Form",
+  components: { OutputTabLink },
   props: {
     questions: Array,
   },
@@ -107,6 +117,8 @@ export default {
         [Severity.information]: "information-outline",
         [Severity.error]: "close-circle-outline",
       },
+      // Tracks whether each question's error text overflows 2 lines (question.name -> boolean)
+      errorTextOverflow: {},
     };
   },
   computed: {
@@ -135,6 +147,55 @@ export default {
         !question.isValid &&
         (question.__origAnswer !== undefined || !(question.guiOptions && question.guiOptions.hint && !question.isDirty))
       );
+    },
+    shouldShowOutputTabLink(question) {
+      const mode = question.showOutputTabLink;
+      if (!mode) return false;
+      if (mode === "validationMessageOverflow") {
+        return !!(
+          question.shouldShow &&
+          !question.isValid &&
+          (question.__origAnswer !== undefined ||
+            !(question.guiOptions && question.guiOptions.hint && !question.isDirty)) &&
+          this.errorTextOverflow[question.name]
+        );
+      }
+      // Function binding mode — check the evaluated result
+      return !!question._showOutputTabLink;
+    },
+    // Register or unregister a DOM element ref for an error text span.
+    // Vue 3 calls function refs on every re-render, so we guard against
+    // redundant updates to avoid infinite render loops.
+    _registerErrorTextRef(questionName, el) {
+      if (el) {
+        if (this._errorTextRefs[questionName] === el) return;
+        this._errorTextRefs[questionName] = el;
+      } else {
+        if (!(questionName in this._errorTextRefs)) return;
+        delete this._errorTextRefs[questionName];
+      }
+      this._updateErrorTextOverflow();
+    },
+    // Measure each tracked error text span and update overflow state.
+    // Chromium doesn't report scrollHeight > clientHeight with -webkit-line-clamp,
+    // so we temporarily remove the clamp to measure the full content height.
+    _updateErrorTextOverflow() {
+      this.$nextTick(() => {
+        const updated = {};
+        let changed = false;
+        for (const [name, el] of Object.entries(this._errorTextRefs)) {
+          const clampedHeight = el.clientHeight;
+          el.style.webkitLineClamp = "unset";
+          const fullHeight = el.scrollHeight;
+          el.style.webkitLineClamp = "";
+          const overflows = fullHeight > clampedHeight;
+          updated[name] = overflows;
+          if (this.errorTextOverflow[name] !== overflows) changed = true;
+        }
+        if (changed || Object.keys(updated).length !== Object.keys(this.errorTextOverflow).length) {
+          this.errorTextOverflow = updated;
+        }
+      });
     },
     removeShouldntShows(questions, answers) {
       for (let question of this.questions) {
@@ -182,11 +243,15 @@ export default {
       question.isValid = false;
       question.validationMessage = linkMsg.message;
       question.validationLink = linkMsg.link;
+      // Re-evaluate overflow now that the message has changed
+      this._updateErrorTextOverflow();
     },
     setInvalid(question, message = NOT_ANSWERED) {
       question.isValid = false;
       question.validationLink = undefined; // Ensure existing validation link is removed
       question.validationMessage = message;
+      // Re-evaluate overflow — message may have changed and may now be long enough to show the link
+      this._updateErrorTextOverflow();
     },
     setValid(question) {
       question.isValid = true;
@@ -406,6 +471,25 @@ export default {
         }
       }
     },
+    async updateShowOutputTabLink(question, answers, questionIndex) {
+      if (typeof question.showOutputTabLink === "function") {
+        try {
+          const result = await question.showOutputTabLink(question.answer, answers);
+          if (result !== null && typeof result === "object" && "show" in result) {
+            // { show: boolean, linkMessage?: string }
+            question._showOutputTabLink = result.show;
+            question._outputTabLinkMessage = result.linkMessage ?? undefined;
+          } else {
+            // plain boolean
+            question._showOutputTabLink = !!result;
+            question._outputTabLinkMessage = undefined;
+          }
+          this.questions.splice(questionIndex, 1, Object.assign({}, question));
+        } catch (e) {
+          this.console.error(`Could not evaluate showOutputTabLink() for ${question.name}`);
+        }
+      }
+    },
     async onAnswerChanged(name, answer) {
       if (answer === undefined) {
         // we regard undefined as unanswered, so we do not
@@ -434,6 +518,7 @@ export default {
       if (answeredQuestion.isValid) {
         this.updateAdditionalMessages(answeredQuestion, answers, index);
       }
+      this.updateShowOutputTabLink(answeredQuestion, answers, index);
 
       // evaluate methods for other questions following answered question (e.g. when)
       let shouldStart = false;
@@ -515,6 +600,7 @@ export default {
             if (question.isValid) {
               this.updateAdditionalMessages(question, answers, questionIndex);
             }
+            this.updateShowOutputTabLink(question, answers, questionIndex);
           }
         }
         questionIndex++;
@@ -604,6 +690,10 @@ export default {
         // visibility
         const shouldShow = question.when === false || typeof question.when === "function" ? false : true;
         question["shouldShow"] = shouldShow;
+
+        // output tab link
+        question["_showOutputTabLink"] = false;
+        question["_outputTabLinkMessage"] = undefined;
       }
 
       const answers = this.getAnswers();
@@ -670,6 +760,10 @@ export default {
           if (typeof question.additionalMessages === "function" && question.isValid) {
             this.updateAdditionalMessages(question, answers, questionIndex);
           }
+          // evaluate showOutputTabLink()
+          if (typeof question.showOutputTabLink === "function") {
+            this.updateShowOutputTabLink(question, answers, questionIndex);
+          }
         }
         questionIndex++;
       }
@@ -686,6 +780,30 @@ export default {
   },
   created() {
     this.plugins = markRaw(Plugins.registerBuiltinPlugins());
+    // Non-reactive map: question.name -> DOM element for error text spans.
+    // Initialized here (before mounted) but will remain empty until Vue's
+    // function refs fire after the first render — which happens no earlier
+    // than mounted(). So _updateErrorTextOverflow() called during created()
+    // would iterate an empty map and exit harmlessly.
+    this._errorTextRefs = {};
+  },
+  mounted() {
+    // Watch for container WIDTH changes to re-evaluate whether error text overflows 2+ lines.
+    // We only re-measure when the width changes (not height) because text line-wrapping depends
+    // on container width. Ignoring height-only changes prevents false triggers when the dropdown
+    // menu opens/closes (which changes this.$el's height but not its width).
+    this._containerWidth = this.$el ? this.$el.getBoundingClientRect().width : 0;
+    this._resizeObserver = new ResizeObserver((entries) => {
+      const newWidth = entries[0]?.contentRect.width ?? 0;
+      if (newWidth !== this._containerWidth) {
+        this._containerWidth = newWidth;
+        this._updateErrorTextOverflow();
+      }
+    });
+    this._resizeObserver.observe(this.$el);
+  },
+  beforeUnmount() {
+    this._resizeObserver?.disconnect();
   },
 };
 </script>
@@ -781,6 +899,20 @@ a {
     &.severity-info {
       color: var(--vscode-foreground);
     }
+  }
+}
+
+/* Validation messages need column layout for error text + link below */
+.validation-messages {
+  flex-direction: column;
+
+  // Explicitly clamp error text to 2 lines so the overflow detector in
+  // _updateErrorTextOverflow() has a well-defined clamped height to compare
+  // against. Without this, the overflow detection for validationMessageOverflow
+  // mode would silently depend on the -webkit-line-clamp inherited from
+  // .messages-text via @extend — which could break if the nesting ever changes.
+  .error-validation-text {
+    -webkit-line-clamp: 2;
   }
 }
 </style>

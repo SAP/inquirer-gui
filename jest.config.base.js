@@ -4,6 +4,7 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: ["node", "node-addons"],
   },
+  setupFiles: [require.resolve("./packages/inquirer-gui/__tests__/setup.js")],
   coverageProvider: "v8",
   collectCoverage: true,
   collectCoverageFrom: [

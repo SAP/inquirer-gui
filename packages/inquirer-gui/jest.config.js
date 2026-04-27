@@ -4,6 +4,7 @@ module.exports = {
   testEnvironmentOptions: {
     customExportConditions: ["node", "node-addons"],
   },
+  setupFiles: ["<rootDir>/__tests__/setup.js"],
   coverageProvider: "v8",
   testRegex: "(/__tests__/(.*).(test|spec)).[jt]sx?$" /* eslint-disable-line */,
   collectCoverage: true,

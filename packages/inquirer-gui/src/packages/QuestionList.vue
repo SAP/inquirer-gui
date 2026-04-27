@@ -43,7 +43,7 @@ export default {
       if (open) {
         // WORKAROUND: fixes dialog menu popup position on first click
         // Issue: https://github.com/vuetifyjs/vuetify/issues/17126
-        setTimeout(() => window.dispatchEvent(new Event("resize")), 0);
+        requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
       }
     },
     onAnswerChanged(value) {
