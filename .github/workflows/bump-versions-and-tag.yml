@@ -34,7 +34,9 @@ jobs:
           node-version: "24.x"
 
       - name: Install dependencies
-        run: npm install
+        # Use npm ci instead of npm install to avoid modifying package-lock.json on Linux
+        # (platform-specific optional deps from vite/rollup would dirty the working tree and cause lerna to abort)
+        run: npm ci
 
       - name: Ensure Build Is Green
         run: npm run ci
