@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.10 (2026-04-28)
+
+### Bug Fixes
+
+- **ci:** discard lockfile changes after npm install to unblock lerna ([#809](https://github.com/SAP/inquirer-gui/issues/809)) ([5ba1cf0](https://github.com/SAP/inquirer-gui/commit/5ba1cf00a45c05a01881cb0610fd3ee5437f1a1b))
+
 ## 3.4.9 (2026-02-09)
 
 **Note:** Version bump only for package @sap-devx/inquirer-gui-tiles-plugin
