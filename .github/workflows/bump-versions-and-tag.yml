@@ -34,9 +34,9 @@ jobs:
           node-version: "24.x"
 
       - name: Install dependencies
-        # Use npm ci instead of npm install to avoid modifying package-lock.json on Linux
-        # (platform-specific optional deps from vite/rollup would dirty the working tree and cause lerna to abort)
-        run: npm ci
+        # --omit=optional skips platform-specific native binaries (e.g. rollup, encoding)
+        # so npm install does not modify package-lock.json on Linux and lerna sees a clean tree
+        run: npm install --omit=optional
 
       - name: Ensure Build Is Green
         run: npm run ci
