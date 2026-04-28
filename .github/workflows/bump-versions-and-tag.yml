@@ -34,9 +34,13 @@ jobs:
           node-version: "24.x"
 
       - name: Install dependencies
-        # --omit=optional skips platform-specific native binaries (e.g. rollup, encoding)
-        # so npm install does not modify package-lock.json on Linux and lerna sees a clean tree
-        run: npm install --omit=optional
+        run: npm install
+
+      - name: Discard lockfile changes
+        # npm install on Linux adds platform-specific optional deps and modifies package-lock.json.
+        # Reverting it keeps the working tree clean so lerna does not abort with EUNCOMMIT.
+        # node_modules are fully installed regardless — this only discards the lockfile diff.
+        run: git checkout -- package-lock.json
 
       - name: Ensure Build Is Green
         run: npm run ci
