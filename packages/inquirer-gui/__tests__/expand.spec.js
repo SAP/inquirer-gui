@@ -26,6 +26,19 @@ const questionExpandDefaultValue = [
   },
 ];
 
+const questionExpandObjectDefaultValue = [
+  {
+    type: "expand",
+    name: "country",
+    message: "Choose a country",
+    choices: [
+      { name: "United States of America", value: { country: "USA", currency: "Dollar" } },
+      { name: "People's Republic of China", value: { country: "China", currency: "Yen" } },
+    ],
+    default: { country: "China", currency: "Yen" },
+  },
+];
+
 const questionExpandNoDefault = [
   {
     type: "expand",
@@ -114,6 +127,23 @@ describe("Question of type expand", () => {
 
     // test answers
     expect(wrapper.props("questions")[0].answer).toEqual("No");
+  });
+
+  test("Expand with object default value", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        components: {
+          QuestionExpand: QuestionExpand,
+        },
+        stubs: vscodeStubs,
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionExpandObjectDefaultValue });
+    await nextTick();
+
+    expect(wrapper.props("questions")[0].answer).toStrictEqual({ country: "China", currency: "Yen" });
   });
 
   test("Expand without default", async () => {

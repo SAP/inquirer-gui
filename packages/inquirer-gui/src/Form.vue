@@ -407,7 +407,7 @@ export default {
           } else {
             index = question._choices.findIndex(function (choice) {
               if (question._default) {
-                return choice.value === question._default;
+                return isEqual(choice.value, question._default);
               }
             });
           }
