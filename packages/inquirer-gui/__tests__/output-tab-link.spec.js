@@ -80,7 +80,7 @@ enableAutoUnmount(afterEach);
 describe("OutputTabLink component", () => {
   test("renders default link message when no linkMessage prop provided", () => {
     const wrapper = mount(OutputTabLink);
-    expect(wrapper.find("a").text()).toBe("View details in the output tab.");
+    expect(wrapper.find("a").text()).toBe("View Details in the Output Tab.");
   });
 
   test("renders custom linkMessage when prop is provided", () => {
