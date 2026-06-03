@@ -1,6 +1,6 @@
 <template>
   <div class="output-tab-link">
-    <a @click="$emit('show-output-tab-link')">{{ linkMessage || "View details in the output tab." }}</a>
+    <a @click="$emit('show-output-tab-link')">{{ linkMessage || "View Details in the Output Tab." }}</a>
   </div>
 </template>
 
