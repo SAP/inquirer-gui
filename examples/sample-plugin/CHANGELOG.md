@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.11 (2026-06-04)
+
+### Bug Fixes
+
+- **inquirer-gui:** fix capitalisation of output tab link message ([#38362](https://github.com/SAP/inquirer-gui/sample-plugin/issues/38362)) ([#811](https://github.com/SAP/inquirer-gui/sample-plugin/issues/811)) ([e2d0ac4](https://github.com/SAP/inquirer-gui/sample-plugin/commit/e2d0ac4cb47f3fe2fb0fb0b7204ff77c26ede8b0))
+
 ## 3.4.10 (2026-04-28)
 
 ### Bug Fixes
