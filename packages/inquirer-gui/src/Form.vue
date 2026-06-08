@@ -62,7 +62,7 @@
         </span>
       </div>
       <div
-        v-if="shouldShowAdditionalMessages(question)"
+        v-else-if="shouldShowAdditionalMessages(question)"
         class="add-messages"
         :key="'additional-msg-' + index"
         :id="'add-msg-' + index"
