@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.12 (2026-06-09)
+
+### Bug Fixes
+
+- **inquirer-gui:** only allow additional or validation messages to be displayed ([#813](https://github.com/SAP/inquirer-gui/issues/813)) ([4c4ac72](https://github.com/SAP/inquirer-gui/commit/4c4ac72a96118d1eec935a0e258f794f4a13a277))
+
 ## 3.4.11 (2026-06-04)
 
 ### Bug Fixes
