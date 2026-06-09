@@ -1,6 +1,6 @@
 {
   "name": "sample-navigator",
-  "version": "3.4.12",
+  "version": "3.4.13",
   "private": true,
   "scripts": {
     "dev": "vite",
