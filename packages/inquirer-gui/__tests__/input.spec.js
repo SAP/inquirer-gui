@@ -292,6 +292,17 @@ const questionsWithValidateLinks = [
   },
 ];
 
+const questionAddMsgAndValidation = [
+  {
+    type: "input",
+    name: "addmsg_then_validation",
+    message: "message for addmsg_then_validation",
+    validate: (input) => (input === "triggerVal" ? "Some validation message" : true),
+    additionalMessages: (input) =>
+      input === "triggerWarn" ? { message: "Some warning message", severity: 1 } : undefined,
+  },
+];
+
 const questionsWithAdditionalMessages = [
   {
     type: "input",
@@ -920,6 +931,40 @@ describe("Questions of type input, password and number", () => {
     ).toEqual("text validation message 1234");
     expect(validationMsgWithCmd.find("span.question-link").isVisible()).toBe(false);
     expect(validationMsgWithCmd.find("#cmdLinkText").exists()).toBe(false); */
+  });
+
+  test("Input validation message replaces previously shown additional message", async () => {
+    const wrapper = mount(FormVue, {
+      global: {
+        plugins: [vuetify],
+        stubs: vscodeStubs,
+        components: { QuestionInput: InputVue },
+      },
+      attachTo: document.body,
+    });
+    wrapper.setProps({ questions: questionAddMsgAndValidation });
+    await nextTick();
+    await utils.sleep(300);
+
+    const input = wrapper.findAll("input").at(0);
+
+    // Given: input value that triggers an additional (warning) message
+    input.setValue("triggerWarn");
+    await utils.sleep(300);
+
+    expect(wrapper.find(".add-messages").exists()).toBe(true);
+    expect(wrapper.find(".add-messages span.messages-text").text()).toEqual("Some warning message");
+    expect(wrapper.find("#validation-msg-0").exists()).toBe(false);
+
+    // When: input value changes to one that fails validation
+    input.setValue("triggerVal");
+    await utils.sleep(300);
+
+    // Then: validation message is shown AND the additional message is gone
+    const validationMsg = wrapper.find("#validation-msg-0");
+    expect(validationMsg.exists()).toBe(true);
+    expect(validationMsg.find("span.error-validation-text").element.innerHTML).toEqual("Some validation message");
+    expect(wrapper.find(".add-messages").exists()).toBe(false);
   });
 
   test("Input with additional messages", async () => {
