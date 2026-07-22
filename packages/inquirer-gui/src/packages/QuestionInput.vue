@@ -9,10 +9,27 @@
 </template>
 
 <script>
+function applyPatch(el) {
+  if (el && el.shadowRoot && !el.shadowRoot.querySelector("style.line-height-patch")) {
+    const style = document.createElement("style");
+    style.className = "line-height-patch";
+    style.textContent = "input { line-height: normal !important; }";
+    el.shadowRoot.appendChild(style);
+  }
+}
+
 export default {
   name: "QuestionInput",
   props: {
     question: Object,
+  },
+  mounted() {
+    const el = this.$el;
+    if (el && typeof el.updateComplete !== "undefined") {
+      el.updateComplete.then(() => applyPatch(el));
+    } else {
+      applyPatch(el);
+    }
   },
   methods: {
     onInput(val) {
