@@ -1500,3 +1500,24 @@ describe("Questions of type input, password and number", () => {
     expect(component).toBe("CustomComponent");
   });
 });
+
+describe("applyPatch shadow DOM injection", () => {
+  test("injects exactly one style.line-height-patch and does not inject again on repeat calls", () => {
+    const styleNodes = [];
+    const mockShadowRoot = {
+      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      appendChild: (node) => styleNodes.push(node),
+    };
+    const wrapper = mount(InputVue, {
+      props: { question: { name: "test", answer: "", type: "input" } },
+      global: { stubs: vscodeStubs },
+    });
+    Object.defineProperty(wrapper.vm.$el, "shadowRoot", { value: mockShadowRoot, writable: true });
+    Object.defineProperty(wrapper.vm.$el, "updateComplete", { value: undefined, writable: true });
+    wrapper.vm.$options.mounted.call(wrapper.vm);
+    wrapper.vm.$options.mounted.call(wrapper.vm);
+    expect(styleNodes.length).toBe(1);
+    expect(styleNodes[0].className).toBe("line-height-patch");
+    expect(styleNodes[0].textContent).toContain("line-height: normal");
+  });
+});
