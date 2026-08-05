@@ -12,10 +12,15 @@
 </template>
 
 <script>
+import { mountLineHeightPatch } from "../../../inquirer-gui/src/utils";
+
 export default {
   name: "QuestionFileBrowser",
   props: {
     question: Object,
+  },
+  mounted() {
+    mountLineHeightPatch(this.$refs.path);
   },
   data: () => ({
     path: "/home/",

@@ -9,17 +9,7 @@
 </template>
 
 <script>
-// @vscode-elements/elements@1.11.0 hardcodes line-height: 18px on the inner
-// <input> with no CSS custom property hook. Remove this patch when the library
-// exposes one (e.g. --vscode-input-line-height).
-function applyPatch(el) {
-  if (el && el.shadowRoot && !el.shadowRoot.querySelector("style.line-height-patch")) {
-    const style = document.createElement("style");
-    style.className = "line-height-patch";
-    style.textContent = "input { line-height: normal !important; }";
-    el.shadowRoot.appendChild(style);
-  }
-}
+import { mountLineHeightPatch } from "../utils";
 
 export default {
   name: "QuestionInput",
@@ -27,12 +17,7 @@ export default {
     question: Object,
   },
   mounted() {
-    const el = this.$el;
-    if (el && typeof el.updateComplete !== "undefined") {
-      el.updateComplete.then(() => applyPatch(el));
-    } else {
-      applyPatch(el); // fallback for non-Lit environments; usually a no-op in tests
-    }
+    mountLineHeightPatch(this.$el);
   },
   methods: {
     onInput(val) {

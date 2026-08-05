@@ -1501,7 +1501,7 @@ describe("Questions of type input, password and number", () => {
   });
 });
 
-describe("applyPatch shadow DOM injection", () => {
+describe("mountLineHeightPatch shadow DOM injection", () => {
   test("injects exactly one style.line-height-patch and does not inject again on repeat calls", () => {
     const styleNodes = [];
     const mockShadowRoot = {
