@@ -21,6 +21,12 @@
 <script>
 import { mountLineHeightPatch } from "../../../inquirer-gui/src/utils";
 
+// TODO: separate login from answer
+//   @input should fire an answerChanged event
+//   icon@click should fire a custom doLogin event
+// This enables validating the password upon typing
+// It also enables providing specific feedback when actual login fails/succeeds
+
 export default {
   name: "QuestionLogin",
   props: {
