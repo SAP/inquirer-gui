@@ -4,6 +4,7 @@ import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../../inquirer-gui/src/Form.vue";
+import QuestionFileBrowser from "../src/packages/QuestionFileBrowser.vue";
 
 import QuestionFileBrowserPlugin from "../../file-browser-plugin/src";
 // import QuestionFileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
@@ -100,5 +101,56 @@ describe("Question of type file browser", () => {
     const emittedPayload = emittedEvent[emittedEvent.length - 1];
     expect(emittedPayload[0].configFile).toEqual("/home/user");
     expect(emittedPayload[1]).toBeUndefined();
+  });
+});
+
+describe("mountLineHeightPatch in QuestionFileBrowser", () => {
+  test("injects exactly one style.line-height-patch and is idempotent", () => {
+    const styleNodes = [];
+    const mockShadowRoot = {
+      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      appendChild: (node) => styleNodes.push(node),
+    };
+    const wrapper = mount(QuestionFileBrowser, {
+      props: { question: { name: "test", answer: "", type: "input" } },
+      global: {
+        stubs: {
+          "vscode-textfield": { template: "<div><slot></slot></div>" },
+          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-icon": { template: "<i></i>" },
+        },
+      },
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: undefined, writable: true });
+    wrapper.vm.$options.mounted.call(wrapper.vm);
+    wrapper.vm.$options.mounted.call(wrapper.vm);
+    expect(styleNodes.length).toBe(1);
+    expect(styleNodes[0].className).toBe("line-height-patch");
+    expect(styleNodes[0].textContent).toContain("line-height: normal");
+  });
+
+  test("injects patch after updateComplete resolves", async () => {
+    const styleNodes = [];
+    const mockShadowRoot = {
+      querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
+      appendChild: (node) => styleNodes.push(node),
+    };
+    const wrapper = mount(QuestionFileBrowser, {
+      props: { question: { name: "test", answer: "", type: "input" } },
+      global: {
+        stubs: {
+          "vscode-textfield": { template: "<div><slot></slot></div>" },
+          "v-tooltip": { template: "<div><slot name='activator' :props='{}'></slot></div>" },
+          "v-icon": { template: "<i></i>" },
+        },
+      },
+    });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "shadowRoot", { value: mockShadowRoot, writable: true });
+    Object.defineProperty(wrapper.vm.$refs.textfield, "updateComplete", { value: Promise.resolve(), writable: true });
+    wrapper.vm.$options.mounted.call(wrapper.vm);
+    await Promise.resolve();
+    expect(styleNodes.length).toBe(1);
+    expect(styleNodes[0].className).toBe("line-height-patch");
   });
 });
