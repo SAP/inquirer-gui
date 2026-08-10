@@ -28,6 +28,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@sap-devx/inquirer-gui": "^3.4.14",
     "vue": "^3.3.4"
   }
 }
