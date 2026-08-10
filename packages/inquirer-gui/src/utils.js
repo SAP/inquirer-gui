@@ -12,8 +12,8 @@ function applyPatch(el) {
 }
 
 export function mountLineHeightPatch(el) {
-  if (el && typeof el.updateComplete !== "undefined") {
-    el.updateComplete.then(() => applyPatch(el));
+  if (el && typeof el.updateComplete?.then === "function") {
+    el.updateComplete.then(() => applyPatch(el)).catch(() => {});
   } else {
     applyPatch(el); // fallback for non-Lit environments; usually a no-op in tests
   }
