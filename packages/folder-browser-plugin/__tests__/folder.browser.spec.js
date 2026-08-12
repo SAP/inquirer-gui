@@ -4,23 +4,22 @@ import { nextTick } from "vue";
 import { createVuetify } from "vuetify";
 import * as components from "vuetify/lib/components/index.mjs";
 import FormVue from "../../inquirer-gui/src/Form.vue";
-import QuestionFileBrowser from "../src/packages/QuestionFileBrowser.vue";
+import QuestionFolderBrowser from "../src/packages/QuestionFolderBrowser.vue";
 
-import QuestionFileBrowserPlugin from "../../file-browser-plugin/src";
-// import QuestionFileBrowserPlugin from "@sap-devx/inquirer-gui-file-browser-plugin";
+import QuestionFolderBrowserPlugin from "../../folder-browser-plugin/src";
 
-const questionFileBrowser = [
+const questionFolderBrowser = [
   {
-    type: "file-browser",
-    name: "configFile",
-    message: "Config file",
+    type: "folder-browser",
+    name: "configFolder",
+    message: "Config folder",
     default: "/home/",
-    getFilePath: async function (currentPath) {
+    getPath: async function (currentPath) {
       return `${currentPath}user`;
     },
   },
 ];
-enableAutoUnmount(afterEach); // Ensures wrapper component gets cleaned up after each test
+enableAutoUnmount(afterEach);
 
 const vscodeStubs = {
   "vscode-textfield": {
@@ -42,7 +41,7 @@ const vscodeStubs = {
   },
 };
 
-describe("Question of type file browser", () => {
+describe("Question of type folder browser", () => {
   let vuetify;
 
   beforeEach(() => {
@@ -52,11 +51,11 @@ describe("Question of type file browser", () => {
     });
   });
 
-  test("File Browser", async () => {
+  test("Folder Browser", async () => {
     const options = {};
     const wrapper = mount(FormVue, {
       global: {
-        plugins: [vuetify, [QuestionFileBrowserPlugin, options]],
+        plugins: [vuetify, [QuestionFolderBrowserPlugin, options]],
         stubs: vscodeStubs,
       },
       attachTo: document.body,
@@ -64,7 +63,7 @@ describe("Question of type file browser", () => {
     await nextTick();
 
     wrapper.vm.registerPlugin(options.plugin);
-    wrapper.setProps({ questions: questionFileBrowser });
+    wrapper.setProps({ questions: questionFolderBrowser });
 
     await nextTick();
     const icon = wrapper.find("i");
@@ -75,11 +74,11 @@ describe("Question of type file browser", () => {
     expect(wrapper.props().questions[0].answer).toBe("/home/user");
   });
 
-  test("File Browser input field", async () => {
+  test("Folder Browser input field", async () => {
     const options = {};
     const wrapper = mount(FormVue, {
       global: {
-        plugins: [vuetify, [QuestionFileBrowserPlugin, options]],
+        plugins: [vuetify, [QuestionFolderBrowserPlugin, options]],
         stubs: vscodeStubs,
       },
       attachTo: document.body,
@@ -87,7 +86,7 @@ describe("Question of type file browser", () => {
     await nextTick();
 
     wrapper.vm.registerPlugin(options.plugin);
-    wrapper.setProps({ questions: questionFileBrowser });
+    wrapper.setProps({ questions: questionFolderBrowser });
 
     await nextTick();
     const input = wrapper.find("input");
@@ -99,19 +98,19 @@ describe("Question of type file browser", () => {
     expect(wrapper.emitted().answered).toBeTruthy();
     const emittedEvent = wrapper.emitted().answered;
     const emittedPayload = emittedEvent[emittedEvent.length - 1];
-    expect(emittedPayload[0].configFile).toEqual("/home/user");
+    expect(emittedPayload[0].configFolder).toEqual("/home/user");
     expect(emittedPayload[1]).toBeUndefined();
   });
 });
 
-describe("mountLineHeightPatch in QuestionFileBrowser", () => {
+describe("mountLineHeightPatch in QuestionFolderBrowser", () => {
   test("injects exactly one style.line-height-patch and is idempotent", () => {
     const styleNodes = [];
     const mockShadowRoot = {
       querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
-    const wrapper = mount(QuestionFileBrowser, {
+    const wrapper = mount(QuestionFolderBrowser, {
       props: { question: { name: "test", answer: "", type: "input" } },
       global: {
         stubs: {
@@ -136,7 +135,7 @@ describe("mountLineHeightPatch in QuestionFileBrowser", () => {
       querySelector: () => styleNodes.find((n) => n.className === "line-height-patch") || null,
       appendChild: (node) => styleNodes.push(node),
     };
-    const wrapper = mount(QuestionFileBrowser, {
+    const wrapper = mount(QuestionFolderBrowser, {
       props: { question: { name: "test", answer: "", type: "input" } },
       global: {
         stubs: {

@@ -11,6 +11,8 @@ import "@vscode-elements/elements/dist/vscode-radio-group/index.js";
 import "@vscode-elements/elements/dist/vscode-radio/index.js";
 import "@vscode-elements/elements/dist/vscode-divider/index.js";
 
+export { mountLineHeightPatch } from "./utils";
+
 export default {
   install(Vue, options) {
     options.vuetify = vuetify;

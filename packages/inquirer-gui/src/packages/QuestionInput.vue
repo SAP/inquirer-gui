@@ -1,5 +1,6 @@
 <template>
   <vscode-textfield
+    ref="textfield"
     @input="onInput"
     :name="question.name"
     :value="question.answer"
@@ -9,10 +10,15 @@
 </template>
 
 <script>
+import { mountLineHeightPatch } from "../utils";
+
 export default {
   name: "QuestionInput",
   props: {
     question: Object,
+  },
+  mounted() {
+    mountLineHeightPatch(this.$refs.textfield);
   },
   methods: {
     onInput(val) {

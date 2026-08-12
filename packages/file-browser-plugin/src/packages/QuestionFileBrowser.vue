@@ -1,5 +1,5 @@
 <template>
-  <vscode-textfield ref="path" @change="onAnswerChanged" :value="question.answer">
+  <vscode-textfield ref="textfield" @change="onAnswerChanged" :value="question.answer">
     <template slot="content-after">
       <v-tooltip location="top">
         <template v-slot:activator="{ props }">
@@ -12,10 +12,15 @@
 </template>
 
 <script>
+import { mountLineHeightPatch } from "@sap-devx/inquirer-gui";
+
 export default {
   name: "QuestionFileBrowser",
   props: {
     question: Object,
+  },
+  mounted() {
+    mountLineHeightPatch(this.$refs.textfield);
   },
   data: () => ({
     path: "/home/",

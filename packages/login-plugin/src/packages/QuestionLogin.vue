@@ -1,6 +1,6 @@
 <template>
   <vscode-textfield
-    ref="login"
+    ref="textfield"
     @keyup.enter="onLogin"
     @change="onInput"
     :name="question.name"
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { mountLineHeightPatch } from "@sap-devx/inquirer-gui";
+
 // TODO: separate login from answer
 //   @input should fire an answerChanged event
 //   icon@click should fire a custom doLogin event
@@ -29,6 +31,9 @@ export default {
   name: "QuestionLogin",
   props: {
     question: Object,
+  },
+  mounted() {
+    mountLineHeightPatch(this.$refs.textfield);
   },
   methods: {
     afterLogin() {

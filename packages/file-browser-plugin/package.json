@@ -35,6 +35,9 @@
     "prepublishOnly": "npm run build",
     "test": "jest -w 1"
   },
+  "peerDependencies": {
+    "@sap-devx/inquirer-gui": "^3.4.13"
+  },
   "dependencies": {
     "vue": "^3.3.4"
   }

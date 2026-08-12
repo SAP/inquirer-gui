@@ -15,7 +15,7 @@ export default defineConfig({
       fileName: (format) => `${PACKAGE_NAME}.${format === "cjs" ? "common" : format}.js`,
     },
     rollupOptions: {
-      external: ["vue"],
+      external: ["vue", "@sap-devx/inquirer-gui"],
       output: {
         sourcemap: true,
         assetFileNames: (assetInfo) => {

@@ -29,9 +29,13 @@
   "scripts": {
     "build": "vite build",
     "build-dev": "vite build --mode development",
-    "ci": "npm-run-all clean build",
+    "ci": "npm-run-all clean build test",
     "clean": "rimraf ./dist",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "test": "jest -w 1"
+  },
+  "peerDependencies": {
+    "@sap-devx/inquirer-gui": "^3.4.13"
   },
   "dependencies": {
     "vue": "^3.3.4"
