@@ -55,7 +55,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "@vscode-elements/elements": "1.11.0",
+    "@vscode-elements/elements": "1.17.0",
     "lodash": "^4.17.23",
     "strip-ansi": "^6.0.0",
     "vue": "^3.3.4",
