@@ -38,6 +38,6 @@
     "@sap-devx/inquirer-gui": "^3.4.13"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "3.5.41"
   }
 }
