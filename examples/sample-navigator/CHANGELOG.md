@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.4.14 (2026-08-19)
+
+### Bug Fixes
+
+- **inquirer-gui:** text clipping in vscode-textfield ([#814](https://github.com/SAP/inquirer-gui/issues/814)) ([8dd5130](https://github.com/SAP/inquirer-gui/commit/8dd513001833160a2f6215ceb77986cd412edd95))
+
 ## 3.4.13 (2026-06-09)
 
 **Note:** Version bump only for package sample-navigator
