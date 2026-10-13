@@ -8,25 +8,26 @@ Lerna 9 monorepo with npm workspaces. All packages share a single fixed version 
 
 **Core package:**
 
-| Directory | npm name | Role |
-|---|---|---|
+| Directory               | npm name                 | Role                                                                        |
+| ----------------------- | ------------------------ | --------------------------------------------------------------------------- |
 | `packages/inquirer-gui` | `@sap-devx/inquirer-gui` | The Form component (`Form.vue`), built-in question renderers, plugin system |
 
 **Built-in plugins** (each a separate npm package):
 
-| Directory | npm name | Question type |
-|---|---|---|
-| `packages/auto-complete-plugin` | `@sap-devx/inquirer-gui-auto-complete-plugin` | `autocomplete` |
-| `packages/controls-navigator` | `@sap-devx/controls-navigator` | multi-step navigator UI |
-| `packages/file-browser-plugin` | `@sap-devx/inquirer-gui-file-browser-plugin` | `file-browser` |
-| `packages/folder-browser-plugin` | `@sap-devx/inquirer-gui-folder-browser-plugin` | `folder-browser` |
-| `packages/label-plugin` | `@sap-devx/inquirer-gui-label-plugin` | `label` (read-only) |
-| `packages/login-plugin` | `@sap-devx/inquirer-gui-login-plugin` | `login` |
-| `packages/radio-button-plugin` | `@sap-devx/inquirer-gui-radio-plugin` | radio button group |
-| `packages/single-checkbox-plugin` | `@sap-devx/inquirer-gui-single-checkbox-plugin` | single checkbox |
-| `packages/tiles-plugin` | `@sap-devx/inquirer-gui-tiles-plugin` | `tiles` (card grid) |
+| Directory                         | npm name                                        | Question type           |
+| --------------------------------- | ----------------------------------------------- | ----------------------- |
+| `packages/auto-complete-plugin`   | `@sap-devx/inquirer-gui-auto-complete-plugin`   | `autocomplete`          |
+| `packages/controls-navigator`     | `@sap-devx/controls-navigator`                  | multi-step navigator UI |
+| `packages/file-browser-plugin`    | `@sap-devx/inquirer-gui-file-browser-plugin`    | `file-browser`          |
+| `packages/folder-browser-plugin`  | `@sap-devx/inquirer-gui-folder-browser-plugin`  | `folder-browser`        |
+| `packages/label-plugin`           | `@sap-devx/inquirer-gui-label-plugin`           | `label` (read-only)     |
+| `packages/login-plugin`           | `@sap-devx/inquirer-gui-login-plugin`           | `login`                 |
+| `packages/radio-button-plugin`    | `@sap-devx/inquirer-gui-radio-plugin`           | radio button group      |
+| `packages/single-checkbox-plugin` | `@sap-devx/inquirer-gui-single-checkbox-plugin` | single checkbox         |
+| `packages/tiles-plugin`           | `@sap-devx/inquirer-gui-tiles-plugin`           | `tiles` (card grid)     |
 
 **Examples** (not published to npm):
+
 - `examples/sample-app` — Vue 3 + webpack demo
 - `examples/sample-app-vite` — Vue 3 + Vite demo (primary)
 - `examples/sample-navigator` — controls-navigator demo
@@ -44,6 +45,7 @@ npm run ci                # format:validate + lint:validate + lerna run ci (all 
 ```
 
 Per-package (inside any `packages/*` or `examples/*` directory):
+
 ```sh
 npm run build             # vite build → dist/
 npm run build-dev         # vite build (dev/watch mode)
@@ -73,6 +75,7 @@ GitHub Actions (`.github/workflows/`):
 - **`release.yml`** — triggered by `v*.*.*` tags; runs `npm run ci` + `npm run release:publish` (lerna publish from-git) + creates GitHub Release with extracted changelog.
 
 To cut a release:
+
 1. Open [bump-versions-and-tag](https://github.com/SAP/inquirer-gui/actions/workflows/bump-versions-and-tag.yml) → Run workflow → choose `automatic` (or a specific semver bump).
 2. GitHub Actions pushes the tag and the release workflow publishes to npm.
 
@@ -83,5 +86,6 @@ Conventional commits enforced via `@commitlint/config-conventional` + husky. Use
 No runtime environment variables. This is a pure UI library — consumers install `@sap-devx/inquirer-gui` from npm and embed it in their Vue 3 app.
 
 Development requirements:
+
 - Node.js 20+
 - npm (not yarn — this repo uses npm workspaces)
