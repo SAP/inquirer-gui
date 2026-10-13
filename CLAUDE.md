@@ -44,26 +44,30 @@ npm install               # install all workspace dependencies
 npm run ci                # format:validate + lint:validate + lerna run ci (all packages)
 ```
 
-Per-package (inside any `packages/*` or `examples/*` directory):
+Core package commands (inside `packages/inquirer-gui`):
 
 ```sh
-npm run build             # vite build → dist/
-npm run build-dev         # vite build (dev/watch mode)
-npm run ci                # clean + build + test (+ copy-coverage where applicable)
-npm run test              # jest tests
+npm run build             # Vite production bundle into dist/
+npm run build-dev         # one build using Vite development mode; no watch loop
+npm run ci                # clean + build + test + copy-coverage
+npm test                  # Jest tests
 ```
+
+Other packages and examples have different scripts; inspect their `package.json` before
+running commands. For example, `examples/sample-navigator` provides `dev` and `build`,
+but no `ci` or `test` script. `examples/sample-app` uses Vue CLI rather than Vite.
 
 ## Testing
 
-Tests use Jest + `@vue/test-utils`. Test files live under `__tests__/` in each package.
+The core and several plugins use Jest + `@vue/test-utils`, with tests in their `__tests__/` directories. The VS Code example has a separate test runner under `src/test/`; not every workspace has tests.
 
 ```sh
 npm run ci                # full build + tests for all packages (from root)
-# or per package:
+# or inside packages/inquirer-gui:
 npm run test
 ```
 
-Note: `packages/label-plugin` and `packages/tiles-plugin` have no tests.
+`packages/label-plugin` and `packages/tiles-plugin` define build-only CI scripts, without a test step. Example CI scripts also vary; Lerna runs only the workspace scripts that exist.
 
 ## CI/CD & Deployment
 

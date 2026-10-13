@@ -199,3 +199,10 @@ To get more help, support and information please open a github issue.
 ## Contributing
 
 Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+## Testing
+
+From `packages/inquirer-gui`, run `npm test` for Jest tests using `@vue/test-utils`;
+core/plugin test files are under `__tests__/`. Root `npm run ci` runs the workspace
+CI scripts that exist. Not every workspace has tests or a `ci` script; inspect its
+`package.json` before selecting commands. The VS Code example uses a separate runner.
