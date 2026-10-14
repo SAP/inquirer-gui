@@ -28,7 +28,7 @@ Lerna 9 monorepo with npm workspaces. All packages share a single fixed version 
 
 **Examples** (not published to npm):
 
-- `examples/sample-app` — Vue 3 + webpack demo
+- `examples/sample-app` — Vue 3 + Vue CLI demo (no webpack.config.js; uses `vue-cli-service`)
 - `examples/sample-app-vite` — Vue 3 + Vite demo (primary)
 - `examples/sample-navigator` — controls-navigator demo
 - `examples/sample-plugin` — how to write a custom plugin
@@ -41,7 +41,7 @@ Lerna 9 monorepo with npm workspaces. All packages share a single fixed version 
 
 ```sh
 npm install               # install all workspace dependencies
-npm run ci                # format:validate + lint:validate + lerna run ci (all packages)
+npm run ci                # legal:delete + legal:copy + format:validate + lint:validate + lerna run ci (all packages)
 ```
 
 Core package commands (inside `packages/inquirer-gui`):

@@ -16,7 +16,7 @@ Similarly, Inquirer-gui provides a plugin mechanism that enables developers to d
 
 Note that an inquirer-gui plugin is a [Vue.js component](https://vuejs.org/v2/guide/components.html); therefore, your application must be a Vue.js application.
 
-If you prefer to read code, check out the provided [sample app](examples/sample-app-vite/package.json).
+If you prefer to read code, check out the provided [sample app](examples/sample-app-vite/src/main.js).
 
 If you want to understand what you're doing, keep reading.
 

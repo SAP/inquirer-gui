@@ -31,7 +31,7 @@ When making changes, make sure to increase the version number based on the natur
 
 ## Requirements
 
-- [node.js](https://www.npmjs.com/package/node) version 10 or higher.
+- [node.js](https://www.npmjs.com/package/node) version 20 or higher.
 
 ## Installation and Usage
 
