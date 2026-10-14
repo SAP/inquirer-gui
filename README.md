@@ -1,6 +1,4 @@
-[![CircleCI](https://circleci.com/gh/SAP/inquirer-gui.svg?style=svg)](https://circleci.com/gh/SAP/inquirer-gui)
-[![Coverage Status](https://coveralls.io/repos/github/SAP/inquirer-gui/badge.svg?branch=master)](https://coveralls.io/github/SAP/inquirer-gui?branch=master)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/SAP/inquirer-gui.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/SAP/inquirer-gui/context:javascript)
+[![CI](https://github.com/SAP/inquirer-gui/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/SAP/inquirer-gui/actions/workflows/ci.yml)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 ![GitHub license](https://img.shields.io/badge/license-Apache_2.0-blue.svg)
 [![REUSE status](https://api.reuse.software/badge/github.com/SAP/inquirer-gui)](https://api.reuse.software/info/github.com/SAP/inquirer-gui)
@@ -33,7 +31,7 @@ When making changes, make sure to increase the version number based on the natur
 
 ## Requirements
 
-- [node.js](https://www.npmjs.com/package/node) version 10 or higher.
+- [node.js](https://www.npmjs.com/package/node) version 20 or higher.
 
 ## Installation and Usage
 
@@ -201,3 +199,10 @@ To get more help, support and information please open a github issue.
 ## Contributing
 
 Contributing information can be found in the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+## Testing
+
+From `packages/inquirer-gui`, run `npm test` for Jest tests using `@vue/test-utils`;
+core/plugin test files are under `__tests__/`. Root `npm run ci` runs the workspace
+CI scripts that exist. Not every workspace has tests or a `ci` script; inspect its
+`package.json` before selecting commands. The VS Code example uses a separate runner.
